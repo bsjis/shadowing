@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>쉐도잉 교실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stage:#15203A; --stage2:#20304F; --stage-line:#33456A; --stage-text:#E8EDF7; --stage-muted:#9FB0CC;
+  --paper:#F5F7FA; --card:#FFFFFF; --ink:#1A2230; --muted:#5F6B7D; --line:#D9DEE6;
+  --teal:#0E7A82; --teal-weak:#E1F1F2; --marker:#FFE066; --up:#1F5FD1; --dn:#B4471A; --ps:#7A3FD0; --warn:#B42318;
+  --cap:52px;
+  --ui:'IBM Plex Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  --en:'Atkinson Hyperlegible','Segoe UI',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:var(--ui);color:var(--ink);background:var(--paper);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #5BB8C0;outline-offset:2px}
+[hidden]{display:none!important}
+.en{font-family:var(--en)}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--stage);color:var(--stage-text);border-bottom:1px solid var(--stage-line)}
+.brand{font-weight:600;font-size:16px;white-space:nowrap}
+.title-input{flex:1;min-width:120px;max-width:520px;background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 10px;color:var(--stage-text);font-size:16px}
+.title-input:hover,.title-input:focus{border-color:var(--stage-line);background:var(--stage2)}
+.top-actions{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.tbtn{background:var(--stage2);border:1px solid var(--stage-line);color:var(--stage-text);border-radius:8px;padding:7px 12px}
+.tbtn:hover{border-color:#5A6F97}
+.tbtn.primary{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(360px,1fr);height:calc(100% - 57px)}
+.stage{background:var(--stage);color:var(--stage-text);padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+.panel{display:flex;flex-direction:column;min-height:0;border-left:1px solid var(--line);background:var(--paper)}
+
+/* ---------- video ---------- */
+.video-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;flex:none}
+.video-wrap iframe,.video-wrap video,#ytHost{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-wrap video.audio{background:#0d1526 radial-gradient(circle at 50% 50%,#22345a 0,#0d1526 60%)}
+#shield{position:absolute;inset:0;display:none;cursor:pointer}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px;background:rgba(10,16,30,.92);color:var(--stage-text)}
+.overlay p{margin:0;max-width:34em}
+.overlay a,.overlay .linkbtn{color:#8FD3D8}
+.linkbtn{background:none;border:1px solid #4E6C8F;border-radius:8px;padding:8px 14px}
+.gap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(10,16,30,.55);color:#fff;pointer-events:none}
+.gap .ring{position:relative;width:110px;height:110px}
+.gap svg{transform:rotate(-90deg)}
+.gap .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:600;font-family:var(--en)}
+.gap p{margin:0;font-size:20px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.gap .gbtns{display:flex;gap:8px;pointer-events:auto}
+.gap .gbtns button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:6px 12px}
+
+/* ---------- caption (presentation) ---------- */
+.caption{display:none;text-align:center;padding:4px 12px 0}
+.caption .en{font-size:var(--cap);line-height:1.55;margin:0;color:#fff}
+.caption .ko{font-size:calc(var(--cap)*.5);color:var(--stage-muted);margin:.3em 0 0}
+.caption .pos{font-size:14px;color:var(--stage-muted);margin-bottom:4px}
+
+/* ---------- transport & controls ---------- */
+.transport{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sbtn{background:var(--stage2);border:1px solid var(--stage-line);color:var(--stage-text);border-radius:8px;padding:9px 14px;min-height:42px}
+.sbtn:hover{border-color:#5A6F97}
+.sbtn.play{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600;min-width:112px}
+.sbtn[aria-pressed="true"]{background:#2C4E7A;border-color:#6E9BD6}
+.where{margin-left:auto;color:var(--stage-muted);font-variant-numeric:tabular-nums;text-align:right;font-size:14px}
+.where strong{color:var(--stage-text);font-weight:600}
+.ctrls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;padding:12px 14px;border:1px solid var(--stage-line);border-radius:10px;background:var(--stage2)}
+.ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;color:var(--stage-muted)}
+.ctrl > span:first-child{color:var(--stage-text);min-width:5.5em}
+.ctrl select,.ctrl input[type=range]{accent-color:#5BB8C0}
+.ctrl select{background:var(--stage);border:1px solid var(--stage-line);border-radius:6px;padding:4px 6px;color:var(--stage-text)}
+.ctrl output{font-family:var(--en);color:var(--stage-text);min-width:3.6em}
+.ctrl .mini{padding:5px 10px;min-height:0;font-size:13px}
+.ctrl label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.present-ctrl{display:none}
+
+/* ---------- panel tabs & toolbar ---------- */
+.tabs{display:flex;border-bottom:1px solid var(--line);background:var(--card);flex:none}
+.tabs button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:12px;font-weight:500;color:var(--muted)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--teal)}
+.tabpane{flex:1;min-height:0;display:flex;flex-direction:column}
+.toolbar{padding:12px 14px;display:flex;flex-direction:column;gap:10px;background:var(--card);border-bottom:1px solid var(--line);flex:none}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row .lbl{font-size:13px;color:var(--muted);min-width:4.2em}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:var(--card);border:0;border-right:1px solid var(--line);padding:6px 12px;font-size:14px}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13.5px}
+.chip[aria-pressed="true"]{background:var(--teal-weak);border-color:var(--teal);color:#0A5A60;font-weight:600}
+.chip .sw{display:inline-block;margin-right:3px}
+.toggle{display:inline-flex;align-items:center;gap:6px;font-size:14px;cursor:pointer}
+.note{font-size:12.5px;color:var(--muted)}
+
+/* ---------- script ---------- */
+.script{flex:1;overflow:auto;padding:10px 10px 40px}
+.sent{display:flex;gap:10px;padding:10px 12px;border-radius:8px;border-left:3px solid transparent;cursor:pointer}
+.sent:hover{background:#ECEFF4}
+.sent.on{background:var(--teal-weak);border-left-color:var(--teal)}
+.snum{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:13px;color:var(--muted);font-family:var(--en)}
+.sent.on .snum{background:var(--teal);border-color:var(--teal);color:#fff}
+.sbody{flex:1;min-width:0}
+.stext{margin:0;font-size:20px;line-height:1.85}
+.sent .ko{margin:2px 0 0;color:var(--muted);font-size:14.5px}
+.w{border-radius:3px;padding:0 1px}
+.tool-speak .w,.tool-blank .w,.tool-stress .w,.tool-rise .w,.tool-fall .w,.tool-pause .w,.tool-erase .w{cursor:cell}
+.tool-speak .w:hover,.tool-blank .w:hover,.tool-stress .w:hover,.tool-rise .w:hover,.tool-fall .w:hover,.tool-pause .w:hover,.tool-erase .w:hover{outline:2px dashed #8AA0BF}
+.st{background:linear-gradient(transparent 52%,var(--marker) 52%);font-weight:700}
+.tn{font-style:normal;font-weight:700;font-size:.8em;vertical-align:.45em;margin-left:1px}
+.tn.up{color:var(--up)} .tn.dn{color:var(--dn)}
+.ps{font-style:normal;font-weight:700;color:var(--ps);margin:0 .12em 0 .2em}
+.bk{color:transparent!important;background:none;border-bottom:2px solid currentColor;border-bottom-color:var(--ink);cursor:pointer;user-select:none}
+.bk.st{background:linear-gradient(transparent 52%,var(--marker) 52%)}
+.rv{color:var(--teal);text-decoration:underline dotted 1.5px;text-underline-offset:4px}
+.empty{padding:32px 18px;color:var(--muted);text-align:center}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);padding:8px 14px;border-top:1px solid var(--line);background:var(--card);flex:none}
+
+/* ---------- editor ---------- */
+.edit{flex:1;overflow:auto;padding:14px 14px 60px;display:flex;flex-direction:column;gap:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.box h3{margin:0 0 4px;font-size:15px}
+.box p.desc{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.inp{border:1px solid var(--line);border-radius:7px;padding:8px 10px;background:#fff;width:100%}
+textarea.inp{resize:vertical;font-family:var(--en);font-size:14px}
+.btn{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:7px 12px;font-size:14px}
+.btn:hover{border-color:#9AA6B8}
+.btn.main{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.sm{padding:4px 9px;font-size:13px}
+.btn.danger{color:var(--warn)}
+.filebtn{display:inline-flex;align-items:center;gap:6px;border:1px dashed #9AA6B8;border-radius:7px;padding:7px 12px;cursor:pointer;font-size:14px;background:#fff}
+.filebtn input{display:none}
+.status{font-size:13px;color:var(--muted);margin-top:8px}
+.status.err{color:var(--warn)}
+.erow{border:1px solid var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:7px;background:#fff}
+.erow.on{border-color:var(--teal);box-shadow:inset 3px 0 0 var(--teal)}
+.erow.bad{border-color:var(--warn)}
+.ehead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.enum{font-family:var(--en);font-weight:700;min-width:1.6em}
+.badge{font-size:11.5px;border-radius:4px;padding:1px 6px;background:#FFF1D6;color:#8A5A00}
+.badge.ok{background:#E3F4E8;color:#1F6B35}
+.spacer{flex:1}
+.etimes{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.etimes input{width:6.2em;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:var(--en);font-variant-numeric:tabular-nums}
+.tapbar{border:1px solid var(--teal);background:var(--teal-weak);border-radius:10px;padding:12px}
+.tapbar .now{font-weight:600;margin:6px 0}
+#edList{display:flex;flex-direction:column;gap:8px}
+
+/* ---------- toast & dialog ---------- */
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:90vw}
+#toast.show{opacity:1}
+dialog{border:1px solid var(--line);border-radius:12px;padding:20px 22px;max-width:480px}
+dialog::backdrop{background:rgba(10,16,30,.5)}
+dialog h3{margin:0 0 10px}
+dialog table{border-collapse:collapse;width:100%;font-size:14px}
+dialog td{padding:6px 4px;border-bottom:1px solid var(--line)}
+kbd{font-family:var(--en);background:var(--paper);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 7px;font-size:13px}
+
+/* ---------- presentation mode ---------- */
+body.present .top,body.present .panel{display:none}
+body.present .layout{grid-template-columns:1fr;height:100%}
+body.present .stage{height:100vh;padding:14px 20px;gap:10px}
+body.present .video-wrap{width:min(100%,calc(60vh * 16 / 9));margin:0 auto}
+body.present.view-video .video-wrap{width:min(100%,calc(80vh * 16 / 9))}
+body.present .caption{display:block;flex:1;overflow:auto}
+body.present.view-video .caption{display:none}
+body.present #shield{display:block}
+body.present .ctrls{display:none}
+body.present .present-ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+body.present .transport{justify-content:center}
+body.present .caption .bk{border-bottom-color:#fff}
+body.present .caption .st{background:linear-gradient(transparent 52%,rgba(255,224,102,.45) 52%);color:#fff}
+body.present .caption .tn.up{color:#86B3FF} body.present .caption .tn.dn{color:#FFAA80} body.present .caption .ps{color:#C9A6FF}
+body.present .caption .rv{color:#8FE3E8}
+body.hc .stage{background:#000}
+body.hc .sbtn{background:#000;border-color:#fff;color:#fff}
+body.hc .sbtn.play{background:#fff;color:#000}
+body.hc .caption .en{color:#fff;font-weight:700}
+body.hc .caption .st{background:#FFE066;color:#000}
+body.hc .caption .ko{color:#fff}
+
+/* ---------- responsive ---------- */
+@media (max-width:920px){
+  .layout{grid-template-columns:1fr;height:auto}
+  .panel{border-left:0;border-top:1px solid var(--line);min-height:70vh}
+  .script,.edit{overflow:visible}
+  .stage{overflow:visible}
+  .brand{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">쉐도잉 교실</div>
+  <input id="lessonTitle" class="title-input" aria-label="수업 제목">
+  <div class="top-actions">
+    <button class="tbtn" id="btnSample">샘플 수업 열기</button>
+    <button class="tbtn" id="btnNew">새 수업</button>
+    <button class="tbtn" id="btnHelp" aria-label="단축키 보기">단축키</button>
+    <button class="tbtn primary" id="btnPresent">발표 모드</button>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="stage" aria-label="영상과 재생 조절">
+    <div class="video-wrap" id="videoWrap">
+      <div id="ytHost"></div>
+      <video id="fileVideo" playsinline hidden></video>
+      <div id="shield" title="클릭하면 재생/정지"></div>
+      <div class="overlay" id="emptyOverlay">
+        <p>아직 영상이 없습니다. 유튜브 주소나 내 컴퓨터의 mp4·mp3 파일을 불러오세요.</p>
+        <button class="linkbtn" data-open-tab="edit">영상 불러오기</button>
+      </div>
+      <div class="overlay" id="blockedOverlay" hidden></div>
+      <div class="gap" id="gapOverlay" hidden>
+        <div class="ring">
+          <svg width="110" height="110" viewBox="0 0 110 110" aria-hidden="true">
+            <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="8"/>
+            <circle id="gapArc" cx="55" cy="55" r="46" fill="none" stroke="#5BD0D8" stroke-width="8" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="0"/>
+          </svg>
+          <div class="num" id="gapNum">3</div>
+        </div>
+        <p>따라 말해 보세요</p>
+        <div class="gbtns"><button id="gapGo">바로 계속</button><button id="gapStop">여기서 멈춤</button></div>
+      </div>
+    </div>
+
+    <div class="caption" id="caption" aria-live="polite"></div>
+
+    <div class="transport">
+      <button class="sbtn" id="bPrev">이전 문장</button>
+      <button class="sbtn play" id="bPlay">재생</button>
+      <button class="sbtn" id="bNext">다음 문장</button>
+      <button class="sbtn" id="bRepeat">이 문장 다시</button>
+      <div class="where"><strong id="posLbl">문장 없음</strong><br><span id="timeLbl">0:00.0</span></div>
+    </div>
+
+    <div class="present-ctrl">
+      <div class="seg" style="border-color:var(--stage-line)">
+        <button class="sbtn mini" data-view="video">영상만</button>
+        <button class="sbtn mini" data-view="script">자막</button>
+        <button class="sbtn mini" data-view="blank">빈칸</button>
+      </div>
+      <button class="sbtn" data-toggle-ko>해석</button>
+      <label class="ctrl"><span>글자 크기</span><input type="range" id="rngCap" min="28" max="110" step="2" value="52"></label>
+      <button class="sbtn" id="bHC" aria-pressed="false">고대비</button>
+      <button class="sbtn" id="bFS">전체화면</button>
+      <button class="sbtn" id="bExitPresent">발표 모드 끝내기</button>
+    </div>
+
+    <div class="ctrls">
+      <div class="ctrl"><span>문장 반복</span>
+        <select id="selRepeat"><option value="1">1번 (반복 없음)</option><option value="2">2번</option><option value="3">3번</option><option value="5">5번</option></select>
+      </div>
+      <div class="ctrl"><span>따라 말할 시간</span>
+        <select id="selGap">
+          <option value="0">멈추지 않음</option><option value="1">문장 길이 × 1</option><option value="1.25">× 1.25</option>
+          <option value="1.5">× 1.5</option><option value="2">× 2</option><option value="2.5">× 2.5</option>
+        </select>
+        <label><input type="checkbox" id="chkAdvance" checked> 끝나면 다음 문장</label>
+      </div>
+      <div class="ctrl"><span>재생 속도</span>
+        <input type="range" id="rngRate" min="0.5" max="1.5" step="0.05" value="1" aria-label="재생 속도">
+        <output id="rateOut">1.00×</output>
+        <button class="sbtn mini" id="bRate1">1×</button>
+      </div>
+      <div class="ctrl"><span>구간 반복</span>
+        <button class="sbtn mini" id="bA">A 지점</button>
+        <button class="sbtn mini" id="bB">B 지점</button>
+        <button class="sbtn mini" id="bAB" aria-pressed="false">A-B 반복</button>
+        <span id="abLbl"></span>
+      </div>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="lesson" aria-selected="true">수업</button>
+      <button role="tab" data-tab="edit" aria-selected="false">자료 편집</button>
+    </nav>
+
+    <!-- 수업 탭 -->
+    <div class="tabpane" id="pane-lesson">
+      <div class="toolbar">
+        <div class="row">
+          <span class="lbl">보기</span>
+          <div class="seg" id="segView">
+            <button data-view="video">영상만</button>
+            <button data-view="script">영상 + 스크립트</button>
+            <button data-view="blank">영상 + 빈칸</button>
+          </div>
+          <label class="toggle"><input type="checkbox" id="chkKo"> 한글 해석</label>
+        </div>
+        <div class="row" id="blankRow">
+          <span class="lbl">빈칸</span>
+          <div class="seg" id="segRatio">
+            <button data-ratio="0.1">10%</button><button data-ratio="0.3">30%</button><button data-ratio="0.5">50%</button>
+          </div>
+          <button class="btn sm" id="bShuffle">다시 섞기</button>
+          <span class="note" id="blankModeLbl"></span>
+        </div>
+        <div class="row" id="toolRow">
+          <span class="lbl">단어 클릭</span>
+          <button class="chip" data-tool="move">문장 이동</button>
+          <button class="chip" data-tool="speak">발음 듣기</button>
+          <button class="chip" data-tool="blank">빈칸 지정</button>
+          <button class="chip" data-tool="stress"><span class="sw st">강세</span></button>
+          <button class="chip" data-tool="rise">↗ 올림</button>
+          <button class="chip" data-tool="fall">↘ 내림</button>
+          <button class="chip" data-tool="pause">| 포즈</button>
+          <button class="chip" data-tool="erase">표시 지우기</button>
+        </div>
+      </div>
+      <div class="script" id="script"></div>
+      <div class="legend">
+        <span><span class="st">강세</span></span><span><i class="tn up">↗</i> 올림 억양</span><span><i class="tn dn">↘</i> 내림 억양</span><span><i class="ps">|</i> 포즈</span>
+        <label class="toggle" style="margin-left:auto"><input type="checkbox" id="chkScroll" checked> 자동 스크롤</label>
+      </div>
+    </div>
+
+    <!-- 편집 탭 -->
+    <div class="tabpane" id="pane-edit" hidden>
+      <div class="edit">
+        <section class="box">
+          <h3>영상</h3>
+          <p class="desc">유튜브 주소(일반·youtu.be·쇼츠·시작 시간 포함 주소 모두 가능)를 넣거나, 내 컴퓨터의 파일을 고르세요. 파일은 업로드되지 않고 이 브라우저에서만 재생됩니다.</p>
+          <div class="row"><input class="inp" id="ytUrl" placeholder="https://www.youtube.com/watch?v=..." style="flex:1;min-width:200px"><button class="btn main" id="btnYt">불러오기</button></div>
+          <div class="row" style="margin-top:8px">
+            <label class="filebtn">내 컴퓨터의 mp4·mp3 열기<input type="file" id="mediaFile" accept="video/*,audio/*,.mp4,.mp3,.m4a,.webm,.wav"></label>
+          </div>
+          <div class="status" id="srcStatus"></div>
+        </section>
+
+        <section class="box">
+          <h3>스크립트 가져오기</h3>
+          <p class="desc">SRT·VTT 자막 파일, 유튜브 ‘스크립트 표시’에서 복사한 내용(시간 + 문장), 또는 그냥 영어 원문을 붙여 넣으세요. 형식은 자동으로 알아봅니다.</p>
+          <div class="row" style="margin-bottom:8px"><label class="filebtn">자막·텍스트 파일 열기<input type="file" id="scriptFile" accept=".srt,.vtt,.txt,text/plain"></label></div>
+          <textarea class="inp" id="rawScript" rows="7" placeholder="0:01&#10;We choose to go to the moon.&#10;0:05&#10;We choose to go to the moon in this decade..."></textarea>
+          <div class="row" style="margin-top:8px">
+            <label class="toggle"><input type="radio" name="unit" value="sentence" checked> 문장 단위로 나누기</label>
+            <label class="toggle"><input type="radio" name="unit" value="cue"> 자막 줄 그대로</label>
+            <span class="spacer"></span>
+            <button class="btn main" id="btnImport">문장 목록 만들기</button>
+          </div>
+          <div class="status" id="importStatus"></div>
+        </section>
+
+        <section class="tapbar">
+          <h3 style="margin:0 0 4px;font-size:15px">재생하며 시간 찍기</h3>
+          <p class="desc" style="margin:0;font-size:13px;color:var(--muted)">켜 두고 영상을 재생하면서, 문장이 시작될 때마다 <kbd>Enter</kbd> 또는 ‘문장 시작’을 누르세요. 앞 문장의 끝과 다음 문장의 시작이 한 번에 정해집니다. 문장 사이에 쉬는 구간이 있으면 ‘여기서 문장 끝’을 먼저 누르세요.</p>
+          <div class="now" id="tapNow"></div>
+          <div class="row">
+            <button class="btn main" id="tapToggle">시간 찍기 켜기</button>
+            <button class="btn" id="tapMark" disabled>문장 시작 (Enter)</button>
+            <button class="btn" id="tapEnd" disabled>여기서 문장 끝</button>
+          </div>
+        </section>
+
+        <section class="box">
+          <h3>문장별 시간과 해석</h3>
+          <p class="desc">‘지금 시점’은 영상의 현재 재생 위치를 그 문장의 시작이나 끝으로 넣습니다. 시간은 0:12.5처럼 적어도 됩니다. ‘시간 추정’ 표시가 있는 문장은 한 번 들어 보고 맞춰 주세요.</p>
+          <details style="margin-bottom:10px">
+            <summary style="cursor:pointer;font-size:14px">해석 한꺼번에 넣기</summary>
+            <textarea class="inp" id="koBulk" rows="5" style="margin-top:8px;font-family:var(--ui)" placeholder="한 줄에 한 문장씩, 위 문장 순서대로"></textarea>
+            <div class="row" style="margin-top:6px"><button class="btn" id="btnKoBulk">해석 넣기</button></div>
+          </details>
+          <div id="edList"></div>
+        </section>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<dialog id="helpDlg">
+  <h3>키보드 단축키</h3>
+  <table>
+    <tr><td><kbd>Space</kbd></td><td>재생 / 정지 (따라 말하는 중이면 바로 계속)</td></tr>
+    <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>이전 / 다음 문장</td></tr>
+    <tr><td><kbd>R</kbd></td><td>현재 문장 다시</td></tr>
+    <tr><td><kbd>B</kbd></td><td>빈칸 보기 켜기 / 끄기</td></tr>
+    <tr><td><kbd>T</kbd></td><td>한글 해석 보이기 / 숨기기</td></tr>
+    <tr><td><kbd>F</kbd></td><td>발표 모드 켜기 / 끄기</td></tr>
+    <tr><td><kbd>Esc</kbd></td><td>전체화면 나가기 (한 번 더 누르면 발표 모드 끝)</td></tr>
+  </table>
+  <p class="note" style="margin-top:12px">유튜브 화면 안을 직접 클릭하면 키 입력이 유튜브로 넘어갑니다. 그럴 땐 영상 바깥을 한 번 클릭하세요. 발표 모드에서는 영상을 클릭해도 단축키가 유지됩니다.</p>
+  <form method="dialog" style="text-align:right;margin-top:10px"><button class="btn main">닫기</button></form>
+</dialog>
+<div id="toast" role="status"></div>
+
+<script>
+'use strict';
+/* =====================================================================
+   DATA MODEL (문장 단위 관리 — 2단계 확장 대비)
+   lesson = {
+     schema:1, id, title, createdAt, updatedAt,
+     source: {kind:'youtube', videoId, startAt, url} | {kind:'file', name, mime} | null,
+     blank:  {mode:'random'|'custom', ratio:0.1|0.3|0.5, seed},
+     sentences: [{
+       id,                 // 고정 ID — 녹음·점수 기록이 이 ID에 연결됨
+       text, start, end,   // 초 단위
+       timing:'subtitle'|'measured'|'estimated',  // 자막에서 옴 / 교사가 직접 맞춤 / 추정
+       ko,                 // 한글 해석
+       marks:{ [wordIndex]: {stress:bool, tone:'rise'|'fall', pause:bool} },
+       blanks:[wordIndex]  // 교사 지정 빈칸
+     }]
+   }
+   (7단계 예정) 연습 기록은 IndexedDB에 문장 ID 단위로 저장:
+   attempt = {id, lessonId, sentenceId, at, audio:Blob, mime, recognized,
+              inputMethod:'live'|'after-recording'|'typed',
+              scores:{ wordMatch:{value, basis:'measured'|'estimated'}, wpm:{...}, fillers:{...} }}
+   ===================================================================== */
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const r2 = v => Math.round(v * 100) / 100;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fmt(t){ if(!isFinite(t) || t < 0) t = 0; const m = Math.floor(t / 60), s = t - m * 60; return m + ':' + (s < 10 ? '0' : '') + s.toFixed(1); }
+function parseClock(str){ str = String(str).trim().replace(',', '.'); if(!str) return NaN; const p = str.split(':').map(Number); if(p.some(isNaN)) return NaN; return p.reduce((a, v) => a * 60 + v, 0); }
+let toastTimer;
+function toast(msg, ms = 2600){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), ms); }
+
+/* ---------------- 샘플 수업 ---------------- */
+function sampleLesson(){
+  // JFK, Rice University 연설(1962) 중 한 대목. 미국 연방정부 저작물(퍼블릭 도메인).
+  // 시간은 추정값입니다 — '자료 편집 > 재생하며 시간 찍기'로 맞추세요.
+  const rows = [
+    ['We choose to go to the moon.', 0.5, 3.2, '우리는 달에 가기로 했습니다.', {1:{stress:true}, 6:{stress:true, tone:'fall'}}],
+    ['We choose to go to the moon in this decade and do the other things,', 4.5, 10.5, '우리는 이번 10년 안에 달에 가고, 다른 일들도 해내기로 했습니다.', {1:{stress:true}, 6:{stress:true}, 9:{stress:true, pause:true}, 13:{stress:true}, 14:{tone:'rise'}}],
+    ['not because they are easy, but because they are hard,', 10.8, 15.6, '그것이 쉬워서가 아니라 어렵기 때문입니다.', {0:{stress:true}, 4:{stress:true, tone:'rise', pause:true}, 9:{stress:true, tone:'fall'}}],
+    ['because that goal will serve to organize and measure the best of our energies and skills,', 16.4, 22.6, '그 목표가 우리의 역량과 기술을 최대한 모으고 가늠하게 해 줄 것이기 때문이며,', {2:{stress:true, pause:true}, 6:{stress:true}, 8:{stress:true}, 10:{stress:true}, 13:{stress:true}, 15:{stress:true, tone:'rise'}}],
+    ['because that challenge is one that we are willing to accept,', 23.0, 27.0, '그 도전은 우리가 기꺼이 받아들이고,', {2:{stress:true, pause:true}, 8:{stress:true}, 10:{stress:true, tone:'rise'}}],
+    ['one we are unwilling to postpone,', 27.2, 29.6, '미루고 싶지 않으며,', {3:{stress:true}, 5:{stress:true, tone:'rise'}}],
+    ['and one which we intend to win.', 29.8, 32.5, '반드시 이겨 내려는 도전이기 때문입니다.', {4:{stress:true}, 6:{stress:true, tone:'fall'}}],
+  ];
+  return {
+    schema:1, id:uid(), title:'샘플: JFK “We choose to go to the moon” (1962)', createdAt:Date.now(), updatedAt:Date.now(),
+    source:{kind:'youtube', videoId:'aA1LOz9liag', startAt:0, url:'https://www.youtube.com/watch?v=aA1LOz9liag'},
+    blank:{mode:'random', ratio:0.3, seed:1},
+    sentences: rows.map(([text, start, end, ko, marks]) => ({id:uid(), text, start, end, ko, timing:'estimated', marks, blanks:[]}))
+  };
+}
+function newLesson(){
+  return {schema:1, id:uid(), title:'새 수업', createdAt:Date.now(), updatedAt:Date.now(), source:null, blank:{mode:'random', ratio:0.3, seed:1}, sentences:[]};
+}
+function mkSent(text, start, end, timing){ return {id:uid(), text:text.trim(), start:r2(start), end:r2(end), ko:'', timing, marks:{}, blanks:[]}; }
+
+/* ---------------- 상태 ---------------- */
+let lesson;
+const ui = {view:'script', ko:false, tool:'move', repeat:1, gap:1.5, advance:true, rate:1,
+  ab:{a:null, b:null, on:false}, tap:false, tapK:0, tapInside:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson'};
+const E = {target:0, plays:0, gap:null, ignoreUntil:0, lastT:0, endedAt:-1};
+
+/* ---------------- 저장 ---------------- */
+const DRAFT_KEY = 'shadowroom.draft.v1', PREF_KEY = 'shadowroom.prefs.v1';
+let saveTimer;
+function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(() => {
+  lesson.updatedAt = Date.now();
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(lesson)); }catch(e){}
+}, 400); }
+function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll})); }catch(e){} }
+function loadPrefs(){ try{ Object.assign(ui, JSON.parse(localStorage.getItem(PREF_KEY) || '{}')); }catch(e){} }
+
+/* ---------------- 유튜브 주소 해석 ---------------- */
+function parseTimeParam(t){
+  if(!t) return 0; t = String(t);
+  if(/^\d+(\.\d+)?s?$/.test(t)) return parseFloat(t);
+  const m = t.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/);
+  return m ? (+(m[1]||0))*3600 + (+(m[2]||0))*60 + (+(m[3]||0)) : 0;
+}
+function parseYouTube(input){
+  input = (input || '').trim();
+  if(/^[\w-]{11}$/.test(input)) return {id:input, start:0};
+  let u; try{ u = new URL(/^https?:\/\//i.test(input) ? input : 'https://' + input); }catch(e){ return null; }
+  const host = u.hostname.replace(/^(www|m|music)\./, '');
+  let id = null;
+  if(host === 'youtu.be') id = u.pathname.slice(1).split('/')[0];
+  else if(/(^|\.)youtube(-nocookie)?\.com$/.test(host)){
+    id = u.searchParams.get('v');
+    if(!id){ const m = u.pathname.match(/^\/(shorts|embed|live|v|e)\/([\w-]{11})/); if(m) id = m[2]; }
+  }
+  if(!id || !/^[\w-]{11}$/.test(id)) return null;
+  const hashT = (u.hash.match(/t=([^&]+)/) || [])[1];
+  return {id, start: parseTimeParam(u.searchParams.get('t') || u.searchParams.get('start') || hashT)};
+}
+
+/* ---------------- 플레이어 (유튜브 / 로컬 파일 공통) ---------------- */
+let ytApiPromise = null;
+function loadYTApi(){
+  if(window.YT && window.YT.Player) return Promise.resolve();
+  if(ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise((res, rej) => {
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { prev && prev(); res(); };
+    const s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.onerror = () => { ytApiPromise = null; rej(new Error('yt-api')); };
+    document.head.appendChild(s);
+  });
+  return ytApiPromise;
+}
+const Player = {
+  kind:null, yt:null, el:null, ready:false, rate:1, videoId:null,
+  ensureHost(){ if(!$('#ytHost')){ const d = document.createElement('div'); d.id = 'ytHost'; $('#videoWrap').prepend(d); } },
+  destroy(){
+    this.ready = false;
+    if(this.yt){ try{ this.yt.destroy(); }catch(e){} this.yt = null; }
+    const old = $('#ytHost'); if(old && old.tagName === 'IFRAME') old.remove();
+    this.ensureHost();
+    const el = this.el;
+    el.pause(); if(el.src){ URL.revokeObjectURL(el.src); el.removeAttribute('src'); el.load(); }
+    el.hidden = true; this.kind = null;
+  },
+  async loadYouTube(id, start = 0){
+    this.destroy(); this.kind = 'yt'; this.videoId = id;
+    showOverlay(null); $('#emptyOverlay').hidden = true;
+    try{ await loadYTApi(); }catch(e){ showOverlay('noapi'); return; }
+    if(this.kind !== 'yt' || this.videoId !== id) return;
+    const vars = {playsinline:1, rel:0, modestbranding:1, iv_load_policy:3, cc_load_policy:0, start:Math.floor(start || 0)};
+    if(location.protocol.startsWith('http')) vars.origin = location.origin;
+    this.yt = new YT.Player('ytHost', {
+      videoId:id, width:'100%', height:'100%', playerVars:vars,
+      events:{
+        onReady:() => { this.ready = true; this.setRate(this.rate); },
+        onError:e => onPlayerError(e.data)
+      }
+    });
+  },
+  loadFile(file){
+    this.destroy(); this.kind = 'file';
+    showOverlay(null); $('#emptyOverlay').hidden = true;
+    const el = this.el; el.hidden = false;
+    el.classList.toggle('audio', (file.type || '').startsWith('audio') || /\.(mp3|m4a|wav)$/i.test(file.name));
+    el.controls = true;
+    el.onloadedmetadata = () => { this.ready = true; el.playbackRate = this.rate; };
+    el.onerror = () => toast('이 파일은 브라우저에서 재생할 수 없습니다. mp4(H.264) 또는 mp3로 바꿔 보세요.', 4000);
+    el.src = URL.createObjectURL(file);
+  },
+  play(){ if(this.kind === 'yt') this.yt?.playVideo?.(); else if(this.kind === 'file') this.el.play().catch(() => {}); },
+  pause(){ if(this.kind === 'yt') this.yt?.pauseVideo?.(); else if(this.kind === 'file') this.el.pause(); },
+  seek(t){ t = Math.max(0, t); if(this.kind === 'yt') this.yt?.seekTo?.(t, true); else if(this.kind === 'file') this.el.currentTime = t; },
+  time(){ if(this.kind === 'yt') return this.yt?.getCurrentTime?.() || 0; if(this.kind === 'file') return this.el.currentTime || 0; return 0; },
+  isPlaying(){
+    if(this.kind === 'yt'){ const st = this.yt?.getPlayerState?.(); return st === 1 || st === 3; }
+    if(this.kind === 'file') return !this.el.paused && !this.el.ended;
+    return false;
+  },
+  setRate(r){
+    this.rate = r;
+    if(this.kind === 'yt' && this.ready) this.yt.setPlaybackRate(r);
+    if(this.kind === 'file') this.el.playbackRate = r;
+  },
+  actualRate(){
+    if(this.kind === 'yt' && this.ready) return this.yt.getPlaybackRate?.() || this.rate;
+    if(this.kind === 'file') return this.el.playbackRate;
+    return this.rate;
+  }
+};
+Player.el = $('#fileVideo');
+
+function showOverlay(kind, code){
+  const o = $('#blockedOverlay');
+  if(!kind){ o.hidden = true; return; }
+  const vid = Player.videoId, link = vid ? `<a href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener">유튜브에서 열기</a>` : '';
+  const msgs = {
+    blocked:'이 영상은 외부 재생이 막혀 있습니다. 다른 채널의 같은 영상을 찾아보세요.',
+    gone:'영상을 찾을 수 없습니다. 삭제되었거나 비공개로 바뀌었을 수 있습니다.',
+    bad:'유튜브 주소를 확인해 주세요. 영상 ID가 올바르지 않습니다.',
+    html5:'브라우저에서 이 영상을 재생하지 못했습니다. 새로 고침 후 다시 시도해 보세요.',
+    noapi:'유튜브 플레이어를 불러오지 못했습니다. 인터넷 연결이나 학교 네트워크의 유튜브 차단 여부를 확인하세요.',
+    file:'유튜브 영상은 웹 주소로 연 페이지에서만 재생됩니다. 이 파일을 GitHub Pages 같은 곳에 올려 링크로 열어 주세요.'
+  };
+  o.innerHTML = `<p>${msgs[kind] || msgs.html5}</p>${kind === 'noapi' || kind === 'bad' ? '' : link}${code ? `<p class="note" style="color:var(--stage-muted)">오류 코드 ${code}</p>` : ''}`;
+  o.hidden = false;
+}
+function onPlayerError(code){
+  if(code === 101 || code === 150 || code === 152) showOverlay('blocked', code);
+  else if(code === 100) showOverlay('gone', code);
+  else if(code === 2) showOverlay('bad', code);
+  else if(code === 153 && location.protocol === 'file:') showOverlay('file', code);
+  else showOverlay('html5', code);
+}
+
+/* ---------------- 스크립트 해석 ---------------- */
+const ABBR = /^(mr|mrs|ms|dr|prof|sr|jr|st|vs|etc|no|vol|fig|e\.g|i\.e)\.$/i;
+function isSentenceEnd(w){
+  if(!/[.!?…]["'”’)\]]*$/.test(w)) return false;
+  if(ABBR.test(w) || /^[A-Z]\.$/.test(w) || /^([A-Za-z]\.){2,}$/.test(w)) return false;
+  return true;
+}
+function cleanLine(s){
+  return s.replace(/<[^>]+>/g, '').replace(/\{\\[^}]*\}/g, '')
+    .replace(/\[(?:[^\]]*)\]/g, '').replace(/\((?:applause|laughter|music|cheering|박수|웃음|음악)[^)]*\)/gi, '')
+    .replace(/♪|&gt;&gt;|>>/g, '').replace(/^\s*-\s+/, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+}
+function parseCueTime(s){
+  const m = String(s).trim().match(/^(?:(\d+):)?(\d{1,2}):(\d{1,2})(?:[.,](\d{1,3}))?/);
+  if(!m) return NaN;
+  return (+(m[1] || 0)) * 3600 + (+m[2]) * 60 + (+m[3]) + (m[4] ? +('0.' + m[4].padEnd(3, '0')) : 0);
+}
+function parseSubtitle(raw){
+  const cues = []; let lastLine = '';
+  for(const block of raw.split(/\n\s*\n/)){
+    const lines = block.split('\n');
+    const ti = lines.findIndex(l => l.includes('-->'));
+    if(ti < 0) continue;
+    const [a, b] = lines[ti].split('-->');
+    const start = parseCueTime(a), end = parseCueTime((b || '').trim().split(/\s+/)[0]);
+    if(isNaN(start)) continue;
+    const out = [];
+    for(const l of lines.slice(ti + 1)){ const c = cleanLine(l); if(c && c !== lastLine){ out.push(c); lastLine = c; } }
+    if(out.length) cues.push({start, end:isNaN(end) ? start + 2 : end, text:out.join(' ')});
+  }
+  return cues;
+}
+const TS_ONLY = /^(?:\d{1,2}:)?\d{1,2}:\d{2}$/;
+const TS_INLINE = /^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/;
+const SPOKEN_TIME = /^(\d+\s*(hours?|minutes?|seconds?|시간|분|초),?\s*)+$/i;
+function looksLikeYTTranscript(raw){ return raw.split('\n').filter(l => TS_ONLY.test(l.trim()) || TS_INLINE.test(l.trim())).length >= 2; }
+function parseYTTranscript(raw){
+  const cues = []; let cur = null;
+  for(let line of raw.split('\n')){
+    line = line.trim(); if(!line || SPOKEN_TIME.test(line)) continue;
+    if(TS_ONLY.test(line)){ cur = {start:parseCueTime(line), text:''}; cues.push(cur); continue; }
+    const m = line.match(TS_INLINE);
+    if(m){ cur = {start:parseCueTime(m[1]), text:cleanLine(m[2])}; cues.push(cur); continue; }
+    if(cur){ const c = cleanLine(line); if(c) cur.text = (cur.text + ' ' + c).trim(); }
+  }
+  const good = cues.filter(c => c.text);
+  good.forEach((c, i) => {
+    const words = c.text.split(/\s+/).length;
+    const next = good[i + 1];
+    c.end = next ? Math.max(c.start + 0.5, next.start) : c.start + Math.max(2, words / 2.6);
+  });
+  return good;
+}
+function cuesToSentences(cues){
+  const words = [];
+  for(const c of cues){
+    const toks = c.text.split(/\s+/).filter(Boolean); if(!toks.length) continue;
+    const total = toks.reduce((a, w) => a + w.length + 1, 0), dur = Math.max(0.2, c.end - c.start);
+    let acc = 0;
+    toks.forEach((w, j) => {
+      const s = c.start + dur * acc / total; acc += w.length + 1;
+      words.push({w, s, e:c.start + dur * acc / total, first:j === 0, last:j === toks.length - 1});
+    });
+  }
+  const out = []; let cur = [];
+  const flush = () => {
+    if(!cur.length) return;
+    const aligned = cur[0].first && cur[cur.length - 1].last;
+    out.push(mkSent(cur.map(x => x.w).join(' '), cur[0].s, cur[cur.length - 1].e, aligned ? 'subtitle' : 'estimated'));
+    cur = [];
+  };
+  for(const x of words){ cur.push(x); if(isSentenceEnd(x.w) || (cur.length >= 30 && x.last)) flush(); }
+  flush();
+  return out;
+}
+function splitSentences(text){
+  const out = []; let cur = [];
+  for(const w of text.split(/\s+/).filter(Boolean)){ cur.push(w); if(isSentenceEnd(w)){ out.push(cur.join(' ')); cur = []; } }
+  if(cur.length) out.push(cur.join(' '));
+  return out;
+}
+function buildSentences(raw, unit){
+  raw = raw.replace(/\r\n?/g, '\n').replace(/^\uFEFF/, '');
+  let cues = null, kind = 'text';
+  if(/^\s*WEBVTT/.test(raw) || /-->/.test(raw)){ cues = parseSubtitle(raw); kind = 'subtitle'; }
+  else if(looksLikeYTTranscript(raw)){ cues = parseYTTranscript(raw); kind = 'youtube'; }
+  if(cues && cues.length){
+    const sents = unit === 'cue' ? cues.map(c => mkSent(c.text, c.start, c.end, 'subtitle')) : cuesToSentences(cues);
+    return {sents, kind};
+  }
+  let units;
+  if(unit === 'cue') units = raw.split('\n').map(cleanLine).filter(Boolean);
+  else units = raw.split(/\n\s*\n/).flatMap(p => splitSentences(cleanLine(p.replace(/\n/g, ' '))));
+  let t = 0;
+  const sents = units.map(u => { const d = Math.max(1.2, u.split(/\s+/).length / 2.6); const s = mkSent(u, t, t + d, 'estimated'); t += d + 0.4; return s; });
+  return {sents, kind:'text'};
+}
+
+/* ---------------- 단어 · 빈칸 · 모델링 ---------------- */
+function tokens(text){
+  return text.trim().split(/\s+/).filter(Boolean).map(raw => {
+    const m = raw.match(/^([^A-Za-z0-9]*)(.*?)([^A-Za-z0-9]*)$/);
+    let lead = m[1], core = m[2], trail = m[3];
+    if(!core){ lead = raw; trail = ''; }
+    return {raw, lead, core, trail};
+  });
+}
+const STOP = new Set('a an the and or but so to of in on at by for with from as is am are was were be been being it its this that these those i you he she we they me him her us them my your his our their do does did have has had will would can could shall should may might must not no if then than there here what which who whom when where why how all any some just very'.split(' '));
+function prng(seed){ let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function shuffled(arr, rnd){ const a = arr.slice(); for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function blankSet(s, si){
+  if(lesson.blank.mode === 'custom') return new Set(s.blanks || []);
+  const toks = tokens(s.text);
+  const idx = toks.map((t, i) => /[A-Za-z]/.test(t.core) ? i : -1).filter(i => i >= 0);
+  if(!idx.length) return new Set();
+  const k = Math.min(idx.length, Math.max(1, Math.round(toks.length * lesson.blank.ratio)));
+  const rnd = prng(lesson.blank.seed * 7919 + si * 104729 + 17);
+  const content = shuffled(idx.filter(i => !STOP.has(toks[i].core.toLowerCase())), rnd);
+  const func = shuffled(idx.filter(i => STOP.has(toks[i].core.toLowerCase())), rnd);
+  return new Set([...content, ...func].slice(0, k));
+}
+function sentenceHTML(s, si){
+  const toks = tokens(s.text), marks = s.marks || {};
+  const bl = ui.view === 'blank' ? blankSet(s, si) : null;
+  return toks.map((t, wi) => {
+    const m = marks[wi] || {};
+    const isB = bl && bl.has(wi) && t.core, revealed = isB && ui.revealed.has(s.id + ':' + wi);
+    let cls = 'w';
+    if(m.stress) cls += ' st';
+    if(isB && !revealed) cls += ' bk';
+    if(revealed) cls += ' rv';
+    const core = `<span class="${cls}" data-s="${si}" data-w="${wi}">${esc(t.core)}</span>`;
+    const after = (m.tone === 'rise' ? '<i class="tn up" aria-label="올림 억양">↗</i>' : m.tone === 'fall' ? '<i class="tn dn" aria-label="내림 억양">↘</i>' : '') + (m.pause ? '<i class="ps" aria-label="포즈">|</i>' : '');
+    return esc(t.lead) + core + esc(t.trail) + after;
+  }).join(' ');
+}
+function toggleMark(si, wi, tool){
+  const s = lesson.sentences[si]; s.marks = s.marks || {};
+  const m = s.marks[wi] || {};
+  if(tool === 'stress') m.stress = !m.stress;
+  else if(tool === 'rise' || tool === 'fall') m.tone = m.tone === tool ? undefined : tool;
+  else if(tool === 'pause') m.pause = !m.pause;
+  else if(tool === 'erase'){ delete s.marks[wi]; afterTextChange(); return; }
+  if(!m.stress) delete m.stress; if(!m.tone) delete m.tone; if(!m.pause) delete m.pause;
+  if(Object.keys(m).length) s.marks[wi] = m; else delete s.marks[wi];
+  afterTextChange();
+}
+function toggleBlank(si, wi){
+  if(lesson.blank.mode !== 'custom'){
+    lesson.sentences.forEach((s, i) => { s.blanks = [...blankSet(s, i)]; });
+    lesson.blank.mode = 'custom';
+    toast('교사 지정 빈칸으로 바뀌었습니다. 단어를 눌러 빈칸을 넣고 빼세요.');
+  }
+  const s = lesson.sentences[si]; s.blanks = s.blanks || [];
+  const k = s.blanks.indexOf(wi);
+  if(k >= 0) s.blanks.splice(k, 1); else s.blanks.push(wi);
+  ui.revealed.delete(s.id + ':' + wi);
+  if(ui.view !== 'blank') setView('blank'); else afterTextChange();
+}
+let voices = [];
+function loadVoices(){ voices = (window.speechSynthesis?.getVoices() || []).filter(v => /^en/i.test(v.lang)); }
+if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function speak(word){
+  if(!('speechSynthesis' in window)){ toast('이 브라우저는 음성 합성을 지원하지 않습니다.'); return; }
+  if(!word) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(word);
+  u.lang = 'en-US'; u.rate = 0.85;
+  const v = voices.find(v => v.lang === 'en-US' && /google|samantha|aria|jenny|natural/i.test(v.name)) || voices.find(v => v.lang === 'en-US') || voices[0];
+  if(v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+/* ---------------- 쉐도잉 엔진 ---------------- */
+const N = () => lesson.sentences.length;
+const curS = () => lesson.sentences[E.target];
+function indexAt(t){
+  const ss = lesson.sentences;
+  for(let i = 0; i < ss.length; i++){ if(t >= ss[i].start && t < ss[i].end) return i; }
+  for(let i = 0; i < ss.length; i++){ if(ss[i].start > t) return i; }
+  return ss.length - 1;
+}
+function goTo(i, play = true){
+  if(!N()) return;
+  i = clamp(i, 0, N() - 1);
+  clearGap();
+  E.target = i; E.plays = 0; E.endedAt = -1;
+  const s = curS();
+  Player.seek(s.start);
+  E.ignoreUntil = performance.now() + 450; E.lastT = s.start;
+  if(play) Player.play();
+  onCurChange();
+}
+function follow(t){
+  const i = indexAt(t);
+  E.plays = 0; E.endedAt = -1;
+  if(i !== E.target){ E.target = i; onCurChange(); }
+}
+function startGap(sec, cb){
+  E.gap = {t0:performance.now(), total:sec * 1000, cb};
+  $('#gapOverlay').hidden = false;
+}
+function clearGap(){ E.gap = null; $('#gapOverlay').hidden = true; }
+function finishGap(){ if(!E.gap) return; const cb = E.gap.cb; clearGap(); cb(); }
+function stopAfterGap(){ clearGap(); E.endedAt = E.target; }
+function replayCurrent(){ const s = curS(); Player.seek(s.start); E.ignoreUntil = performance.now() + 450; E.lastT = s.start; Player.play(); }
+function sentenceEnded(){
+  const s = curS(); E.plays++;
+  const more = E.plays < ui.repeat;
+  if(ui.gap > 0){
+    Player.pause();
+    const rate = Player.actualRate() || 1;
+    const sec = clamp((s.end - s.start) / rate * ui.gap, 1, 30);
+    startGap(sec, () => {
+      if(more) replayCurrent();
+      else if(ui.advance && E.target < N() - 1) goTo(E.target + 1);
+      else E.endedAt = E.target;
+    });
+  } else {
+    if(more) replayCurrent();
+    else if(E.target < N() - 1){ E.target++; E.plays = 0; onCurChange(); }
+  }
+}
+function togglePlay(){
+  if(!Player.kind){ toast('먼저 영상을 불러오세요.'); return; }
+  if(E.gap){ finishGap(); return; }
+  if(Player.isPlaying()){ Player.pause(); return; }
+  if(!N()){ Player.play(); return; }
+  if(E.endedAt === E.target && E.target < N() - 1){ goTo(E.target + 1); return; }
+  const s = curS(), t = Player.time();
+  if(!ui.ab.on && !ui.tap && (t < s.start - 0.3 || t >= s.end - 0.05)){ goTo(E.target); return; }
+  Player.play();
+}
+function tick(){
+  updateTransport();
+  if(!Player.ready) return;
+  const t = Player.time(), now = performance.now(), playing = Player.isPlaying();
+  $('#timeLbl').textContent = fmt(t);
+  if(E.gap){
+    const left = E.gap.total - (now - E.gap.t0);
+    $('#gapNum').textContent = Math.max(0, Math.ceil(left / 1000));
+    $('#gapArc').style.strokeDashoffset = String(289 * (1 - Math.max(0, left) / E.gap.total));
+    if(playing && now - E.gap.t0 > 700){ clearGap(); if(E.target < N() - 1){ E.target++; E.plays = 0; onCurChange(); } E.lastT = t; return; }
+    if(left <= 0) finishGap();
+    E.lastT = t; return;
+  }
+  if(!N()) return;
+  if(ui.ab.on && ui.ab.a != null && ui.ab.b != null){
+    if(playing && now > E.ignoreUntil && (t >= ui.ab.b - 0.03 || t < ui.ab.a - 0.8)){ Player.seek(ui.ab.a); E.ignoreUntil = now + 400; }
+    const i = indexAt(t); if(i !== E.target){ E.target = i; onCurChange(); }
+    E.lastT = t; return;
+  }
+  if(now < E.ignoreUntil || !playing){ E.lastT = t; return; }
+  if(Math.abs(t - E.lastT) > 1.6){ follow(t); E.lastT = t; return; }
+  E.lastT = t;
+  if(E.endedAt === E.target){ E.endedAt = -1; if(E.target < N() - 1){ E.target++; E.plays = 0; onCurChange(); } return; }
+  if(ui.tap){ const i = indexAt(t); if(i !== E.target && !ui.tapInside){ /* 찍는 중엔 하이라이트 고정 */ } return; }
+  const s = curS(); if(!s) return;
+  if(t >= s.end - 0.04 && E.plays < ui.repeat) sentenceEnded();
+}
+setInterval(tick, 50);
+
+/* ---------------- 렌더링 ---------------- */
+function renderScript(){
+  const box = $('#script');
+  document.body.classList.toggle('view-video', ui.view === 'video');
+  box.className = 'script tool-' + ui.tool;
+  if(!N()){ box.innerHTML = '<div class="empty">문장이 없습니다. ‘자료 편집’에서 스크립트를 넣어 주세요.<br><br><button class="btn main" data-open-tab="edit">스크립트 넣기</button></div>'; return; }
+  if(ui.view === 'video'){ box.innerHTML = '<div class="empty">영상만 보는 중입니다. 학생들이 소리에만 집중하게 할 때 쓰세요.<br>위의 ‘영상 + 스크립트’를 누르면 다시 보입니다.</div>'; return; }
+  box.innerHTML = lesson.sentences.map((s, i) => `
+    <div class="sent${i === E.target ? ' on' : ''}" data-i="${i}">
+      <button class="snum" data-go="${i}" aria-label="${i + 1}번 문장 재생">${i + 1}</button>
+      <div class="sbody"><p class="en stext">${sentenceHTML(s, i)}</p>${ui.ko && s.ko ? `<p class="ko">${esc(s.ko)}</p>` : ''}</div>
+    </div>`).join('');
+}
+function renderCaption(){
+  const c = $('#caption');
+  if(!ui.present){ c.innerHTML = ''; return; }
+  const s = curS();
+  if(!s || ui.view === 'video'){ c.innerHTML = ''; return; }
+  c.innerHTML = `<div class="pos">${E.target + 1} / ${N()}</div><p class="en">${sentenceHTML(s, E.target)}</p>${ui.ko && s.ko ? `<p class="ko">${esc(s.ko)}</p>` : ''}`;
+}
+function onCurChange(){
+  $$('#script .sent').forEach(el => el.classList.toggle('on', +el.dataset.i === E.target));
+  $$('#edList .erow').forEach(el => el.classList.toggle('on', +el.dataset.i === E.target));
+  if(ui.autoScroll && ui.tab === 'lesson'){
+    const el = $(`#script .sent[data-i="${E.target}"]`);
+    el && el.scrollIntoView({block:'center', behavior:reduceMotion ? 'auto' : 'smooth'});
+  }
+  if(ui.tab === 'edit' && ui.tap){ const el = $(`#edList .erow[data-i="${E.target}"]`); el && el.scrollIntoView({block:'nearest'}); }
+  renderCaption(); updateTransport();
+}
+function updateTransport(){
+  const playing = Player.isPlaying();
+  $('#bPlay').textContent = E.gap ? '바로 계속' : playing ? '일시정지' : '재생';
+  $('#posLbl').textContent = N() ? `${E.target + 1} / ${N()}번 문장` : '문장 없음';
+}
+function syncToolbar(){
+  $$('[data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === ui.view)));
+  $$('[data-toggle-ko]').forEach(b => b.setAttribute('aria-pressed', String(ui.ko)));
+  $('#chkKo').checked = ui.ko;
+  $('#blankRow').hidden = ui.view !== 'blank';
+  $$('#segRatio button').forEach(b => b.setAttribute('aria-pressed', String(lesson.blank.mode === 'random' && +b.dataset.ratio === lesson.blank.ratio)));
+  $('#blankModeLbl').textContent = lesson.blank.mode === 'custom' ? '교사가 지정한 빈칸을 쓰는 중' : '내용어부터 무작위로 비움 · 빈칸을 누르면 정답';
+  $('#bShuffle').textContent = lesson.blank.mode === 'custom' ? '무작위로 돌아가기' : '다시 섞기';
+  $$('#toolRow [data-tool]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tool === ui.tool)));
+  $('#selRepeat').value = String(ui.repeat);
+  $('#selGap').value = String(ui.gap);
+  $('#chkAdvance').checked = ui.advance;
+  $('#rngRate').value = String(ui.rate); $('#rateOut').textContent = ui.rate.toFixed(2) + '×';
+  $('#chkScroll').checked = ui.autoScroll;
+  $('#rngCap').value = String(ui.cap); document.documentElement.style.setProperty('--cap', ui.cap + 'px');
+  $('#bHC').setAttribute('aria-pressed', String(ui.hc)); document.body.classList.toggle('hc', ui.hc);
+  $('#bAB').setAttribute('aria-pressed', String(ui.ab.on));
+  $('#abLbl').textContent = (ui.ab.a != null ? 'A ' + fmt(ui.ab.a) : '') + (ui.ab.b != null ? '  B ' + fmt(ui.ab.b) : '');
+  $('#lessonTitle').value = lesson.title || '';
+}
+function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderTapNow(); }
+function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
+function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
+
+/* ---------------- 편집 화면 ---------------- */
+function renderEditor(){
+  const list = $('#edList');
+  if(!N()){ list.innerHTML = '<p class="note">문장이 없습니다. 위에서 스크립트를 가져오세요.</p>'; return; }
+  list.innerHTML = lesson.sentences.map((s, i) => {
+    const bad = !(s.end > s.start);
+    const badge = s.timing === 'estimated' ? '<span class="badge">시간 추정</span>' : s.timing === 'subtitle' ? '<span class="badge ok">자막 시간</span>' : '<span class="badge ok">직접 맞춤</span>';
+    return `<div class="erow${i === E.target ? ' on' : ''}${bad ? ' bad' : ''}" data-i="${i}">
+      <div class="ehead"><span class="enum">${i + 1}</span>${badge}
+        <button class="btn sm" data-act="play">▶ 들어보기</button><span class="spacer"></span>
+        <button class="btn sm" data-act="merge" ${i === N() - 1 ? 'disabled' : ''}>다음 문장과 합치기</button>
+        <button class="btn sm" data-act="add">아래에 추가</button>
+        <button class="btn sm danger" data-act="del">삭제</button></div>
+      <textarea class="inp en" data-f="text" rows="2">${esc(s.text)}</textarea>
+      <div class="etimes">시작 <input data-f="start" value="${fmt(s.start)}" aria-label="${i + 1}번 시작 시간"><button class="btn sm" data-act="setStart">지금 시점</button>
+        <span style="width:8px"></span>끝 <input data-f="end" value="${fmt(s.end)}" aria-label="${i + 1}번 끝 시간"><button class="btn sm" data-act="setEnd">지금 시점</button>
+        ${bad ? '<span style="color:var(--warn)">끝이 시작보다 늦어야 합니다</span>' : ''}</div>
+      <input class="inp" data-f="ko" value="${esc(s.ko || '')}" placeholder="한글 해석 (선택)">
+    </div>`;
+  }).join('');
+}
+function refreshRowTimes(i){
+  const row = $(`#edList .erow[data-i="${i}"]`), s = lesson.sentences[i];
+  if(!row || !s) return;
+  $('[data-f="start"]', row).value = fmt(s.start);
+  $('[data-f="end"]', row).value = fmt(s.end);
+  const b = $('.badge', row); b.className = 'badge ok'; b.textContent = '직접 맞춤';
+  row.classList.toggle('bad', !(s.end > s.start));
+}
+let scriptRenderTimer;
+$('#edList').addEventListener('input', e => {
+  const f = e.target.dataset.f, row = e.target.closest('.erow'); if(!f || !row) return;
+  const s = lesson.sentences[+row.dataset.i];
+  if(f === 'text'){
+    const before = tokens(s.text).length; s.text = e.target.value;
+    const after = tokens(s.text).length;
+    if(after !== before){ for(const k of Object.keys(s.marks || {})) if(+k >= after) delete s.marks[k]; s.blanks = (s.blanks || []).filter(w => w < after); }
+  } else if(f === 'ko') s.ko = e.target.value;
+  else return;
+  clearTimeout(scriptRenderTimer); scriptRenderTimer = setTimeout(() => { renderScript(); renderCaption(); }, 250);
+  save();
+});
+$('#edList').addEventListener('change', e => {
+  const f = e.target.dataset.f, row = e.target.closest('.erow'); if(!row || (f !== 'start' && f !== 'end')) return;
+  const i = +row.dataset.i, s = lesson.sentences[i], v = parseClock(e.target.value);
+  if(isNaN(v)){ e.target.value = fmt(s[f]); toast('시간은 1:23.4 또는 83.4처럼 적어 주세요.'); return; }
+  s[f] = r2(v); s.timing = 'measured'; refreshRowTimes(i); save();
+});
+$('#edList').addEventListener('click', e => {
+  const btn = e.target.closest('[data-act]'); if(!btn) return;
+  const i = +btn.closest('.erow').dataset.i, ss = lesson.sentences, s = ss[i];
+  switch(btn.dataset.act){
+    case 'play': goTo(i); break;
+    case 'setStart': if(!Player.ready) return toast('영상을 먼저 불러오세요.'); s.start = r2(Player.time()); s.timing = 'measured'; refreshRowTimes(i); save(); break;
+    case 'setEnd': if(!Player.ready) return toast('영상을 먼저 불러오세요.'); s.end = r2(Player.time()); s.timing = 'measured'; refreshRowTimes(i); save(); break;
+    case 'merge': {
+      const n = ss[i + 1]; if(!n) return;
+      const offset = tokens(s.text).length;
+      for(const [k, m] of Object.entries(n.marks || {})) s.marks[+k + offset] = m;
+      s.blanks = [...(s.blanks || []), ...(n.blanks || []).map(w => w + offset)];
+      s.text = s.text + ' ' + n.text; s.end = n.end; s.ko = [s.ko, n.ko].filter(Boolean).join(' ');
+      if(n.timing === 'estimated') s.timing = 'estimated';
+      ss.splice(i + 1, 1); renderAll(); save(); break;
+    }
+    case 'add': {
+      const next = ss[i + 1];
+      const st = s.end, en = next ? Math.max(st + 0.5, next.start) : st + 2;
+      ss.splice(i + 1, 0, mkSent('', st, en, 'estimated'));
+      renderAll(); save();
+      setTimeout(() => $(`#edList .erow[data-i="${i + 1}"] textarea`)?.focus(), 0);
+      break;
+    }
+    case 'del':
+      if(!confirm(`${i + 1}번 문장을 삭제할까요?`)) return;
+      ss.splice(i, 1); E.target = clamp(E.target, 0, Math.max(0, N() - 1)); renderAll(); save(); break;
+  }
+});
+
+/* 재생하며 시간 찍기 */
+function renderTapNow(){
+  const k = ui.tapK, s = lesson.sentences[k];
+  $('#tapToggle').textContent = ui.tap ? '시간 찍기 끄기' : '시간 찍기 켜기';
+  $('#tapMark').disabled = $('#tapEnd').disabled = !ui.tap;
+  $('#tapEnd').disabled = !ui.tap || !ui.tapInside;
+  if(!ui.tap){ $('#tapNow').textContent = '선택한 문장(현재 하이라이트)부터 시작합니다.'; return; }
+  if(!s){ $('#tapNow').textContent = '마지막 문장까지 끝났습니다.'; return; }
+  $('#tapNow').textContent = ui.tapInside ? `${k + 1}번 문장 듣는 중 — 다음 문장이 시작되면 Enter` : `${k + 1}번 문장이 시작되면 Enter: “${s.text.slice(0, 40)}${s.text.length > 40 ? '…' : ''}”`;
+}
+function tapMark(){
+  if(!ui.tap || !Player.ready) return;
+  const t = r2(Player.time()), ss = lesson.sentences;
+  if(!ui.tapInside){
+    if(!ss[ui.tapK]) return;
+    ss[ui.tapK].start = t; ss[ui.tapK].timing = 'measured'; refreshRowTimes(ui.tapK); ui.tapInside = true;
+  } else {
+    ss[ui.tapK].end = t; refreshRowTimes(ui.tapK);
+    ui.tapK++;
+    if(ss[ui.tapK]){ ss[ui.tapK].start = t; ss[ui.tapK].timing = 'measured'; refreshRowTimes(ui.tapK); }
+    else ui.tapInside = false;
+  }
+  if(ss[ui.tapK]){ E.target = ui.tapK; onCurChange(); }
+  renderTapNow(); save();
+}
+function tapEnd(){
+  if(!ui.tap || !ui.tapInside || !Player.ready) return;
+  const s = lesson.sentences[ui.tapK]; s.end = r2(Player.time()); refreshRowTimes(ui.tapK);
+  ui.tapK++; ui.tapInside = false; renderTapNow(); save();
+}
+$('#tapToggle').onclick = () => {
+  ui.tap = !ui.tap; ui.tapK = E.target; ui.tapInside = false;
+  if(ui.tap){ clearGap(); toast('시간 찍기 중에는 자동 멈춤과 반복이 꺼집니다.'); }
+  renderTapNow();
+};
+$('#tapMark').onclick = tapMark;
+$('#tapEnd').onclick = tapEnd;
+
+/* ---------------- 가져오기 ---------------- */
+$('#btnYt').onclick = () => {
+  const p = parseYouTube($('#ytUrl').value);
+  if(!p){ $('#srcStatus').textContent = '유튜브 주소를 알아보지 못했습니다. 주소 전체를 복사해 넣어 주세요.'; $('#srcStatus').className = 'status err'; return; }
+  lesson.source = {kind:'youtube', videoId:p.id, startAt:p.start, url:$('#ytUrl').value.trim()};
+  Player.loadYouTube(p.id, p.start);
+  if(location.protocol === 'file:') showOverlay('file');
+  $('#srcStatus').className = 'status';
+  $('#srcStatus').textContent = `유튜브 영상 ${p.id}${p.start ? ` · ${fmt(p.start)}부터` : ''}을 불러왔습니다. 재생이 막힌 영상이면 화면에 안내가 나옵니다.`;
+  save();
+};
+$('#ytUrl').addEventListener('keydown', e => { if(e.key === 'Enter') $('#btnYt').click(); });
+$('#mediaFile').onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  lesson.source = {kind:'file', name:f.name, mime:f.type};
+  Player.loadFile(f);
+  $('#srcStatus').className = 'status';
+  $('#srcStatus').textContent = `내 컴퓨터 파일 “${f.name}”을 재생합니다. 이 파일은 이 기기에만 있으므로, 수업을 다시 열면 파일을 한 번 더 골라야 합니다.`;
+  e.target.value = ''; save();
+};
+$('#scriptFile').onchange = async e => {
+  const f = e.target.files[0]; if(!f) return;
+  $('#rawScript').value = await f.text();
+  $('#importStatus').textContent = `“${f.name}”을 읽었습니다. ‘문장 목록 만들기’를 누르세요.`;
+  e.target.value = '';
+};
+$('#btnImport').onclick = () => {
+  const raw = $('#rawScript').value;
+  if(!raw.trim()){ $('#importStatus').textContent = '스크립트 내용이 비어 있습니다.'; return; }
+  if(N() && !confirm('지금 문장 목록을 새로 바꿀까요? 해석·빈칸·모델링 표시도 함께 지워집니다.')) return;
+  const unit = $('input[name="unit"]:checked').value;
+  const {sents, kind} = buildSentences(raw, unit);
+  if(!sents.length){ $('#importStatus').textContent = '문장을 찾지 못했습니다. 형식을 확인해 주세요.'; return; }
+  lesson.sentences = sents; lesson.blank.mode = 'random'; ui.revealed.clear();
+  E.target = 0; E.plays = 0; E.endedAt = -1; clearGap();
+  const est = sents.filter(s => s.timing === 'estimated').length;
+  const kindLbl = {subtitle:'자막 파일', youtube:'유튜브 스크립트', text:'일반 텍스트'}[kind];
+  $('#importStatus').textContent = `${kindLbl}에서 ${sents.length}개 문장을 만들었습니다.` + (est ? ` 그중 ${est}개는 시간이 추정값이니 들어 보고 맞춰 주세요.` : '');
+  renderAll(); save();
+};
+$('#btnKoBulk').onclick = () => {
+  const lines = $('#koBulk').value.split('\n').map(l => l.trim()).filter(Boolean);
+  if(!lines.length) return;
+  lines.forEach((l, i) => { if(lesson.sentences[i]) lesson.sentences[i].ko = l; });
+  renderAll(); save();
+  toast(`${Math.min(lines.length, N())}개 문장에 해석을 넣었습니다.` + (lines.length !== N() ? ` (해석 ${lines.length}줄, 문장 ${N()}개)` : ''));
+};
+
+/* ---------------- 이벤트 ---------------- */
+function onTextClick(e){
+  const go = e.target.closest('[data-go]');
+  if(go){ goTo(+go.dataset.go); return; }
+  const w = e.target.closest('.w');
+  if(w){
+    const si = +w.dataset.s, wi = +w.dataset.w, s = lesson.sentences[si];
+    if(w.classList.contains('bk') && (ui.tool === 'move' || ui.tool === 'speak')){ ui.revealed.add(s.id + ':' + wi); renderScript(); renderCaption(); return; }
+    const tok = tokens(s.text)[wi];
+    switch(ui.tool){
+      case 'speak': speak(tok.core); return;
+      case 'blank': toggleBlank(si, wi); return;
+      case 'stress': case 'rise': case 'fall': case 'pause': case 'erase': toggleMark(si, wi, ui.tool); return;
+    }
+  }
+  const sent = e.target.closest('.sent');
+  if(sent && ui.tool === 'move') goTo(+sent.dataset.i);
+}
+$('#script').addEventListener('click', onTextClick);
+$('#caption').addEventListener('click', onTextClick);
+
+document.addEventListener('click', e => {
+  const v = e.target.closest('[data-view]'); if(v){ setView(v.dataset.view); }
+  if(e.target.closest('[data-toggle-ko]')) setKo(!ui.ko);
+  const ot = e.target.closest('[data-open-tab]'); if(ot) setTab(ot.dataset.openTab);
+  const b = e.target.closest('button'); if(b && e.detail > 0) b.blur();
+});
+$('#chkKo').onchange = e => setKo(e.target.checked);
+$('#chkScroll').onchange = e => { ui.autoScroll = e.target.checked; savePrefs(); };
+$$('#toolRow [data-tool]').forEach(b => b.onclick = () => { ui.tool = b.dataset.tool; renderScript(); syncToolbar(); });
+$$('#segRatio button').forEach(b => b.onclick = () => { lesson.blank.mode = 'random'; lesson.blank.ratio = +b.dataset.ratio; ui.revealed.clear(); afterTextChange(); });
+$('#bShuffle').onclick = () => { if(lesson.blank.mode === 'random') lesson.blank.seed++; lesson.blank.mode = 'random'; ui.revealed.clear(); afterTextChange(); };
+
+function setTab(tab){
+  ui.tab = tab;
+  $$('.tabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+  $('#pane-lesson').hidden = tab !== 'lesson';
+  $('#pane-edit').hidden = tab !== 'edit';
+  if(ui.present) setPresent(false);
+}
+$$('.tabs [data-tab]').forEach(b => b.onclick = () => setTab(b.dataset.tab));
+
+$('#bPlay').onclick = togglePlay;
+$('#bPrev').onclick = () => goTo(E.target - 1);
+$('#bNext').onclick = () => goTo(E.target + 1);
+$('#bRepeat').onclick = () => goTo(E.target);
+$('#gapGo').onclick = finishGap;
+$('#gapStop').onclick = stopAfterGap;
+$('#shield').onclick = togglePlay;
+$('#selRepeat').onchange = e => { ui.repeat = +e.target.value; savePrefs(); e.target.blur(); };
+$('#selGap').onchange = e => { ui.gap = +e.target.value; if(!ui.gap) clearGap(); savePrefs(); e.target.blur(); };
+$('#chkAdvance').onchange = e => { ui.advance = e.target.checked; savePrefs(); };
+$('#rngRate').oninput = e => { ui.rate = +e.target.value; Player.setRate(ui.rate); $('#rateOut').textContent = ui.rate.toFixed(2) + '×'; };
+$('#rngRate').onchange = e => {
+  savePrefs(); e.target.blur();
+  setTimeout(() => { const a = Player.actualRate(); if(Player.kind === 'yt' && Math.abs(a - ui.rate) > 0.01){ $('#rateOut').textContent = a.toFixed(2) + '×'; toast(`유튜브는 ${a}배 속도로 재생합니다 (이 영상이 지원하는 가장 가까운 값).`); } }, 400);
+};
+$('#bRate1').onclick = () => { ui.rate = 1; Player.setRate(1); syncToolbar(); savePrefs(); };
+$('#bA').onclick = () => { if(!Player.ready) return; ui.ab.a = Player.time(); if(ui.ab.b != null && ui.ab.b <= ui.ab.a) ui.ab.b = null; syncToolbar(); };
+$('#bB').onclick = () => {
+  if(!Player.ready) return; const t = Player.time();
+  if(ui.ab.a == null || t <= ui.ab.a + 0.3){ toast('B 지점은 A 지점보다 뒤여야 합니다.'); return; }
+  ui.ab.b = t; ui.ab.on = true; clearGap(); Player.seek(ui.ab.a); E.ignoreUntil = performance.now() + 400; Player.play(); syncToolbar();
+};
+$('#bAB').onclick = () => {
+  if(ui.ab.a == null || ui.ab.b == null){ toast('재생하면서 A 지점과 B 지점을 차례로 누르세요.'); return; }
+  ui.ab.on = !ui.ab.on;
+  if(ui.ab.on){ clearGap(); Player.seek(ui.ab.a); E.ignoreUntil = performance.now() + 400; Player.play(); }
+  else { E.plays = 0; E.endedAt = -1; E.target = indexAt(Player.time()); onCurChange(); }
+  syncToolbar();
+};
+
+/* 발표 모드 */
+function setPresent(on){
+  ui.present = on;
+  document.body.classList.toggle('present', on);
+  if(on){ if(ui.tab !== 'lesson'){ ui.tab = 'lesson'; setTab('lesson'); ui.present = true; document.body.classList.add('present'); } document.documentElement.requestFullscreen?.().catch(() => {}); }
+  else if(document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  renderCaption();
+}
+$('#btnPresent').onclick = () => setPresent(true);
+$('#bExitPresent').onclick = () => setPresent(false);
+$('#bFS').onclick = () => { if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.().catch(() => {}); };
+$('#bHC').onclick = () => { ui.hc = !ui.hc; syncToolbar(); savePrefs(); };
+$('#rngCap').oninput = e => { ui.cap = +e.target.value; document.documentElement.style.setProperty('--cap', ui.cap + 'px'); };
+$('#rngCap').onchange = e => { savePrefs(); e.target.blur(); };
+
+$('#btnHelp').onclick = () => $('#helpDlg').showModal();
+$('#btnSample').onclick = () => { if(N() && !confirm('샘플 수업을 열까요? 지금 수업은 이 샘플로 바뀝니다.')) return; openLesson(sampleLesson()); };
+$('#btnNew').onclick = () => { if(N() && !confirm('새 수업을 시작할까요? 지금 수업은 지워집니다.')) return; openLesson(newLesson()); setTab('edit'); };
+$('#lessonTitle').oninput = e => { lesson.title = e.target.value; save(); };
+
+document.addEventListener('keydown', e => {
+  if(e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+  if(e.ctrlKey || e.metaKey || e.altKey) return;
+  if($('#helpDlg').open) return;
+  if(ui.tap && e.key === 'Enter'){ e.preventDefault(); tapMark(); return; }
+  switch(e.code){
+    case 'Space': e.preventDefault(); togglePlay(); break;
+    case 'ArrowLeft': e.preventDefault(); goTo(E.target - 1); break;
+    case 'ArrowRight': e.preventDefault(); goTo(E.target + 1); break;
+    case 'KeyR': goTo(E.target); break;
+    case 'KeyB': setView(ui.view === 'blank' ? 'script' : 'blank'); break;
+    case 'KeyT': setKo(!ui.ko); break;
+    case 'KeyF': setPresent(!ui.present); break;
+    case 'Escape': if(ui.present && !document.fullscreenElement) setPresent(false); break;
+  }
+});
+
+/* ---------------- 시작 ---------------- */
+function openLesson(l){
+  lesson = l;
+  lesson.blank = Object.assign({mode:'random', ratio:0.3, seed:1}, lesson.blank || {});
+  E.target = 0; E.plays = 0; E.endedAt = -1; clearGap(); ui.revealed.clear(); ui.tap = false;
+  ui.ab = {a:null, b:null, on:false};
+  const src = lesson.source;
+  if(src && src.kind === 'youtube'){
+    $('#ytUrl').value = src.url || src.videoId;
+    Player.loadYouTube(src.videoId, src.startAt || 0);
+    if(location.protocol === 'file:') showOverlay('file');
+    $('#srcStatus').textContent = `유튜브 영상 ${src.videoId}`;
+  } else if(src && src.kind === 'file'){
+    Player.destroy(); $('#emptyOverlay').hidden = false;
+    $('#emptyOverlay p').textContent = `이 수업은 내 컴퓨터 파일 “${src.name}”을 씁니다. 같은 파일을 다시 골라 주세요.`;
+    $('#srcStatus').textContent = `파일 “${src.name}”을 다시 골라 주세요.`;
+  } else {
+    Player.destroy(); $('#emptyOverlay').hidden = false;
+    $('#emptyOverlay p').textContent = '아직 영상이 없습니다. 유튜브 주소나 내 컴퓨터의 mp4·mp3 파일을 불러오세요.';
+    $('#ytUrl').value = ''; $('#srcStatus').textContent = '';
+  }
+  $('#rawScript').value = ''; $('#importStatus').textContent = '';
+  renderAll(); save();
+}
+loadPrefs();
+let draft = null;
+try{ draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); }catch(e){}
+Player.rate = ui.rate;
+openLesson(draft && draft.schema === 1 ? draft : sampleLesson());
+</script>
+</body>
+</html>
