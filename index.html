@@ -195,6 +195,48 @@ body.timing .timing{display:flex;flex-direction:column;gap:12px;max-width:860px;
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:90vw}
 #toast.show{opacity:1}
 dialog{border:1px solid var(--line);border-radius:12px;padding:20px 22px;max-width:480px}
+dialog.lib{max-width:720px;width:calc(100% - 32px)}
+.lib-head{display:flex;justify-content:space-between;align-items:center}
+.lib-head h3{margin:0}
+#libList{display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow:auto}
+.litem{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;flex-wrap:wrap}
+.litem.cur{border-color:var(--teal);background:var(--teal-weak)}
+.litem .lt{flex:1;min-width:180px}
+.litem .lt strong{display:block}
+.litem .lt span{font-size:12.5px;color:var(--muted)}
+.lib-foot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+/* ---------- 공용 자료실 ---------- */
+dialog.hub{max-width:840px}
+.hstatus{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--teal-weak);border-radius:8px;padding:10px 12px;margin:6px 0 10px;font-size:14px}
+.hfilters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.hfilters select.inp{width:auto}
+#hubList{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow:auto}
+.hcard{display:flex;gap:12px;border:1px solid var(--line);border-radius:10px;padding:10px}
+.hthumb{width:150px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#E6EAF0;flex:none}
+.hinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.hmeta{font-size:12.5px;color:var(--muted)}
+.hnote{margin:0;font-size:13.5px;background:var(--paper);border-radius:6px;padding:6px 8px;white-space:pre-wrap}
+.hbtns{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:4px}
+.hbtns a.btn{text-decoration:none;color:inherit}
+.hpv{border-top:1px dashed var(--line);margin-top:6px;padding-top:6px}
+.hpv p.en{margin:2px 0;font-size:16px;line-height:1.75}
+.hpv p.ko{margin:0 0 6px;font-size:13px;color:var(--muted)}
+.gate{background:#FFF8EA;border:1px solid #EFCB82;border-radius:10px;padding:14px;margin-top:6px}
+.gate h4{margin:0 0 6px;font-size:16px}
+.gate p{margin:0 0 10px;font-size:14px}
+.hfoot{display:flex;gap:14px;justify-content:flex-end;margin-top:12px}
+.linky{background:none;border:0;color:var(--muted);text-decoration:underline;padding:0;font-size:13px}
+.atabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.arow{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.st-pill{font-size:11.5px;border-radius:4px;padding:1px 6px;background:#EEF1F5}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--muted)}
+.form label.full{grid-column:1/-1}
+.sbanner{background:var(--teal-weak);border:1px solid var(--teal);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px}
+.issues{margin:0 0 10px;padding-left:1.2em;font-size:13.5px;color:var(--warn)}
+.okmsg{color:#1F6B35;font-size:14px;margin:0 0 10px}
+.origin{font-size:12px;color:var(--teal)}
+@media (max-width:600px){.hcard{flex-direction:column}.hthumb{width:100%}.form{grid-template-columns:1fr}}
 dialog::backdrop{background:rgba(10,16,30,.5)}
 dialog h3{margin:0 0 10px}
 dialog table{border-collapse:collapse;width:100%;font-size:14px}
@@ -241,11 +283,12 @@ body.hc .caption .ko{color:#fff}
   <div class="brand">쉐도잉 교실</div>
   <input id="lessonTitle" class="title-input" aria-label="수업 제목">
   <div class="top-actions">
-    <button class="tbtn" id="btnSample">샘플 수업 열기</button>
+    <button class="tbtn primary" id="btnHub">공용 자료실</button>
+    <button class="tbtn" id="btnLib">수업 목록</button>
     <button class="tbtn" id="btnNew">새 수업</button>
     <button class="tbtn" id="btnHelp" aria-label="단축키 보기">단축키</button>
     <button class="tbtn" id="btnTiming">시간 맞추기</button>
-    <button class="tbtn primary" id="btnPresent">발표 모드</button>
+    <button class="tbtn" id="btnPresent">발표 모드</button>
   </div>
 </header>
 
@@ -404,6 +447,7 @@ body.hc .caption .ko{color:#fff}
     <!-- 편집 탭 -->
     <div class="tabpane" id="pane-edit" hidden>
       <div class="edit">
+        <div class="sbanner" id="submitBanner" hidden>모든 문장의 시간을 맞췄습니다. 이 수업을 협의회 자료실에 보낼까요?<span class="spacer"></span><button class="btn main sm" id="btnSubmitBanner">자료실에 보내기</button></div>
         <section class="box">
           <h3>영상</h3>
           <p class="desc">유튜브 주소(일반·youtu.be·쇼츠·시작 시간 포함 주소 모두 가능)를 넣거나, 내 컴퓨터의 파일을 고르세요. 파일은 업로드되지 않고 이 브라우저에서만 재생됩니다.</p>
@@ -455,11 +499,47 @@ body.hc .caption .ko{color:#fff}
           <div class="row" style="margin-top:10px"><button class="btn main" id="btnAddEnd">＋ 맨 끝에 문장 추가</button>
             <span class="note">추가한 문장은 수업 탭에도 바로 나타납니다.</span></div>
         </section>
+
+        <section class="box" id="submitBox">
+          <h3>자료실에 보내기</h3>
+          <p class="desc">이 수업을 영이들 협의회 자료실에 보냅니다. 관리자가 확인하고 승인하면 다른 선생님들이 가져다 쓸 수 있습니다. 내 수업은 그대로 남습니다.</p>
+          <div id="submitCheck"></div>
+          <button class="btn main" id="btnSubmitOpen">자료실에 보내기</button>
+        </section>
       </div>
     </div>
   </aside>
 </main>
 
+<dialog id="hubDlg" class="lib hub">
+  <div class="lib-head"><h3 id="hubTitle">영이들 협의회 쉐도잉 자료실</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="hubBody"></div>
+</dialog>
+<dialog id="submitDlg" class="lib">
+  <div class="lib-head"><h3>자료실에 보내기</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <p class="note" style="margin:6px 0 0">보낼 수업: <b id="sbTitle"></b></p>
+  <div class="form">
+    <label id="sbCodeWrap" class="full">회원 코드 <input class="inp" id="sbCode" autocomplete="off" placeholder="협의회에서 안내받은 회원 코드"></label>
+    <label>작성자 이름 (자료실에 표시) <input class="inp" id="sbAuthor" maxlength="20" placeholder="예: 김○○"></label>
+    <label>학교 (선택) <input class="inp" id="sbSchool" maxlength="30" placeholder="예: ○○고"></label>
+    <label>수준 <select class="inp" id="sbLevel"><option>하</option><option>중</option><option>상</option></select></label>
+    <label>주제 <select class="inp" id="sbTopic"><option>연설</option><option>뉴스</option><option>인터뷰</option><option>강연(TED 등)</option><option>드라마·영화</option><option>광고</option><option>일상 대화</option><option>기타</option></select></label>
+    <label class="full">활용 메모 (선택) <textarea class="inp" id="sbNote" rows="4" style="font-family:var(--ui)" placeholder="어느 학년에서 어떻게 쓰면 좋은지, 학생들이 어려워한 부분 등을 짧게 적어 주세요."></textarea></label>
+  </div>
+  <p class="issues" id="sbMsg" style="list-style:none;padding:0;margin-top:8px"></p>
+  <div class="lib-foot"><span class="note">보낸 뒤에도 내 수업은 그대로 고칠 수 있습니다.</span><span class="spacer"></span><button class="btn main" id="sbSend">보내기</button></div>
+</dialog>
+<dialog id="libDlg" class="lib">
+  <div class="lib-head"><h3>수업 목록</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <p class="note" style="margin:0 0 10px">만든 수업은 모두 자동 저장됩니다. 저장 위치는 <b>이 컴퓨터의 이 브라우저</b>입니다. 다른 컴퓨터에서 쓰거나 백업하려면 ‘파일로 내보내기’를 쓰세요.</p>
+  <div id="libList"></div>
+  <div class="lib-foot">
+    <button class="btn" id="libSample">샘플 수업 추가</button>
+    <span class="spacer"></span>
+    <button class="btn" id="libExportAll">전체를 파일로 내보내기</button>
+    <label class="filebtn">파일에서 가져오기<input type="file" id="libImport" accept=".json,application/json"></label>
+  </div>
+</dialog>
 <dialog id="helpDlg">
   <h3>키보드 단축키</h3>
   <table>
@@ -544,11 +624,24 @@ const E = {target:0, plays:0, gap:null, ignoreUntil:0, lastT:0, endedAt:-1, sing
 
 /* ---------------- 저장 ---------------- */
 const DRAFT_KEY = 'shadowroom.draft.v1', PREF_KEY = 'shadowroom.prefs.v2';
+const LIB_KEY = 'shadowroom.lessons.v1', CUR_KEY = 'shadowroom.current.v1';
+// 수업 보관함: {수업ID: 수업} — 이 브라우저에 저장
+function loadLib(){ try{ return JSON.parse(localStorage.getItem(LIB_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function writeLib(lib){
+  try{ localStorage.setItem(LIB_KEY, JSON.stringify(lib)); return true; }
+  catch(e){ toast('저장 공간이 부족합니다. 안 쓰는 수업을 파일로 내보낸 뒤 지워 주세요.', 5000); return false; }
+}
 let saveTimer;
-function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(() => {
+function saveNow(){
+  clearTimeout(saveTimer);
+  if(!lesson) return;
   lesson.updatedAt = Date.now();
-  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(lesson)); }catch(e){}
-}, 400); }
+  const lib = loadLib(); lib[lesson.id] = lesson;
+  if(writeLib(lib)) try{ localStorage.setItem(CUR_KEY, lesson.id); }catch(e){}
+}
+function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveNow(); renderSubmitBox(); }, 400); }
+window.addEventListener('beforeunload', saveNow);
+window.addEventListener('pagehide', saveNow);
 function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH, ytCC:ui.ytCC})); }catch(e){} }
 function loadPrefs(){ try{ Object.assign(ui, JSON.parse(localStorage.getItem(PREF_KEY) || '{}')); }catch(e){} }
 
@@ -1062,7 +1155,7 @@ function syncToolbar(){
   $('#lessonTitle').value = lesson.title || '';
 }
 function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
-function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); }
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); }
 function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 
@@ -1187,6 +1280,7 @@ function closeTiming(){
   Player.pause(); ui.rate = 1; Player.setRate(1);
   E.plays = 0; E.endedAt = -1;
   renderAll();
+  maybeAskSubmit();
 }
 function renderTiming(){
   const ss = lesson.sentences, n = ss.length, k = tm.k;
@@ -1443,14 +1537,91 @@ $('#rngCap').oninput = e => { ui.cap = +e.target.value; document.documentElement
 $('#rngCap').onchange = e => { savePrefs(); e.target.blur(); };
 
 $('#btnHelp').onclick = () => $('#helpDlg').showModal();
-$('#btnSample').onclick = () => { if(N() && !confirm('샘플 수업을 열까요? 지금 수업은 이 샘플로 바뀝니다.')) return; openLesson(sampleLesson()); };
-$('#btnNew').onclick = () => { if(N() && !confirm('새 수업을 시작할까요? 지금 수업은 지워집니다.')) return; openLesson(newLesson()); setTab('edit'); };
+/* ---------------- 수업 목록 ---------------- */
+function switchLesson(l){ saveNow(); openLesson(l); }
+$('#btnNew').onclick = () => {
+  switchLesson(newLesson()); setTab('edit');
+  setTimeout(() => { const t = $('#lessonTitle'); t.focus(); t.select(); }, 0);
+  toast('새 수업을 만들었습니다. 맨 위에 수업 제목을 적어 주세요. 이전 수업은 ‘수업 목록’에 그대로 있습니다.', 4200);
+};
+function fmtDate(ms){ const d = new Date(ms); return `${d.getMonth() + 1}월 ${d.getDate()}일 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
+function renderLib(){
+  saveNow();
+  const items = Object.values(loadLib()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  $('#libList').innerHTML = items.length ? items.map(l => {
+    const src = l.source ? (l.source.kind === 'youtube' ? '유튜브' : '내 컴퓨터 파일') : '영상 없음';
+    return `<div class="litem${l.id === lesson.id ? ' cur' : ''}" data-id="${esc(l.id)}">
+      <div class="lt"><strong>${esc(l.title || '제목 없음')}</strong><span>문장 ${(l.sentences || []).length}개 · ${src} · ${fmtDate(l.updatedAt || l.createdAt || Date.now())} 저장</span>
+        ${l.origin ? `<span class="origin">자료실에서 가져옴 · 원작 ${esc(l.origin.author || '')}${l.origin.school ? ' (' + esc(l.origin.school) + ')' : ''}</span>` : l.submittedAt ? '<span class="origin">자료실에 보냄</span>' : ''}</div>
+      ${l.id === lesson.id ? '<span class="note">지금 열려 있음</span>' : '<button class="btn main sm" data-lib="open">열기</button>'}
+      <button class="btn sm" data-lib="copy">복사본 만들기</button>
+      <button class="btn sm" data-lib="export">파일로 내보내기</button>
+      <button class="btn sm danger" data-lib="del">삭제</button>
+    </div>`;
+  }).join('') : '<p class="note">저장된 수업이 없습니다.</p>';
+}
+function download(name, obj){
+  const blob = new Blob([JSON.stringify(obj, null, 1)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+const safeName = t => (t || '수업').replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 40) || '수업';
+$('#btnLib').onclick = () => { renderLib(); $('#libDlg').showModal(); };
+$('#libList').addEventListener('click', e => {
+  const b = e.target.closest('[data-lib]'); if(!b) return;
+  const id = b.closest('.litem').dataset.id, lib = loadLib(), l = lib[id]; if(!l) return;
+  switch(b.dataset.lib){
+    case 'open': $('#libDlg').close(); switchLesson(l); setTab('lesson'); toast(`“${l.title}” 수업을 열었습니다.`); break;
+    case 'copy': {
+      const c = JSON.parse(JSON.stringify(l));
+      c.id = uid(); c.title = (l.title || '수업') + ' (복사본)'; c.createdAt = c.updatedAt = Date.now(); delete c.submittedAt;
+      c.sentences.forEach(s => s.id = uid());
+      lib[c.id] = c; writeLib(lib); renderLib(); break;
+    }
+    case 'export': download(`쉐도잉_${safeName(l.title)}.json`, {app:'shadowroom', version:1, lessons:[l]}); break;
+    case 'del': {
+      if(!confirm(`“${l.title}” 수업을 지울까요? 되돌릴 수 없습니다.`)) return;
+      delete lib[id]; writeLib(lib);
+      if(id === lesson.id){
+        const rest = Object.values(lib).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+        lesson = null; openLesson(rest[0] || newLesson());
+      }
+      renderLib(); break;
+    }
+  }
+});
+$('#libSample').onclick = () => { $('#libDlg').close(); switchLesson(sampleLesson()); setTab('lesson'); };
+$('#libExportAll').onclick = () => {
+  saveNow();
+  const all = Object.values(loadLib());
+  const d = new Date();
+  download(`쉐도잉_전체수업_${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}.json`, {app:'shadowroom', version:1, lessons:all});
+};
+$('#libImport').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if(!f) return;
+  let data; try{ data = JSON.parse(await f.text()); }catch(err){ toast('이 파일은 수업 파일이 아닙니다.'); return; }
+  const list = Array.isArray(data.lessons) ? data.lessons : (data.sentences ? [data] : []);
+  const ok = list.filter(l => l && l.schema === 1 && Array.isArray(l.sentences));
+  if(!ok.length){ toast('가져올 수업을 찾지 못했습니다.'); return; }
+  const lib = loadLib(); let added = 0, replaced = 0;
+  for(const l of ok){
+    if(lib[l.id]){
+      if((lib[l.id].updatedAt || 0) > (l.updatedAt || 0) && !confirm(`“${l.title}”은 이 컴퓨터에 더 최근 버전이 있습니다. 파일 내용으로 덮어쓸까요?`)) continue;
+      replaced++;
+    } else added++;
+    lib[l.id] = l;
+  }
+  writeLib(lib);
+  if(lib[lesson.id] && ok.some(l => l.id === lesson.id)) openLesson(lib[lesson.id]);
+  renderLib();
+  toast(`수업 ${added}개를 새로 가져왔습니다.` + (replaced ? ` ${replaced}개는 새 내용으로 바꿨습니다.` : ''), 3500);
+};
 $('#lessonTitle').oninput = e => { lesson.title = e.target.value; save(); };
 
 document.addEventListener('keydown', e => {
   if(e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
   if(e.ctrlKey || e.metaKey || e.altKey) return;
-  if($('#helpDlg').open) return;
+  if($('#helpDlg').open || $('#libDlg').open || $('#hubDlg').open || $('#submitDlg').open) return;
   if(tm.open){
     if(e.key === 'Enter'){ e.preventDefault(); timingMark(); }
     else if(e.code === 'Space'){ e.preventDefault(); $('#tmPlay').click(); }
@@ -1471,6 +1642,375 @@ document.addEventListener('keydown', e => {
 });
 
 /* ---------------- 시작 ---------------- */
+/* =====================================================================
+   공용 자료실 (영이들 협의회)
+   자료실 연결부: 저장 장소와 주고받는 일은 모두 hubApi()를 거칩니다.
+   지금은 구글 Apps Script 우편함, 3단계(로그인 서버)로 옮길 때는 이 부분만 바꾸면 됩니다.
+   ===================================================================== */
+const HUB_CONFIG = {
+  name: '영이들 협의회 쉐도잉 자료실',
+  endpoint: 'https://script.google.com/macros/s/AKfycbzXRGUYiUR-qB1XX8soo21P0T8ow8spMdEo925ejmAcpGx2RSjPsseAs0Yu08dQePVHww/exec'   // ← Apps Script 배포 주소
+};
+const HUB_KEY = 'shadowroom.hub.v1', HUB_EP_KEY = 'shadowroom.hub.endpoint', HUB_ADMIN_KEY = 'shadowroom.hub.admin';
+function loadJSON(k){ try{ return JSON.parse(localStorage.getItem(k) || '{}') || {}; }catch(e){ return {}; } }
+// 이 기기의 자료실 이용 기록 (3단계에서 로그인 계정으로 옮길 수 있게 따로 보관)
+const hub = Object.assign({memberCode:'', contrib:false, imported:[], freeUsed:[], author:'', school:'', freeLimit:1}, loadJSON(HUB_KEY));
+function saveHub(){ try{ localStorage.setItem(HUB_KEY, JSON.stringify(hub)); }catch(e){} }
+function hubEndpoint(){ let o = ''; try{ o = localStorage.getItem(HUB_EP_KEY) || ''; }catch(e){} return (o || HUB_CONFIG.endpoint || '').trim(); }
+const HUB_ERR = {
+  wrongmember:'회원 코드가 맞지 않습니다.', wrongcontrib:'기여 코드가 맞지 않습니다.', wrongadmin:'관리자 비밀번호가 맞지 않습니다.',
+  notfound:'그 수업을 찾을 수 없습니다. 자료실에서 내려갔을 수 있습니다.', toolarge:'수업이 너무 커서 보낼 수 없습니다. 문장 수를 줄여 주세요.',
+  badlesson:'수업 내용이 올바르지 않습니다.', noendpoint:'자료실이 아직 연결되지 않았습니다.',
+  network:'자료실에 연결하지 못했습니다. 인터넷 연결이나 우편함 주소를 확인해 주세요.'
+};
+function hubError(code, detail){ const e = new Error(HUB_ERR[code] || ('자료실에서 오류가 났습니다.' + (detail ? ' (' + detail + ')' : ''))); e.code = code; return e; }
+async function hubApi(action, data = {}){
+  const url = hubEndpoint();
+  if(!url) throw hubError('noendpoint');
+  let res, j;
+  try{
+    res = await fetch(url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(Object.assign({action}, data))});
+    j = await res.json();
+  }catch(e){ throw hubError('network'); }
+  if(!j.ok) throw hubError(j.error || 'server', j.detail);
+  return j;
+}
+const hubBody = () => $('#hubBody');
+const hubBusy = msg => { hubBody().innerHTML = `<p class="empty">${esc(msg)}</p>`; };
+function marksHTML(text, marks){
+  marks = marks || {};
+  return tokens(text).map((t, wi) => {
+    const m = marks[wi] || {};
+    return esc(t.lead) + `<span class="w${m.stress ? ' st' : ''}">${esc(t.core)}</span>` + esc(t.trail)
+      + (m.tone === 'rise' ? '<i class="tn up">↗</i>' : m.tone === 'fall' ? '<i class="tn dn">↘</i>' : '') + (m.pause ? '<i class="ps">|</i>' : '');
+  }).join(' ');
+}
+function fmtLen(sec){ sec = Math.round(sec || 0); const m = Math.floor(sec / 60), s = sec % 60; return m ? `${m}분${s ? ' ' + s + '초' : ''}` : `${s}초`; }
+
+/* ---------- 열기 / 회원 코드 ---------- */
+let hubItems = [], hubFilter = {q:'', level:'', topic:''};
+function openHub(){
+  $('#hubTitle').textContent = HUB_CONFIG.name;
+  if(!$('#hubDlg').open) $('#hubDlg').showModal();
+  if(!hubEndpoint()) return renderHubNoEndpoint();
+  if(!hub.memberCode) return renderHubLogin();
+  loadHubList();
+}
+function renderHubNoEndpoint(){
+  hubBody().innerHTML = `<div class="gate"><h4>자료실이 아직 연결되지 않았습니다</h4>
+    <p>관리자가 우편함(구글 Apps Script)을 설정하면 이곳에서 협의회 선생님들의 수업을 볼 수 있습니다.</p></div>
+    <div class="hfoot"><button class="linky" data-hubgo="adminLogin">관리자</button></div>`;
+}
+function renderHubLogin(msg){
+  hubBody().innerHTML = `<div class="gate"><h4>회원 코드를 넣어 주세요</h4>
+    <p>협의회에서 안내받은 회원 코드를 한 번만 넣으면, 이 컴퓨터에서는 다시 묻지 않습니다.</p>
+    ${msg ? `<p class="issues" style="padding:0;list-style:none">${esc(msg)}</p>` : ''}
+    <div class="row"><input class="inp" id="hubCode" placeholder="회원 코드" style="max-width:240px" autocomplete="off"><button class="btn main" id="hubCodeOk">확인</button></div></div>
+    <div class="hfoot"><button class="linky" data-hubgo="adminLogin">관리자</button></div>`;
+  const go = async () => {
+    const code = $('#hubCode').value.trim(); if(!code) return;
+    $('#hubCodeOk').disabled = true;
+    try{
+      const j = await hubApi('info', {memberCode:code});
+      hub.memberCode = code; hub.freeLimit = j.freeLimit ?? 1; saveHub();
+      loadHubList();
+    }catch(e){ renderHubLogin(e.message); }
+  };
+  $('#hubCodeOk').onclick = go;
+  $('#hubCode').onkeydown = e => { if(e.key === 'Enter') go(); };
+  setTimeout(() => $('#hubCode')?.focus(), 0);
+}
+async function loadHubList(){
+  hubBusy('자료실을 불러오는 중입니다…');
+  try{
+    const j = await hubApi('list', {memberCode:hub.memberCode});
+    hub.freeLimit = j.freeLimit ?? hub.freeLimit; saveHub();
+    hubItems = (j.items || []).sort((a, b) => String(b.approvedAt).localeCompare(String(a.approvedAt)));
+    renderHubList();
+  }catch(e){
+    if(e.code === 'wrongmember'){ hub.memberCode = ''; saveHub(); return renderHubLogin('회원 코드가 바뀌었습니다. 새 코드를 넣어 주세요.'); }
+    hubBody().innerHTML = `<p class="issues" style="list-style:none;padding:0">${esc(e.message)}</p><button class="btn" data-hubgo="list">다시 시도</button>`;
+  }
+}
+
+/* ---------- 목록 ---------- */
+function freeLeft(){ return Math.max(0, hub.freeLimit - hub.freeUsed.length); }
+function renderHubList(){
+  const topics = [...new Set(hubItems.map(x => x.topic).filter(Boolean))];
+  const status = hub.contrib
+    ? '<strong>기여 회원</strong> — 자료실 수업을 마음껏 가져갈 수 있습니다.'
+    : `무료로 가져갈 수 있는 수업 <strong>${freeLeft()}개</strong> 남음 <button class="btn sm" data-hubgo="gate">기여 코드 넣기</button>`;
+  hubBody().innerHTML = `
+    <div class="hstatus">${status}<span class="spacer"></span><span class="note">수업 ${hubItems.length}개</span></div>
+    <div class="hfilters">
+      <input class="inp" id="hubQ" placeholder="제목·작성자·메모 검색" value="${esc(hubFilter.q)}" style="flex:1;min-width:160px">
+      <select class="inp" id="hubLv"><option value="">수준 전체</option>${['하', '중', '상'].map(v => `<option${hubFilter.level === v ? ' selected' : ''}>${v}</option>`).join('')}</select>
+      <select class="inp" id="hubTp"><option value="">주제 전체</option>${topics.map(v => `<option${hubFilter.topic === v ? ' selected' : ''}>${esc(v)}</option>`).join('')}</select>
+    </div>
+    <div id="hubList"></div>
+    <div class="hfoot"><button class="linky" data-hubgo="relogin">회원 코드 다시 넣기</button><button class="linky" data-hubgo="adminLogin">관리자</button></div>`;
+  $('#hubQ').oninput = e => { hubFilter.q = e.target.value; renderHubCards(); };
+  $('#hubLv').onchange = e => { hubFilter.level = e.target.value; renderHubCards(); };
+  $('#hubTp').onchange = e => { hubFilter.topic = e.target.value; renderHubCards(); };
+  renderHubCards();
+}
+function renderHubCards(){
+  const q = hubFilter.q.trim().toLowerCase();
+  const list = hubItems.filter(x => (!hubFilter.level || x.level === hubFilter.level) && (!hubFilter.topic || x.topic === hubFilter.topic)
+    && (!q || [x.title, x.author, x.school, x.note, x.topic].join(' ').toLowerCase().includes(q)));
+  if(!hubItems.length){ $('#hubList').innerHTML = '<p class="empty">아직 자료실에 올라온 수업이 없습니다. 첫 수업을 보내 주세요!</p>'; return; }
+  if(!list.length){ $('#hubList').innerHTML = '<p class="empty">찾는 조건에 맞는 수업이 없습니다.</p>'; return; }
+  $('#hubList').innerHTML = list.map(x => {
+    const got = hub.imported.includes(x.subId);
+    return `<div class="hcard" data-sub="${esc(x.subId)}">
+      ${x.videoId ? `<img class="hthumb" src="https://i.ytimg.com/vi/${esc(x.videoId)}/mqdefault.jpg" alt="" loading="lazy">` : '<div class="hthumb"></div>'}
+      <div class="hinfo">
+        <strong>${esc(x.title)}</strong>
+        <span class="hmeta">${esc(x.author)}${x.school ? ' · ' + esc(x.school) : ''} · 수준 ${esc(x.level || '-')} · ${esc(x.topic || '주제 없음')} · 문장 ${x.sentences}개 · ${fmtLen(x.duration)}</span>
+        ${x.note ? `<p class="hnote">${esc(x.note)}</p>` : ''}
+        <div class="hbtns">
+          <button class="btn sm" data-hub="pv">미리보기</button>
+          ${x.url ? `<a class="btn sm" href="${esc(x.url)}" target="_blank" rel="noopener">유튜브에서 보기</a>` : ''}
+          <button class="btn main sm" data-hub="get">${got ? '다시 가져가기' : '가져가기'}</button>
+          ${got ? '<span class="note">이미 가져간 수업 (다시 가져가도 개수에 안 들어감)</span>' : ''}
+        </div>
+        <div class="hpv" hidden>
+          ${(x.preview || []).map(p => `<p class="en">${marksHTML(p.text, p.marks)}</p>${p.ko ? `<p class="ko">${esc(p.ko)}</p>` : ''}`).join('')}
+          <p class="note">앞 ${Math.min(3, x.sentences)}문장만 보입니다. 가져가면 전체 문장과 맞춰 둔 시간, 표시를 모두 쓸 수 있습니다.</p>
+        </div>
+      </div></div>`;
+  }).join('');
+}
+async function hubGet(subId, btn){
+  const already = hub.imported.includes(subId);
+  if(!already && !hub.contrib && freeLeft() <= 0) return renderHubGate(subId);
+  if(btn){ btn.disabled = true; btn.textContent = '가져오는 중…'; }
+  try{
+    const j = await hubApi('get', {memberCode:hub.memberCode, subId});
+    if(!already){ hub.imported.push(subId); if(!hub.contrib) hub.freeUsed.push(subId); saveHub(); }
+    $('#hubDlg').close();
+    importLibLesson(j.lesson, j.meta, false);
+    toast(`“${j.meta.title}” 수업을 내 수업 목록으로 가져왔습니다.` + (!hub.contrib && !already ? ` 무료 가져가기 ${freeLeft()}개 남음.` : ''), 4000);
+  }catch(e){
+    if(btn){ btn.disabled = false; btn.textContent = '가져가기'; }
+    toast(e.message, 4000);
+  }
+}
+function importLibLesson(l, meta, forCheck){
+  const c = JSON.parse(JSON.stringify(l));
+  c.id = uid(); c.createdAt = c.updatedAt = Date.now();
+  c.sentences.forEach(s => { s.id = uid(); });
+  delete c.submittedAt; delete c.libMeta;
+  c.origin = {library:HUB_CONFIG.name, subId:meta.subId, lessonId:meta.lessonId, author:meta.author, school:meta.school, importedAt:Date.now(), check:!!forCheck};
+  if(forCheck) c.title = '[검토] ' + (c.title || '');
+  switchLesson(c); setTab('lesson');
+}
+
+/* ---------- 기여 코드 ---------- */
+function renderHubGate(subId){
+  hubBody().innerHTML = `<div class="gate">
+    <h4>${subId ? '무료로 가져갈 수 있는 수업을 모두 쓰셨습니다' : '기여 코드 넣기'}</h4>
+    <p>내가 만든 수업 1개를 자료실에 보내 관리자 승인을 받으면, 관리자가 단톡방으로 <b>기여 코드</b>를 알려 드립니다. 기여 코드를 넣으면 자료실의 모든 수업을 마음껏 가져갈 수 있습니다.</p>
+    <p id="gateMsg" class="issues" style="list-style:none;padding:0"></p>
+    <div class="row"><input class="inp" id="hubContrib" placeholder="기여 코드" style="max-width:240px" autocomplete="off"><button class="btn main" id="hubContribOk">확인</button></div>
+    <div class="row" style="margin-top:10px"><button class="btn" data-hubgo="make">내 수업 만들러 가기</button><button class="btn" data-hubgo="list">목록으로</button></div></div>`;
+  const go = async () => {
+    const code = $('#hubContrib').value.trim(); if(!code) return;
+    $('#hubContribOk').disabled = true;
+    try{
+      await hubApi('checkContrib', {memberCode:hub.memberCode, contribCode:code});
+      hub.contrib = true; saveHub();
+      toast('기여 회원이 되셨습니다. 감사합니다!');
+      if(subId) hubGet(subId); else loadHubList();
+    }catch(e){ $('#gateMsg').textContent = e.message; $('#hubContribOk').disabled = false; }
+  };
+  $('#hubContribOk').onclick = go;
+  $('#hubContrib').onkeydown = e => { if(e.key === 'Enter') go(); };
+}
+
+/* ---------- 관리자 ---------- */
+let adminTab = '대기', adminItems = [];
+const adminPw = () => { try{ return sessionStorage.getItem(HUB_ADMIN_KEY) || ''; }catch(e){ return ''; } };
+function renderHubAdminLogin(msg){
+  hubBody().innerHTML = `<div class="gate"><h4>관리자</h4>
+    <p>우편함 주소는 Apps Script ‘배포’ 후 나오는 …/exec 로 끝나는 주소입니다. 관리자 비밀번호는 Apps Script 코드 맨 위에 적은 것입니다.</p>
+    ${msg ? `<p class="issues" style="list-style:none;padding:0">${esc(msg)}</p>` : ''}
+    <label class="note" style="display:block;margin-bottom:4px">우편함 주소</label>
+    <input class="inp" id="admEp" value="${esc(hubEndpoint())}" placeholder="https://script.google.com/macros/s/…/exec" style="margin-bottom:8px">
+    <label class="note" style="display:block;margin-bottom:4px">관리자 비밀번호</label>
+    <div class="row"><input class="inp" type="password" id="admPw" style="max-width:240px"><button class="btn main" id="admOk">들어가기</button></div></div>
+    <div class="hfoot"><button class="linky" data-hubgo="back">자료실로</button></div>`;
+  const go = async () => {
+    const ep = $('#admEp').value.trim(), pw = $('#admPw').value;
+    if(ep && ep !== hubEndpoint()){
+      if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(ep)) return renderHubAdminLogin('우편함 주소는 https://script.google.com/macros/s/ 로 시작하고 /exec 로 끝나야 합니다.');
+      try{ localStorage.setItem(HUB_EP_KEY, ep); }catch(e){}
+    }
+    try{ sessionStorage.setItem(HUB_ADMIN_KEY, pw); }catch(e){}
+    loadAdmin();
+  };
+  $('#admOk').onclick = go;
+  $('#admPw').onkeydown = e => { if(e.key === 'Enter') go(); };
+}
+async function loadAdmin(){
+  hubBusy('관리자 목록을 불러오는 중입니다…');
+  try{
+    const j = await hubApi('admin_list', {adminPassword:adminPw()});
+    adminItems = (j.items || []).reverse();
+    renderAdmin();
+  }catch(e){
+    if(e.code === 'wrongadmin'){ try{ sessionStorage.removeItem(HUB_ADMIN_KEY); }catch(_){} }
+    renderHubAdminLogin(e.message);
+  }
+}
+function renderAdmin(){
+  const groups = {'대기':x => x.status === '대기', '승인':x => x.status === '승인', '그 밖':x => x.status !== '대기' && x.status !== '승인'};
+  const list = adminItems.filter(groups[adminTab]);
+  hubBody().innerHTML = `
+    <div class="hstatus"><strong>관리자 화면</strong><span class="spacer"></span>
+      <button class="btn sm" data-adm="refresh">새로 고침</button><button class="btn sm" data-adm="backup">자료실 전체 백업</button><button class="btn sm" data-adm="logout">관리자 나가기</button></div>
+    <div class="atabs">${Object.keys(groups).map(k => `<button class="chip" data-atab="${k}" aria-pressed="${k === adminTab}">${k === '그 밖' ? '반려·내림·교체됨' : k} ${adminItems.filter(groups[k]).length}</button>`).join('')}</div>
+    <div id="hubList">${list.length ? list.map(x => `
+      <div class="arow" data-sub="${esc(x.subId)}">
+        <div class="row"><strong>${esc(x.title)}</strong><span class="st-pill">${esc(x.status)}</span></div>
+        <span class="hmeta">${esc(x.author)}${x.school ? ' · ' + esc(x.school) : ''} · ${esc(x.submittedAt)} 보냄 · 수준 ${esc(x.level || '-')} · ${esc(x.topic || '-')} · 문장 ${x.sentences}개 · ${fmtLen(x.duration)}</span>
+        ${x.note ? `<p class="hnote">${esc(x.note)}</p>` : ''}
+        <div class="hbtns">
+          <button class="btn sm" data-adm="check">가져와서 확인</button>
+          ${x.url ? `<a class="btn sm" href="${esc(x.url)}" target="_blank" rel="noopener">유튜브</a>` : ''}
+          ${x.status !== '승인' ? '<button class="btn main sm" data-adm="승인">승인</button>' : '<button class="btn sm danger" data-adm="내림">자료실에서 내리기</button>'}
+          ${x.status === '대기' ? '<button class="btn sm danger" data-adm="반려">반려</button>' : ''}
+        </div></div>`).join('') : '<p class="empty">해당하는 수업이 없습니다.</p>'}</div>
+    <p class="note" style="margin-top:10px">‘가져와서 확인’은 무료 개수와 상관없이 내 수업 목록에 [검토] 복사본을 만듭니다. 확인 후 지워도 됩니다.</p>`;
+}
+async function adminAction(act, subId, btn){
+  if(act === 'check'){
+    btn.disabled = true;
+    try{ const j = await hubApi('admin_get', {adminPassword:adminPw(), subId}); $('#hubDlg').close(); importLibLesson(j.lesson, j.meta, true); toast('[검토] 복사본을 열었습니다. 문장을 눌러 시간이 맞는지 들어 보세요.', 4000); }
+    catch(e){ toast(e.message); btn.disabled = false; }
+    return;
+  }
+  if(act === '내림' && !confirm('이 수업을 자료실에서 내릴까요? (시트에는 남아 있어 다시 승인할 수 있습니다)')) return;
+  if(act === '반려' && !confirm('이 수업을 반려할까요?')) return;
+  btn.disabled = true;
+  try{
+    await hubApi('admin_set', {adminPassword:adminPw(), subId, status:act});
+    if(act === '승인') toast('승인했습니다. 보낸 선생님께 단톡방으로 기여 코드를 알려 주세요.', 4500);
+    loadAdmin();
+  }catch(e){ toast(e.message); btn.disabled = false; }
+}
+async function adminBackup(){
+  try{
+    toast('백업 파일을 만드는 중입니다…');
+    const j = await hubApi('admin_backup', {adminPassword:adminPw()});
+    const d = new Date();
+    download(`자료실백업_${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}.json`, {app:'shadowroom-library', version:1, name:j.name, items:j.items});
+  }catch(e){ toast(e.message); }
+}
+
+/* ---------- 자료실 대화창 클릭 ---------- */
+$('#hubBody').addEventListener('click', e => {
+  const go = e.target.closest('[data-hubgo]');
+  if(go){
+    const g = go.dataset.hubgo;
+    if(g === 'adminLogin') return adminPw() && hubEndpoint() ? loadAdmin() : renderHubAdminLogin();
+    if(g === 'list' || g === 'back') return openHub();
+    if(g === 'gate') return renderHubGate(null);
+    if(g === 'relogin'){ hub.memberCode = ''; saveHub(); return renderHubLogin(); }
+    if(g === 'make'){ $('#hubDlg').close(); setTab('edit'); toast('수업을 만들고 시간 맞추기를 마친 뒤, 아래쪽 ‘자료실에 보내기’를 누르세요.', 4500); return; }
+  }
+  const card = e.target.closest('.hcard');
+  const hb = e.target.closest('[data-hub]');
+  if(card && hb){
+    if(hb.dataset.hub === 'pv'){ const pv = $('.hpv', card); pv.hidden = !pv.hidden; hb.textContent = pv.hidden ? '미리보기' : '미리보기 닫기'; }
+    if(hb.dataset.hub === 'get') hubGet(card.dataset.sub, hb);
+    return;
+  }
+  const at = e.target.closest('[data-atab]');
+  if(at){ adminTab = at.dataset.atab; return renderAdmin(); }
+  const ad = e.target.closest('[data-adm]');
+  if(ad){
+    const act = ad.dataset.adm;
+    if(act === 'refresh') return loadAdmin();
+    if(act === 'backup') return adminBackup();
+    if(act === 'logout'){ try{ sessionStorage.removeItem(HUB_ADMIN_KEY); }catch(_){} return openHub(); }
+    const row = ad.closest('.arow'); if(row) adminAction(act, row.dataset.sub, ad);
+  }
+});
+$('#btnHub').onclick = openHub;
+
+/* ---------- 자료실에 보내기 ---------- */
+function submitIssues(l){
+  if(l.origin) return {block:[`자료실에서 가져온 수업은 다시 보낼 수 없습니다. (원작: ${l.origin.author || '알 수 없음'})`], warn:[]};
+  const block = [], warn = [];
+  if(!l.source || l.source.kind !== 'youtube') block.push('유튜브 영상으로 만든 수업만 보낼 수 있습니다. 내 컴퓨터 파일은 다른 선생님이 열 수 없습니다.');
+  if(!l.title || /^새 수업$/.test(l.title.trim())) block.push('맨 위 제목 칸에 수업 제목을 적어 주세요.');
+  if(l.sentences.length < 2) block.push('문장이 2개 이상 있어야 합니다.');
+  const empty = l.sentences.map((s, i) => !s.text.trim() ? i + 1 : 0).filter(Boolean);
+  if(empty.length) block.push(`내용이 빈 문장이 있습니다: ${empty.slice(0, 6).join(', ')}번`);
+  const bad = l.sentences.map((s, i) => !(s.end > s.start) ? i + 1 : 0).filter(Boolean);
+  if(bad.length) block.push(`끝 시간이 시작보다 빠른 문장이 있습니다: ${bad.slice(0, 6).join(', ')}번`);
+  const est = l.sentences.map((s, i) => s.timing === 'estimated' ? i + 1 : 0).filter(Boolean);
+  if(est.length) warn.push(`${est.length}개 문장의 시간이 아직 추정값입니다 (${est.slice(0, 6).join(', ')}번${est.length > 6 ? ' 등' : ''}). ‘시간 맞추기’로 맞추면 더 좋습니다.`);
+  return {block, warn};
+}
+function renderSubmitBox(){
+  if(!lesson || !$('#submitBox')) return;
+  const {block, warn} = submitIssues(lesson);
+  const sent = lesson.submittedAt ? `<p class="okmsg">${fmtDate(lesson.submittedAt)}에 자료실로 보냈습니다. 고쳐서 다시 보내면 관리자 승인 후 새 버전으로 바뀝니다.</p>` : '';
+  $('#submitCheck').innerHTML = sent + (block.length || warn.length
+    ? `<ul class="issues">${block.map(x => `<li>${esc(x)}</li>`).join('')}${warn.map(x => `<li style="color:#8A5A00">${esc(x)}</li>`).join('')}</ul>`
+    : (sent ? '' : '<p class="okmsg">보낼 준비가 되었습니다.</p>'));
+  $('#btnSubmitOpen').disabled = block.length > 0;
+  $('#btnSubmitOpen').textContent = lesson.submittedAt ? '고친 내용 다시 보내기' : '자료실에 보내기';
+  $('#submitBanner').hidden = !(block.length === 0 && warn.length === 0 && !lesson.submittedAt && !lesson.origin);
+}
+function openSubmit(){
+  const {block, warn} = submitIssues(lesson);
+  if(block.length){ setTab('edit'); renderSubmitBox(); $('#submitBox').scrollIntoView({block:'center'}); toast('보내기 전에 고칠 것이 있습니다.'); return; }
+  if(warn.length && !confirm(warn.join('\n') + '\n\n그래도 보낼까요?')) return;
+  const meta = lesson.libMeta || {};
+  $('#sbAuthor').value = hub.author || ''; $('#sbSchool').value = hub.school || '';
+  $('#sbLevel').value = meta.level || '중'; $('#sbTopic').value = meta.topic || '연설'; $('#sbNote').value = meta.note || '';
+  $('#sbCodeWrap').hidden = !!hub.memberCode; $('#sbCode').value = '';
+  $('#sbMsg').textContent = ''; $('#sbSend').disabled = false; $('#sbSend').textContent = '보내기';
+  $('#sbTitle').textContent = lesson.title;
+  $('#submitDlg').showModal();
+}
+async function sendSubmit(){
+  const author = $('#sbAuthor').value.trim();
+  if(!author){ $('#sbMsg').textContent = '작성자 이름을 적어 주세요.'; return; }
+  const code = hub.memberCode || $('#sbCode').value.trim();
+  if(!code){ $('#sbMsg').textContent = '회원 코드를 적어 주세요.'; return; }
+  const meta = {author, school:$('#sbSchool').value.trim(), level:$('#sbLevel').value, topic:$('#sbTopic').value, note:$('#sbNote').value.trim(),
+    duration:Math.max(0, ...lesson.sentences.map(s => s.end))};
+  $('#sbSend').disabled = true; $('#sbSend').textContent = '보내는 중…';
+  try{
+    saveNow();
+    const copy = JSON.parse(JSON.stringify(lesson)); delete copy.submittedAt; delete copy.libMeta;
+    await hubApi('submit', {memberCode:code, lesson:copy, meta});
+    hub.memberCode = code; hub.author = author; hub.school = meta.school; saveHub();
+    lesson.submittedAt = Date.now(); lesson.libMeta = {level:meta.level, topic:meta.topic, note:meta.note};
+    saveNow(); renderSubmitBox();
+    $('#submitDlg').close();
+    toast('보냈습니다! 관리자 승인 후 자료실에 올라갑니다. 승인되면 단톡방으로 기여 코드를 받으실 수 있습니다.', 5500);
+  }catch(e){
+    if(e.code === 'wrongmember'){ hub.memberCode = ''; saveHub(); $('#sbCodeWrap').hidden = false; }
+    $('#sbMsg').textContent = e.message; $('#sbSend').disabled = false; $('#sbSend').textContent = '보내기';
+  }
+}
+$('#btnSubmitOpen').onclick = openSubmit;
+$('#btnSubmitBanner').onclick = openSubmit;
+$('#sbSend').onclick = sendSubmit;
+// 시간 맞추기를 끝냈을 때 한 번 물어봄
+function maybeAskSubmit(){
+  if(!lesson || lesson.submittedAt || lesson.origin || !hubEndpoint()) return;
+  const {block, warn} = submitIssues(lesson);
+  if(block.length || warn.length) return;
+  setTimeout(() => { if(confirm('모든 문장의 시간을 맞췄습니다. 이 수업을 협의회 자료실에 보낼까요?')) openSubmit(); }, 300);
+}
+
+
 function openLesson(l){
   lesson = l;
   lesson.blank = Object.assign({mode:'random', ratio:0.3, seed:1}, lesson.blank || {});
@@ -1494,10 +2034,19 @@ function openLesson(l){
   renderAll(); save();
 }
 loadPrefs();
-let draft = null;
-try{ draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); }catch(e){}
 Player.rate = ui.rate;
-openLesson(draft && draft.schema === 1 ? draft : sampleLesson());
+(function init(){
+  const lib = loadLib();
+  // 이전 버전(수업 1개만 저장)에서 옮겨 오기
+  try{
+    const old = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+    if(old && old.schema === 1 && !lib[old.id]){ lib[old.id] = old; writeLib(lib); }
+    localStorage.removeItem(DRAFT_KEY);
+  }catch(e){}
+  let curId = null; try{ curId = localStorage.getItem(CUR_KEY); }catch(e){}
+  const all = Object.values(lib).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  openLesson(lib[curId] || all[0] || sampleLesson());
+})();
 </script>
 </body>
 </html>
