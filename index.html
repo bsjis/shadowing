@@ -316,6 +316,7 @@ body.hc .caption .ko{color:#fff}
       </div>
       <button class="sbtn" data-toggle-ko>해석</button>
       <label class="ctrl"><span>글자 크기</span><input type="range" id="rngCap" min="28" max="110" step="2" value="52"></label>
+      <button class="sbtn" id="bYtCC2" aria-pressed="false">유튜브 자막</button>
       <button class="sbtn" id="bCover" aria-pressed="false">영상 자막 가리기</button>
       <button class="sbtn" id="bHC" aria-pressed="false">고대비</button>
       <button class="sbtn" id="bFS">전체화면</button>
@@ -337,7 +338,11 @@ body.hc .caption .ko{color:#fff}
         <output id="rateOut">1.00×</output>
         <button class="sbtn mini" id="bRate1">1×</button>
       </div>
-      <div class="ctrl"><span>영상 속 자막</span>
+      <div class="ctrl"><span>유튜브 자막</span>
+        <button class="sbtn mini" id="bYtCC" aria-pressed="false">끔</button>
+        <span class="note" style="color:var(--stage-muted)">영어 자막을 켜고 끕니다</span>
+      </div>
+      <div class="ctrl"><span>영상에 박힌 자막</span>
         <label><input type="checkbox" id="chkCover"> 아래쪽 가리기</label>
         <input type="range" id="rngCover" min="8" max="40" step="1" value="18" aria-label="가리는 높이">
       </div>
@@ -534,7 +539,7 @@ function mkSent(text, start, end, timing){ return {id:uid(), text:text.trim(), s
 /* ---------------- 상태 ---------------- */
 let lesson;
 const ui = {view:'script', ko:false, tool:'move', repeat:2, gap:1.5, advance:true, rate:1,
-  ab:{a:null, b:null, on:false}, tap:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18, scope:'marked'};
+  ab:{a:null, b:null, on:false}, tap:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18, scope:'marked', ytCC:false};
 const E = {target:0, plays:0, gap:null, ignoreUntil:0, lastT:0, endedAt:-1, single:false, seekTo:null, seekDeadline:0};
 
 /* ---------------- 저장 ---------------- */
@@ -544,7 +549,7 @@ function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(() => {
   lesson.updatedAt = Date.now();
   try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(lesson)); }catch(e){}
 }, 400); }
-function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH})); }catch(e){} }
+function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH, ytCC:ui.ytCC})); }catch(e){} }
 function loadPrefs(){ try{ Object.assign(ui, JSON.parse(localStorage.getItem(PREF_KEY) || '{}')); }catch(e){} }
 
 /* ---------------- 유튜브 주소 해석 ---------------- */
@@ -598,7 +603,7 @@ const Player = {
     el.hidden = true; this.kind = null;
   },
   async loadYouTube(id, start = 0){
-    this.destroy(); this.kind = 'yt'; this.videoId = id;
+    this.destroy(); this.kind = 'yt'; this.videoId = id; this.ccApplied = false;
     showOverlay(null); $('#emptyOverlay').hidden = true;
     const env = ytEnvProblem();
     if(env){ showOverlay(env); return; }
@@ -612,8 +617,8 @@ const Player = {
     this.yt = new YT.Player('ytHost', {
       videoId:id, width:'100%', height:'100%', playerVars:vars,
       events:{
-        onReady:() => { this.ready = true; clearTimeout(this.readyTimer); showOverlay(null); this.setRate(this.rate); this.hideCC(); },
-        onStateChange:e => { if(e.data === 1 || e.data === 3) this.hideCC(); },
+        onReady:() => { this.ready = true; clearTimeout(this.readyTimer); showOverlay(null); this.setRate(this.rate); this.applyCC(); },
+        onStateChange:e => { if((e.data === 1 || e.data === 3) && !this.ccApplied){ this.ccApplied = true; this.applyCC(); } },
         onError:e => onPlayerError(e.data)
       }
     });
@@ -628,11 +633,18 @@ const Player = {
     el.onerror = () => toast('이 파일은 브라우저에서 재생할 수 없습니다. mp4(H.264) 또는 mp3로 바꿔 보세요.', 4000);
     el.src = URL.createObjectURL(file);
   },
-  hideCC(){
-    // 유튜브 자체 자막(CC)을 끔. 영상에 그림으로 박힌 자막은 끌 수 없으므로 '아래쪽 가리기'를 씀
+  applyCC(){
+    // 유튜브 자체 자막(CC) 켜기/끄기. 영상에 그림으로 박힌 자막은 끌 수 없으므로 '아래쪽 가리기'를 씀
     if(this.kind !== 'yt' || !this.yt) return;
-    try{ this.yt.unloadModule('captions'); }catch(e){}
-    try{ this.yt.unloadModule('cc'); }catch(e){}
+    try{
+      if(ui.ytCC){
+        this.yt.loadModule('captions');
+        this.yt.setOption('captions', 'track', {languageCode:'en'});
+      } else {
+        this.yt.unloadModule('captions');
+        this.yt.unloadModule('cc');
+      }
+    }catch(e){}
   },
   play(){ if(this.kind === 'yt') this.yt?.playVideo?.(); else if(this.kind === 'file') this.el.play().catch(() => {}); },
   pause(){ if(this.kind === 'yt') this.yt?.pauseVideo?.(); else if(this.kind === 'file') this.el.pause(); },
@@ -720,20 +732,24 @@ function parseSubtitle(raw){
   }
   return cues;
 }
-const TS_ONLY = /^(?:\d{1,2}:)?\d{1,2}:\d{2}$/;
-const TS_INLINE = /^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/;
+// 유튜브 스크립트 복사본 형식들:
+//  (1) "0:05" 한 줄 + 문장 한 줄   (2) "0:05 문장"
+//  (3) 새 형식: "0:055초So, our..."  "1:021분 2초You were..." (시간 + 읽어 주는 시간 + 문장이 붙어 있음)
+const TS_LEAD = /^((?:\d{1,2}:)?\d{1,2}:\d{2})(?:\s*(?:(?:\d+\s*(?:시간|분|초)\s*)+|(?:\d+\s*(?:hours?|minutes?|seconds?),?\s*)+))?\s*(.*)$/i;
 const SPOKEN_TIME = /^(\d+\s*(hours?|minutes?|seconds?|시간|분|초),?\s*)+$/i;
-function looksLikeYTTranscript(raw){ return raw.split('\n').filter(l => TS_ONLY.test(l.trim()) || TS_INLINE.test(l.trim())).length >= 2; }
+const CHAPTER = /^(챕터|chapter)\s*\d+\s*[:.]/i;
+function looksLikeYTTranscript(raw){ return raw.split('\n').filter(l => TS_LEAD.test(l.trim())).length >= 2; }
 function parseYTTranscript(raw){
   const cues = []; let cur = null;
   for(let line of raw.split('\n')){
-    line = line.trim(); if(!line || SPOKEN_TIME.test(line)) continue;
-    if(TS_ONLY.test(line)){ cur = {start:parseCueTime(line), text:''}; cues.push(cur); continue; }
-    const m = line.match(TS_INLINE);
-    if(m){ cur = {start:parseCueTime(m[1]), text:cleanLine(m[2])}; cues.push(cur); continue; }
-    if(cur){ const c = cleanLine(line); if(c) cur.text = (cur.text + ' ' + c).trim(); }
+    line = line.trim();
+    if(!line || SPOKEN_TIME.test(line) || CHAPTER.test(line)) continue;
+    const m = line.match(TS_LEAD);
+    if(m){ cur = {start:parseCueTime(m[1]), text:cleanLine(m[2] || '')}; cues.push(cur); continue; }
+    // 시간 없는 줄은 앞 문장에 이어 붙임 (영어가 없는 화면 메뉴 글자는 버림)
+    if(cur && /[A-Za-z]/.test(line)){ const c = cleanLine(line); if(c) cur.text = (cur.text + ' ' + c).trim(); }
   }
-  const good = cues.filter(c => c.text);
+  const good = cues.filter(c => /[A-Za-z]/.test(c.text));
   good.forEach((c, i) => {
     const words = c.text.split(/\s+/).length;
     const next = good[i + 1];
@@ -1037,6 +1053,8 @@ function syncToolbar(){
   $('#rngCap').value = String(ui.cap); document.documentElement.style.setProperty('--cap', ui.cap + 'px');
   $('#chkCover').checked = ui.cover; $('#rngCover').value = String(ui.coverH);
   $('#bCover').setAttribute('aria-pressed', String(ui.cover));
+  $('#bYtCC').setAttribute('aria-pressed', String(ui.ytCC)); $('#bYtCC').textContent = ui.ytCC ? '켬' : '끔';
+  $('#bYtCC2').setAttribute('aria-pressed', String(ui.ytCC));
   $('#ccCover').classList.toggle('on', ui.cover); $('#ccCover').style.height = ui.coverH + '%';
   $('#bHC').setAttribute('aria-pressed', String(ui.hc)); document.body.classList.toggle('hc', ui.hc);
   $('#bAB').setAttribute('aria-pressed', String(ui.ab.on));
@@ -1412,6 +1430,13 @@ $('#bFS').onclick = () => { if(document.fullscreenElement) document.exitFullscre
 $('#chkCover').onchange = e => { ui.cover = e.target.checked; syncToolbar(); savePrefs(); };
 $('#rngCover').oninput = e => { ui.coverH = +e.target.value; if(!ui.cover) ui.cover = true; syncToolbar(); };
 $('#rngCover').onchange = e => { savePrefs(); e.target.blur(); };
+function toggleYtCC(){
+  ui.ytCC = !ui.ytCC; Player.applyCC(); syncToolbar(); savePrefs();
+  if(Player.kind !== 'yt') toast('유튜브 영상에서만 쓰는 기능입니다.');
+  else if(ui.ytCC) toast('영어 자막을 켭니다. 영상에 자막이 없으면 아무것도 나오지 않습니다.', 3200);
+}
+$('#bYtCC').onclick = toggleYtCC;
+$('#bYtCC2').onclick = toggleYtCC;
 $('#bCover').onclick = () => { ui.cover = !ui.cover; syncToolbar(); savePrefs(); };
 $('#bHC').onclick = () => { ui.hc = !ui.hc; syncToolbar(); savePrefs(); };
 $('#rngCap').oninput = e => { ui.cap = +e.target.value; document.documentElement.style.setProperty('--cap', ui.cap + 'px'); };
