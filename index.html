@@ -162,7 +162,8 @@ textarea.inp{resize:vertical;font-family:var(--en);font-size:14px}
 .spacer{flex:1}
 .etimes{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .etimes .tl{min-width:2.2em;color:var(--ink);font-weight:500}
-.etimes .nd{font-family:var(--en);min-width:3.2em;padding:4px 6px}
+.etimes .nd{font-family:var(--en);min-width:3.4em;padding:4px 5px}
+.etimes input{width:6.8em}
 .etimes input{width:6.2em;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:var(--en);font-variant-numeric:tabular-nums}
 .tapbar{border:1px solid var(--teal);background:var(--teal-weak);border-radius:10px;padding:12px}
 /* ---------- 시간 맞추기 전용 화면 ---------- */
@@ -382,6 +383,10 @@ body.hc .caption .ko{color:#fff}
         <select id="selGap" aria-label="말할 시간"><option value="0">멈추지 않음</option><option value="1">말할 시간 × 1</option><option value="1.5">× 1.5</option><option value="2">× 2</option><option value="2.5">× 2.5</option></select>
         <label><input type="checkbox" id="chkAdvance" checked> 이어서 재생</label>
       </div>
+      <div class="ctrl"><span>문장 앞뒤 여유</span>
+        <select id="selPad" aria-label="문장 앞뒤 여유"><option value="0">없음</option><option value="0.2">0.2초</option><option value="0.3">0.3초</option><option value="0.5">0.5초</option><option value="0.8">0.8초</option></select>
+        <span class="note" style="color:var(--stage-muted)">끝이 잘리면 늘리세요</span>
+      </div>
       <div class="ctrl"><span>재생 속도</span>
         <input type="range" id="rngRate" min="0.5" max="1.5" step="0.05" value="1" aria-label="재생 속도">
         <output id="rateOut">1.00×</output>
@@ -594,6 +599,7 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const r2 = v => Math.round(v * 100) / 100;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 function fmt(t){ if(!isFinite(t) || t < 0) t = 0; const m = Math.floor(t / 60), s = t - m * 60; return m + ':' + (s < 10 ? '0' : '') + s.toFixed(1); }
+function fmt2(t){ if(!isFinite(t) || t < 0) t = 0; const m = Math.floor(t / 60), s = t - m * 60; return m + ':' + (s < 10 ? '0' : '') + s.toFixed(2); }
 function parseClock(str){ str = String(str).trim().replace(',', '.'); if(!str) return NaN; const p = str.split(':').map(Number); if(p.some(isNaN)) return NaN; return p.reduce((a, v) => a * 60 + v, 0); }
 let toastTimer;
 function toast(msg, ms = 2600){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), ms); }
@@ -626,7 +632,7 @@ function mkSent(text, start, end, timing){ return {id:uid(), text:text.trim(), s
 /* ---------------- 상태 ---------------- */
 let lesson;
 const ui = {view:'script', ko:false, tool:'move', repeat:2, gap:1.5, advance:true, rate:1,
-  ab:{a:null, b:null, on:false}, tap:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18, scope:'marked', ytCC:false};
+  ab:{a:null, b:null, on:false}, tap:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18, scope:'marked', ytCC:false, pad:0.3};
 const E = {target:0, plays:0, gap:null, ignoreUntil:0, lastT:0, endedAt:-1, single:false, seekTo:null, seekDeadline:0};
 
 /* ---------------- 저장 ---------------- */
@@ -656,7 +662,7 @@ function saveNow(){
 function save(){ setSaveState('busy'); clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveNow(); renderSubmitBox(); }, 400); }
 window.addEventListener('beforeunload', saveNow);
 window.addEventListener('pagehide', saveNow);
-function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH, ytCC:ui.ytCC})); }catch(e){} }
+function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH, ytCC:ui.ytCC, pad:ui.pad})); }catch(e){} }
 function loadPrefs(){ try{ Object.assign(ui, JSON.parse(localStorage.getItem(PREF_KEY) || '{}')); }catch(e){} }
 
 /* ---------------- 유튜브 주소 해석 ---------------- */
@@ -1067,6 +1073,9 @@ function indexAt(t){
   for(let i = 0; i < ss.length; i++){ if(ss[i].start > t) return i; }
   return ss.length - 1;
 }
+// 자막 시간이 초 단위로 거칠어도 첫소리·끝소리가 잘리지 않도록 앞뒤에 여유를 둠
+const segStart = s => Math.max(0, s.start - Math.min(0.2, ui.pad / 2));
+const segEnd = s => s.end + ui.pad;
 // single=true: 그 문장만 재생하고 멈춤 (문장 클릭·이전/다음·다시 듣기)
 function seekTo(t){
   Player.seek(t);
@@ -1077,7 +1086,7 @@ function goTo(i, play = true, single = true){
   i = clamp(i, 0, N() - 1);
   clearGap();
   E.target = i; E.plays = 0; E.endedAt = -1; E.single = single;
-  seekTo(curS().start);
+  seekTo(segStart(curS()));
   if(play) Player.play();
   onCurChange();
 }
@@ -1094,7 +1103,7 @@ function startGap(sec, cb){
 function clearGap(){ E.gap = null; $('#gapOverlay').hidden = true; }
 function finishGap(){ if(!E.gap) return; const cb = E.gap.cb; clearGap(); cb(); }
 function stopAfterGap(){ clearGap(); E.endedAt = E.target; }
-function replayCurrent(){ seekTo(curS().start); Player.play(); }
+function replayCurrent(){ seekTo(segStart(curS())); Player.play(); }
 function shadowOn(s){ return ui.scope === 'all' || (ui.scope === 'marked' && !!s.shadow); }
 function repeatsFor(s){ return shadowOn(s) ? ui.repeat : 1; }
 function sentenceEnded(){
@@ -1128,7 +1137,7 @@ function togglePlay(){
   if(!N()){ Player.play(); return; }
   if(E.endedAt === E.target && E.target < N() - 1){ goTo(E.target + 1, true, false); return; }
   const s = curS(), t = Player.time();
-  if(!ui.ab.on && !ui.tap && (t < s.start - 0.3 || t >= s.end - 0.05)){ goTo(E.target, true, false); return; }
+  if(!ui.ab.on && !ui.tap && (t < segStart(s) - 0.3 || t >= segEnd(s) - 0.05)){ goTo(E.target, true, false); return; }
   E.single = false; Player.play();
 }
 function tick(){
@@ -1163,7 +1172,7 @@ function tick(){
   const s = curS(); if(!s) return;
   // 유튜브는 정지 명령이 늦게 먹으므로 조금 일찍 멈춤
   const early = Player.kind === 'yt' ? 0.12 * (Player.actualRate() || 1) : 0.04;
-  if(t >= s.end - early && E.plays < repeatsFor(s)) sentenceEnded();
+  if(t >= segEnd(s) - early && E.plays < repeatsFor(s)) sentenceEnded();
 }
 setInterval(tick, 50);
 
@@ -1214,6 +1223,7 @@ function syncToolbar(){
   $('#shadowOpts').style.opacity = ui.scope === 'off' ? '.45' : '1';
   const nMarked = lesson.sentences.filter(x => x.shadow).length;
   $('#scopeNote').textContent = ui.scope === 'marked' ? (nMarked ? `${nMarked}개 문장` : '지정한 문장이 없습니다') : '';
+  $('#selPad').value = String(ui.pad);
   $('#selRepeat').value = String(ui.repeat);
   $('#selGap').value = String(ui.gap);
   $('#chkAdvance').checked = ui.advance;
@@ -1250,14 +1260,14 @@ function renderEditor(){
         <button class="btn sm danger" data-act="del">삭제</button></div>
       <textarea class="inp en" data-f="text" rows="2">${esc(s.text)}</textarea>
       <div class="etimes"><span class="tl">시작</span>
-        <button class="btn sm nd" data-act="nudge" data-f2="start" data-d="-0.5">-0.5</button><button class="btn sm nd" data-act="nudge" data-f2="start" data-d="-0.1">-0.1</button>
-        <input data-f="start" value="${fmt(s.start)}" aria-label="${i + 1}번 시작 시간">
-        <button class="btn sm nd" data-act="nudge" data-f2="start" data-d="0.1">+0.1</button><button class="btn sm nd" data-act="nudge" data-f2="start" data-d="0.5">+0.5</button>
+        <button class="btn sm nd" data-act="nudge" data-f2="start" data-d="-0.5">-0.5</button><button class="btn sm nd" data-act="nudge" data-f2="start" data-d="-0.1">-0.1</button><button class="btn sm nd" data-act="nudge" data-f2="start" data-d="-0.05">-0.05</button>
+        <input data-f="start" value="${fmt2(s.start)}" aria-label="${i + 1}번 시작 시간">
+        <button class="btn sm nd" data-act="nudge" data-f2="start" data-d="0.05">+0.05</button><button class="btn sm nd" data-act="nudge" data-f2="start" data-d="0.1">+0.1</button><button class="btn sm nd" data-act="nudge" data-f2="start" data-d="0.5">+0.5</button>
         <button class="btn sm" data-act="setStart">지금 시점</button></div>
       <div class="etimes"><span class="tl">끝</span>
-        <button class="btn sm nd" data-act="nudge" data-f2="end" data-d="-0.5">-0.5</button><button class="btn sm nd" data-act="nudge" data-f2="end" data-d="-0.1">-0.1</button>
-        <input data-f="end" value="${fmt(s.end)}" aria-label="${i + 1}번 끝 시간">
-        <button class="btn sm nd" data-act="nudge" data-f2="end" data-d="0.1">+0.1</button><button class="btn sm nd" data-act="nudge" data-f2="end" data-d="0.5">+0.5</button>
+        <button class="btn sm nd" data-act="nudge" data-f2="end" data-d="-0.5">-0.5</button><button class="btn sm nd" data-act="nudge" data-f2="end" data-d="-0.1">-0.1</button><button class="btn sm nd" data-act="nudge" data-f2="end" data-d="-0.05">-0.05</button>
+        <input data-f="end" value="${fmt2(s.end)}" aria-label="${i + 1}번 끝 시간">
+        <button class="btn sm nd" data-act="nudge" data-f2="end" data-d="0.05">+0.05</button><button class="btn sm nd" data-act="nudge" data-f2="end" data-d="0.1">+0.1</button><button class="btn sm nd" data-act="nudge" data-f2="end" data-d="0.5">+0.5</button>
         <button class="btn sm" data-act="setEnd">지금 시점</button>
         <button class="btn sm" data-act="playEnd">끝부분 듣기</button>
         ${bad ? '<span style="color:var(--warn)">끝이 시작보다 늦어야 합니다</span>' : ''}</div>
@@ -1275,8 +1285,8 @@ function playTail(i){
 function refreshRowTimes(i){
   const row = $(`#edList .erow[data-i="${i}"]`), s = lesson.sentences[i];
   if(!row || !s) return;
-  $('[data-f="start"]', row).value = fmt(s.start);
-  $('[data-f="end"]', row).value = fmt(s.end);
+  $('[data-f="start"]', row).value = fmt2(s.start);
+  $('[data-f="end"]', row).value = fmt2(s.end);
   const b = $('.badge', row); b.className = 'badge ok'; b.textContent = '직접 맞춤';
   row.classList.toggle('bad', !(s.end > s.start));
 }
@@ -1296,7 +1306,7 @@ $('#edList').addEventListener('input', e => {
 $('#edList').addEventListener('change', e => {
   const f = e.target.dataset.f, row = e.target.closest('.erow'); if(!row || (f !== 'start' && f !== 'end')) return;
   const i = +row.dataset.i, s = lesson.sentences[i], v = parseClock(e.target.value);
-  if(isNaN(v)){ e.target.value = fmt(s[f]); toast('시간은 1:23.4 또는 83.4처럼 적어 주세요.'); return; }
+  if(isNaN(v)){ e.target.value = fmt2(s[f]); toast('시간은 1:23.4 또는 83.4처럼 적어 주세요.'); return; }
   s[f] = r2(v); s.timing = 'measured'; refreshRowTimes(i); save();
 });
 $('#edList').addEventListener('click', e => {
@@ -1565,6 +1575,7 @@ $('#gapGo').onclick = finishGap;
 $('#gapStop').onclick = stopAfterGap;
 $('#shield').onclick = () => { if(tm.open) $('#tmPlay').click(); else togglePlay(); };
 $('#selScope').onchange = e => { ui.scope = e.target.value; if(ui.scope === 'off') clearGap(); syncToolbar(); savePrefs(); e.target.blur(); if(ui.scope === 'marked' && !lesson.sentences.some(x => x.shadow)) toast('수업 탭에서 ‘따라 말하기 문장 지정’을 누르고 문장을 고르세요.', 3500); };
+$('#selPad').onchange = e => { ui.pad = +e.target.value; savePrefs(); e.target.blur(); toast(ui.pad ? `문장 앞뒤에 ${ui.pad}초 여유를 두고 재생합니다.` : '여유 없이 문장 시간 그대로 재생합니다.'); };
 $('#selRepeat').onchange = e => { ui.repeat = +e.target.value; savePrefs(); e.target.blur(); };
 $('#selGap').onchange = e => { ui.gap = +e.target.value; if(!ui.gap) clearGap(); savePrefs(); e.target.blur(); };
 $('#chkAdvance').onchange = e => { ui.advance = e.target.checked; savePrefs(); };
