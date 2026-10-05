@@ -52,13 +52,19 @@ body.hc #ccCover{background:#000}
 .overlay p{margin:0;max-width:34em}
 .overlay a,.overlay .linkbtn{color:#8FD3D8}
 .linkbtn{background:none;border:1px solid #4E6C8F;border-radius:8px;padding:8px 14px}
-.gap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(10,16,30,.55);color:#fff;pointer-events:none}
-.gap .ring{position:relative;width:110px;height:110px}
-.gap svg{transform:rotate(-90deg)}
-.gap .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:600;font-family:var(--en)}
-.gap p{margin:0;font-size:20px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-.gap .gbtns{display:flex;gap:8px;pointer-events:auto}
-.gap .gbtns button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:6px 12px}
+.gap{position:absolute;right:12px;top:12px;pointer-events:none}
+.gap-card{background:rgba(12,20,38,.82);color:#fff;border:1px solid rgba(91,208,216,.5);border-radius:10px;padding:8px 12px;min-width:190px;pointer-events:auto}
+.gap-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:14px}
+.gap-top .num{font-family:var(--en);font-size:20px;font-weight:700}
+.gap-bar{height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:6px 0 8px;overflow:hidden}
+.gap-bar i{display:block;height:100%;width:100%;background:#5BD0D8}
+.gap .gbtns{display:flex;gap:6px}
+.gap .gbtns button{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:6px;padding:4px 10px;font-size:13px}
+.shtag{display:block;margin-top:4px;font-size:10.5px;color:var(--teal);text-align:center;font-weight:600;line-height:1.1}
+.sent.sh{background-image:linear-gradient(90deg,rgba(14,122,130,.07),transparent 60%)}
+.sent.sh .snum{border:2px solid var(--teal);color:var(--teal)}
+.sent.sh.on .snum{color:#fff}
+.tool-shadow .sent{cursor:copy}
 
 /* ---------- caption (presentation) ---------- */
 .caption{display:none;text-align:center;padding:4px 12px 0}
@@ -152,7 +158,35 @@ textarea.inp{resize:vertical;font-family:var(--en);font-size:14px}
 .etimes{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .etimes input{width:6.2em;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-family:var(--en);font-variant-numeric:tabular-nums}
 .tapbar{border:1px solid var(--teal);background:var(--teal-weak);border-radius:10px;padding:12px}
-.tapbar .now{font-weight:600;margin:6px 0}
+/* ---------- 시간 맞추기 전용 화면 ---------- */
+.timing{display:none}
+body.timing .top,body.timing .panel,body.timing .ctrls,body.timing .transport,body.timing .present-ctrl,body.timing .caption{display:none}
+body.timing .layout{grid-template-columns:1fr;height:100%}
+body.timing .stage{height:100vh;padding:14px 20px}
+body.timing .video-wrap{width:min(100%,calc(40vh * 16 / 9));margin:0 auto}
+body.timing #shield{display:block}
+body.timing .timing{display:flex;flex-direction:column;gap:12px;max-width:860px;width:100%;margin:0 auto}
+.t-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.t-head strong{font-size:18px}
+.t-prog{color:var(--stage-muted);margin-left:8px;font-size:14px}
+.t-dots{display:flex;gap:5px;flex-wrap:wrap}
+.t-dots span{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:var(--en);border:1px solid var(--stage-line);color:var(--stage-muted)}
+.t-dots span.done{background:#2C6B55;border-color:#3E9A79;color:#fff}
+.t-dots span.cur{background:var(--teal);border-color:#5BD0D8;color:#fff}
+.t-guide{margin:0;padding-left:1.3em;color:var(--stage-muted);font-size:14px}
+.t-guide b{color:var(--stage-text)}
+.t-now{font-size:15px;color:var(--stage-muted);min-height:1.5em}
+.t-now .en{color:var(--stage-text)}
+.t-card{background:#fff;color:var(--ink);border-radius:12px;padding:14px 18px}
+.t-label{font-size:14px;color:var(--teal);font-weight:600}
+.t-text{font-size:26px;margin:4px 0 0;line-height:1.4}
+.t-big{background:var(--teal);color:#fff;border:0;border-radius:14px;padding:18px;font-size:24px;font-weight:600;min-height:80px;transition:transform .08s,background .15s}
+.t-big:active,.t-big.flash{transform:scale(.98);background:#13A0A9}
+.t-big:disabled{background:#3A4A68;color:#9FB0CC;cursor:default}
+.t-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--stage-muted);font-size:14px}
+.t-row select{background:var(--stage);border:1px solid var(--stage-line);border-radius:6px;padding:6px;color:var(--stage-text)}
+.t-done{background:#1E4A3C;border:1px solid #3E9A79;border-radius:12px;padding:14px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.t-done p{margin:0;flex:1;min-width:200px}
 #edList{display:flex;flex-direction:column;gap:8px}
 
 /* ---------- toast & dialog ---------- */
@@ -208,6 +242,7 @@ body.hc .caption .ko{color:#fff}
     <button class="tbtn" id="btnSample">샘플 수업 열기</button>
     <button class="tbtn" id="btnNew">새 수업</button>
     <button class="tbtn" id="btnHelp" aria-label="단축키 보기">단축키</button>
+    <button class="tbtn" id="btnTiming">시간 맞추기</button>
     <button class="tbtn primary" id="btnPresent">발표 모드</button>
   </div>
 </header>
@@ -225,15 +260,39 @@ body.hc .caption .ko{color:#fff}
       </div>
       <div class="overlay" id="blockedOverlay" hidden></div>
       <div class="gap" id="gapOverlay" hidden>
-        <div class="ring">
-          <svg width="110" height="110" viewBox="0 0 110 110" aria-hidden="true">
-            <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="8"/>
-            <circle id="gapArc" cx="55" cy="55" r="46" fill="none" stroke="#5BD0D8" stroke-width="8" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="0"/>
-          </svg>
-          <div class="num" id="gapNum">3</div>
+        <div class="gap-card" role="status">
+          <div class="gap-top"><span>따라 말해 보세요</span><span class="num" id="gapNum">3</span></div>
+          <div class="gap-bar"><i id="gapBar"></i></div>
+          <div class="gbtns"><button id="gapGo">바로 계속</button><button id="gapStop">멈춤</button></div>
         </div>
-        <p>따라 말해 보세요</p>
-        <div class="gbtns"><button id="gapGo">바로 계속</button><button id="gapStop">여기서 멈춤</button></div>
+      </div>
+    </div>
+
+    <div class="timing" id="timingPanel">
+      <div class="t-head">
+        <div><strong>시간 맞추기</strong><span class="t-prog" id="tmProg"></span></div>
+        <button class="sbtn" id="tmClose">다 했어요, 닫기</button>
+      </div>
+      <div class="t-dots" id="tmDots" aria-hidden="true"></div>
+      <ol class="t-guide">
+        <li><b>처음부터 시작</b>을 누르면 영상이 처음부터 재생됩니다.</li>
+        <li>아래 흰 상자의 문장이 <b>들리기 시작하는 순간</b> 큰 버튼을 누르세요. 키보드 <kbd>Enter</kbd>도 됩니다.</li>
+        <li>잘못 눌렀으면 <b>한 번 되돌리기</b>를 누르고 다시 누르세요.</li>
+      </ol>
+      <div class="t-now" id="tmNow"></div>
+      <div class="t-card"><div class="t-label" id="tmLabel"></div><p class="en t-text" id="tmText"></p></div>
+      <button class="t-big" id="tmMark">1번 문장 시작</button>
+      <div class="t-row">
+        <button class="sbtn" id="tmStart">처음부터 시작</button>
+        <button class="sbtn" id="tmPlay">재생</button>
+        <button class="sbtn" id="tmUndo">한 번 되돌리기</button>
+        <button class="sbtn" id="tmGap">여기서 문장 끝 (쉬는 구간 앞)</button>
+        <label style="margin-left:auto">속도 <select id="tmRate"><option value="0.75">0.75배 (추천)</option><option value="1">1배</option><option value="0.5">0.5배</option></select></label>
+      </div>
+      <div class="t-done" id="tmDone" hidden>
+        <p>모든 문장의 시간을 맞췄습니다. 자동으로 저장되었습니다.</p>
+        <button class="sbtn play" id="tmCheck">수업 화면에서 들어보기</button>
+        <button class="sbtn" id="tmRedo">처음부터 다시</button>
       </div>
     </div>
 
@@ -262,15 +321,14 @@ body.hc .caption .ko{color:#fff}
     </div>
 
     <div class="ctrls">
-      <div class="ctrl"><span>문장 반복</span>
-        <select id="selRepeat"><option value="1">1번 (반복 없음)</option><option value="2">2번</option><option value="3">3번</option><option value="5">5번</option></select>
+      <div class="ctrl"><span>따라 말하기</span>
+        <select id="selScope"><option value="off">끔</option><option value="marked">지정한 문장만</option><option value="all">모든 문장</option></select>
+        <span class="note" id="scopeNote" style="color:var(--stage-muted)"></span>
       </div>
-      <div class="ctrl"><span>따라 말할 시간</span>
-        <select id="selGap">
-          <option value="0">멈추지 않음</option><option value="1">문장 길이 × 1</option><option value="1.25">× 1.25</option>
-          <option value="1.5">× 1.5</option><option value="2">× 2</option><option value="2.5">× 2.5</option>
-        </select>
-        <label><input type="checkbox" id="chkAdvance" checked> 끝나면 다음 문장</label>
+      <div class="ctrl" id="shadowOpts"><span>따라 말하기 방식</span>
+        <select id="selRepeat" aria-label="반복 횟수"><option value="1">1번 듣기</option><option value="2">2번 반복</option><option value="3">3번 반복</option><option value="5">5번 반복</option></select>
+        <select id="selGap" aria-label="말할 시간"><option value="0">멈추지 않음</option><option value="1">말할 시간 × 1</option><option value="1.5">× 1.5</option><option value="2">× 2</option><option value="2.5">× 2.5</option></select>
+        <label><input type="checkbox" id="chkAdvance" checked> 이어서 재생</label>
       </div>
       <div class="ctrl"><span>재생 속도</span>
         <input type="range" id="rngRate" min="0.5" max="1.5" step="0.05" value="1" aria-label="재생 속도">
@@ -326,6 +384,7 @@ body.hc .caption .ko{color:#fff}
           <button class="chip" data-tool="fall">↘ 내림</button>
           <button class="chip" data-tool="pause">| 포즈</button>
           <button class="chip" data-tool="erase">표시 지우기</button>
+          <button class="chip" data-tool="shadow">따라 말하기 문장 지정</button>
         </div>
       </div>
       <div class="script" id="script"></div>
@@ -363,14 +422,9 @@ body.hc .caption .ko{color:#fff}
         </section>
 
         <section class="tapbar">
-          <h3 style="margin:0 0 4px;font-size:15px">재생하며 시간 찍기</h3>
-          <p class="desc" style="margin:0;font-size:13px;color:var(--muted)">켜 두고 영상을 재생하면서, 문장이 시작될 때마다 <kbd>Enter</kbd> 또는 ‘문장 시작’을 누르세요. 앞 문장의 끝과 다음 문장의 시작이 한 번에 정해집니다. 문장 사이에 쉬는 구간이 있으면 ‘여기서 문장 끝’을 먼저 누르세요.</p>
-          <div class="now" id="tapNow"></div>
-          <div class="row">
-            <button class="btn main" id="tapToggle">시간 찍기 켜기</button>
-            <button class="btn" id="tapMark" disabled>문장 시작 (Enter)</button>
-            <button class="btn" id="tapEnd" disabled>여기서 문장 끝</button>
-          </div>
+          <h3 style="margin:0 0 4px;font-size:15px">소리와 문장 시간 맞추기</h3>
+          <p style="margin:0 0 10px;font-size:13px;color:var(--muted)">영상을 들으면서 문장이 시작될 때마다 버튼 하나만 누르면 됩니다. 영상 하나당 한 번만 하면 저장됩니다.</p>
+          <button class="btn main" data-open-timing>시간 맞추기 화면 열기</button>
         </section>
 
         <section class="box">
@@ -471,18 +525,18 @@ function mkSent(text, start, end, timing){ return {id:uid(), text:text.trim(), s
 
 /* ---------------- 상태 ---------------- */
 let lesson;
-const ui = {view:'script', ko:false, tool:'move', repeat:1, gap:1.5, advance:true, rate:1,
-  ab:{a:null, b:null, on:false}, tap:false, tapK:0, tapInside:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18};
+const ui = {view:'script', ko:false, tool:'move', repeat:2, gap:1.5, advance:true, rate:1,
+  ab:{a:null, b:null, on:false}, tap:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18, scope:'marked'};
 const E = {target:0, plays:0, gap:null, ignoreUntil:0, lastT:0, endedAt:-1};
 
 /* ---------------- 저장 ---------------- */
-const DRAFT_KEY = 'shadowroom.draft.v1', PREF_KEY = 'shadowroom.prefs.v1';
+const DRAFT_KEY = 'shadowroom.draft.v1', PREF_KEY = 'shadowroom.prefs.v2';
 let saveTimer;
 function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(() => {
   lesson.updatedAt = Date.now();
   try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(lesson)); }catch(e){}
 }, 400); }
-function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH})); }catch(e){} }
+function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH})); }catch(e){} }
 function loadPrefs(){ try{ Object.assign(ui, JSON.parse(localStorage.getItem(PREF_KEY) || '{}')); }catch(e){} }
 
 /* ---------------- 유튜브 주소 해석 ---------------- */
@@ -773,6 +827,18 @@ function toggleMark(si, wi, tool){
   if(Object.keys(m).length) s.marks[wi] = m; else delete s.marks[wi];
   afterTextChange();
 }
+let lastShadowClick = null;
+function toggleShadow(i, range){
+  const ss = lesson.sentences;
+  if(range && lastShadowClick != null){
+    const [a, b] = [Math.min(lastShadowClick, i), Math.max(lastShadowClick, i)];
+    const val = !!ss[lastShadowClick].shadow;
+    for(let k = a; k <= b; k++) ss[k].shadow = val;
+  } else ss[i].shadow = !ss[i].shadow;
+  lastShadowClick = i;
+  if(ui.scope === 'off'){ ui.scope = 'marked'; savePrefs(); }
+  afterTextChange();
+}
 function toggleBlank(si, wi){
   if(lesson.blank.mode !== 'custom'){
     lesson.sentences.forEach((s, i) => { s.blanks = [...blankSet(s, i)]; });
@@ -832,8 +898,11 @@ function clearGap(){ E.gap = null; $('#gapOverlay').hidden = true; }
 function finishGap(){ if(!E.gap) return; const cb = E.gap.cb; clearGap(); cb(); }
 function stopAfterGap(){ clearGap(); E.endedAt = E.target; }
 function replayCurrent(){ const s = curS(); Player.seek(s.start); E.ignoreUntil = performance.now() + 450; E.lastT = s.start; Player.play(); }
+function shadowOn(s){ return ui.scope === 'all' || (ui.scope === 'marked' && !!s.shadow); }
+function repeatsFor(s){ return shadowOn(s) ? ui.repeat : 1; }
 function sentenceEnded(){
   const s = curS(); E.plays++;
+  if(!shadowOn(s)){ if(E.target < N() - 1){ E.target++; E.plays = 0; onCurChange(); } return; }
   const more = E.plays < ui.repeat;
   if(ui.gap > 0){
     Player.pause();
@@ -867,7 +936,7 @@ function tick(){
   if(E.gap){
     const left = E.gap.total - (now - E.gap.t0);
     $('#gapNum').textContent = Math.max(0, Math.ceil(left / 1000));
-    $('#gapArc').style.strokeDashoffset = String(289 * (1 - Math.max(0, left) / E.gap.total));
+    $('#gapBar').style.width = (100 * Math.max(0, left) / E.gap.total) + '%';
     if(playing && now - E.gap.t0 > 700){ clearGap(); if(E.target < N() - 1){ E.target++; E.plays = 0; onCurChange(); } E.lastT = t; return; }
     if(left <= 0) finishGap();
     E.lastT = t; return;
@@ -882,9 +951,9 @@ function tick(){
   if(Math.abs(t - E.lastT) > 1.6){ follow(t); E.lastT = t; return; }
   E.lastT = t;
   if(E.endedAt === E.target){ E.endedAt = -1; if(E.target < N() - 1){ E.target++; E.plays = 0; onCurChange(); } return; }
-  if(ui.tap){ const i = indexAt(t); if(i !== E.target && !ui.tapInside){ /* 찍는 중엔 하이라이트 고정 */ } return; }
+  if(ui.tap) return; // 시간 맞추기 중에는 자동 멈춤·반복 끔
   const s = curS(); if(!s) return;
-  if(t >= s.end - 0.04 && E.plays < ui.repeat) sentenceEnded();
+  if(t >= s.end - 0.04 && E.plays < repeatsFor(s)) sentenceEnded();
 }
 setInterval(tick, 50);
 
@@ -896,8 +965,8 @@ function renderScript(){
   if(!N()){ box.innerHTML = '<div class="empty">문장이 없습니다. ‘자료 편집’에서 스크립트를 넣어 주세요.<br><br><button class="btn main" data-open-tab="edit">스크립트 넣기</button></div>'; return; }
   if(ui.view === 'video'){ box.innerHTML = '<div class="empty">영상만 보는 중입니다. 학생들이 소리에만 집중하게 할 때 쓰세요.<br>위의 ‘영상 + 스크립트’를 누르면 다시 보입니다.</div>'; return; }
   box.innerHTML = lesson.sentences.map((s, i) => `
-    <div class="sent${i === E.target ? ' on' : ''}" data-i="${i}">
-      <button class="snum" data-go="${i}" aria-label="${i + 1}번 문장 재생">${i + 1}</button>
+    <div class="sent${i === E.target ? ' on' : ''}${s.shadow ? ' sh' : ''}" data-i="${i}">
+      <div><button class="snum" data-go="${i}" aria-label="${i + 1}번 문장 재생">${i + 1}</button>${s.shadow ? '<span class="shtag">따라<br>말하기</span>' : ''}</div>
       <div class="sbody"><p class="en stext">${sentenceHTML(s, i)}</p>${ui.ko && s.ko ? `<p class="ko">${esc(s.ko)}</p>` : ''}</div>
     </div>`).join('');
 }
@@ -915,7 +984,6 @@ function onCurChange(){
     const el = $(`#script .sent[data-i="${E.target}"]`);
     el && el.scrollIntoView({block:'center', behavior:reduceMotion ? 'auto' : 'smooth'});
   }
-  if(ui.tab === 'edit' && ui.tap){ const el = $(`#edList .erow[data-i="${E.target}"]`); el && el.scrollIntoView({block:'nearest'}); }
   renderCaption(); updateTransport();
 }
 function updateTransport(){
@@ -932,6 +1000,10 @@ function syncToolbar(){
   $('#blankModeLbl').textContent = lesson.blank.mode === 'custom' ? '교사가 지정한 빈칸을 쓰는 중' : '내용어부터 무작위로 비움 · 빈칸을 누르면 정답';
   $('#bShuffle').textContent = lesson.blank.mode === 'custom' ? '무작위로 돌아가기' : '다시 섞기';
   $$('#toolRow [data-tool]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tool === ui.tool)));
+  $('#selScope').value = ui.scope;
+  $('#shadowOpts').style.opacity = ui.scope === 'off' ? '.45' : '1';
+  const nMarked = lesson.sentences.filter(x => x.shadow).length;
+  $('#scopeNote').textContent = ui.scope === 'marked' ? (nMarked ? `${nMarked}개 문장` : '지정한 문장이 없습니다') : '';
   $('#selRepeat').value = String(ui.repeat);
   $('#selGap').value = String(ui.gap);
   $('#chkAdvance').checked = ui.advance;
@@ -947,7 +1019,7 @@ function syncToolbar(){
   $('#lessonTitle').value = lesson.title || '';
 }
 function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
-function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderTapNow(); }
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); }
 function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 
@@ -1029,43 +1101,108 @@ $('#edList').addEventListener('click', e => {
   }
 });
 
-/* 재생하며 시간 찍기 */
-function renderTapNow(){
-  const k = ui.tapK, s = lesson.sentences[k];
-  $('#tapToggle').textContent = ui.tap ? '시간 찍기 끄기' : '시간 찍기 켜기';
-  $('#tapMark').disabled = $('#tapEnd').disabled = !ui.tap;
-  $('#tapEnd').disabled = !ui.tap || !ui.tapInside;
-  if(!ui.tap){ $('#tapNow').textContent = '선택한 문장(현재 하이라이트)부터 시작합니다.'; return; }
-  if(!s){ $('#tapNow').textContent = '마지막 문장까지 끝났습니다.'; return; }
-  $('#tapNow').textContent = ui.tapInside ? `${k + 1}번 문장 듣는 중 — 다음 문장이 시작되면 Enter` : `${k + 1}번 문장이 시작되면 Enter: “${s.text.slice(0, 40)}${s.text.length > 40 ? '…' : ''}”`;
+/* ---------------- 시간 맞추기 전용 화면 ---------------- */
+const REACT = 0.15; // 듣고 누르기까지의 반응 지연을 보정(초)
+const tm = {k:0, inside:false, hist:[], open:false};
+function openTiming(){
+  if(!N()){ toast('먼저 스크립트를 넣어 주세요.'); setTab('edit'); return; }
+  if(!Player.kind){ toast('먼저 영상을 불러오세요.'); setTab('edit'); return; }
+  if(ui.present) setPresent(false);
+  clearGap(); ui.ab.on = false;
+  ui.tap = true; tm.open = true; tm.k = 0; tm.inside = false; tm.hist = [];
+  $('#tmRate').value = '0.75'; ui.rate = 0.75; Player.setRate(0.75);
+  document.body.classList.add('timing');
+  E.target = 0; onCurChange(); renderTiming();
 }
-function tapMark(){
-  if(!ui.tap || !Player.ready) return;
-  const t = r2(Player.time()), ss = lesson.sentences;
-  if(!ui.tapInside){
-    if(!ss[ui.tapK]) return;
-    ss[ui.tapK].start = t; ss[ui.tapK].timing = 'measured'; refreshRowTimes(ui.tapK); ui.tapInside = true;
-  } else {
-    ss[ui.tapK].end = t; refreshRowTimes(ui.tapK);
-    ui.tapK++;
-    if(ss[ui.tapK]){ ss[ui.tapK].start = t; ss[ui.tapK].timing = 'measured'; refreshRowTimes(ui.tapK); }
-    else ui.tapInside = false;
+function closeTiming(){
+  ui.tap = false; tm.open = false;
+  document.body.classList.remove('timing');
+  Player.pause(); ui.rate = 1; Player.setRate(1);
+  E.plays = 0; E.endedAt = -1;
+  renderAll();
+}
+function renderTiming(){
+  const ss = lesson.sentences, n = ss.length, k = tm.k;
+  const done = k >= n;
+  $('#tmProg').textContent = `${Math.min(k, n)} / ${n}문장 완료`;
+  $('#tmDots').innerHTML = ss.map((_, i) => `<span class="${i < k ? 'done' : i === k ? 'cur' : ''}">${i + 1}</span>`).join('');
+  $('#tmDone').hidden = !done;
+  $('#tmMark').disabled = done;
+  $('#tmGap').disabled = !tm.inside || done;
+  $('#tmUndo').disabled = !tm.hist.length;
+  if(done){
+    $('#tmNow').textContent = '';
+    $('#tmLabel').textContent = '끝';
+    $('#tmText').textContent = '모든 문장을 맞췄습니다.';
+    $('#tmMark').textContent = '완료';
+    return;
   }
-  if(ss[ui.tapK]){ E.target = ui.tapK; onCurChange(); }
-  renderTapNow(); save();
+  $('#tmNow').innerHTML = tm.inside ? `지금 들리는 문장: <span class="en">${k + 1}. ${esc(ss[k].text)}</span>` : '';
+  if(tm.inside && k === n - 1){
+    $('#tmLabel').textContent = '마지막 문장이 끝나면 누르세요';
+    $('#tmText').textContent = ss[k].text;
+    $('#tmMark').textContent = '마지막 문장 끝';
+  } else {
+    const t = tm.inside ? k + 1 : k;
+    $('#tmLabel').textContent = `${t + 1}번 문장 — 이 문장이 들리기 시작하면 누르세요`;
+    $('#tmText').textContent = ss[t].text;
+    $('#tmMark').textContent = `${t + 1}번 문장 시작`;
+  }
 }
-function tapEnd(){
-  if(!ui.tap || !ui.tapInside || !Player.ready) return;
-  const s = lesson.sentences[ui.tapK]; s.end = r2(Player.time()); refreshRowTimes(ui.tapK);
-  ui.tapK++; ui.tapInside = false; renderTapNow(); save();
+function tmSnapshot(){ tm.hist.push({k:tm.k, inside:tm.inside, times:lesson.sentences.map(s => [s.start, s.end, s.timing])}); }
+function tmFlash(){ const b = $('#tmMark'); b.classList.add('flash'); setTimeout(() => b.classList.remove('flash'), 150); }
+function timingMark(){
+  if(!tm.open || !Player.ready) return;
+  const ss = lesson.sentences, n = ss.length;
+  if(tm.k >= n) return;
+  tmSnapshot();
+  const t = r2(Math.max(0, Player.time() - REACT));
+  if(!tm.inside){
+    ss[tm.k].start = t; ss[tm.k].timing = 'measured'; tm.inside = true;
+  } else {
+    ss[tm.k].end = t; tm.k++;
+    if(tm.k < n){ ss[tm.k].start = t; ss[tm.k].timing = 'measured'; }
+    else { tm.inside = false; Player.pause(); }
+  }
+  if(tm.k < n){ E.target = tm.k; onCurChange(); }
+  tmFlash(); renderTiming(); save();
 }
-$('#tapToggle').onclick = () => {
-  ui.tap = !ui.tap; ui.tapK = E.target; ui.tapInside = false;
-  if(ui.tap){ clearGap(); toast('시간 찍기 중에는 자동 멈춤과 반복이 꺼집니다.'); }
-  renderTapNow();
-};
-$('#tapMark').onclick = tapMark;
-$('#tapEnd').onclick = tapEnd;
+function timingGap(){
+  if(!tm.open || !tm.inside || !Player.ready) return;
+  tmSnapshot();
+  lesson.sentences[tm.k].end = r2(Math.max(0, Player.time() - REACT));
+  tm.k++; tm.inside = false;
+  if(tm.k >= N()) Player.pause();
+  renderTiming(); save();
+}
+function timingUndo(){
+  const h = tm.hist.pop(); if(!h) return;
+  lesson.sentences.forEach((s, i) => { if(h.times[i]) [s.start, s.end, s.timing] = h.times[i]; });
+  tm.k = h.k; tm.inside = h.inside;
+  const ss = lesson.sentences;
+  const back = tm.inside ? ss[tm.k].start : (tm.k > 0 ? ss[tm.k - 1].end : 0);
+  Player.seek(Math.max(0, back - 2));
+  E.target = Math.min(tm.k, N() - 1); onCurChange();
+  renderTiming(); save();
+  toast('한 번 되돌렸습니다. 2초 앞부터 다시 들으면서 누르세요.');
+}
+function timingRestart(){
+  tm.k = 0; tm.inside = false; tm.hist = [];
+  Player.seek(0); E.ignoreUntil = performance.now() + 400; Player.play();
+  E.target = 0; onCurChange(); renderTiming();
+}
+$('#btnTiming').onclick = openTiming;
+document.addEventListener('click', e => { if(e.target.closest('[data-open-timing]')) openTiming(); });
+$('#tmClose').onclick = closeTiming;
+$('#tmMark').onclick = timingMark;
+$('#tmGap').onclick = timingGap;
+$('#tmUndo').onclick = timingUndo;
+$('#tmStart').onclick = timingRestart;
+$('#tmRedo').onclick = timingRestart;
+$('#tmPlay').onclick = () => { if(Player.isPlaying()) Player.pause(); else Player.play(); };
+$('#tmRate').onchange = e => { ui.rate = +e.target.value; Player.setRate(ui.rate); e.target.blur(); };
+$('#tmCheck').onclick = () => { closeTiming(); setTab('lesson'); goTo(0); };
+setInterval(() => { if(tm.open) $('#tmPlay').textContent = Player.isPlaying() ? '일시정지' : '재생'; }, 200);
 
 /* ---------------- 가져오기 ---------------- */
 $('#btnYt').onclick = () => {
@@ -1125,6 +1262,10 @@ $('#btnKoBulk').onclick = () => {
 
 /* ---------------- 이벤트 ---------------- */
 function onTextClick(e){
+  if(ui.tool === 'shadow'){
+    const sent = e.target.closest('.sent'); if(!sent) return;
+    toggleShadow(+sent.dataset.i, e.shiftKey); return;
+  }
   const go = e.target.closest('[data-go]');
   if(go){ goTo(+go.dataset.go); return; }
   const w = e.target.closest('.w');
@@ -1171,7 +1312,8 @@ $('#bNext').onclick = () => goTo(E.target + 1);
 $('#bRepeat').onclick = () => goTo(E.target);
 $('#gapGo').onclick = finishGap;
 $('#gapStop').onclick = stopAfterGap;
-$('#shield').onclick = togglePlay;
+$('#shield').onclick = () => { if(tm.open) $('#tmPlay').click(); else togglePlay(); };
+$('#selScope').onchange = e => { ui.scope = e.target.value; if(ui.scope === 'off') clearGap(); syncToolbar(); savePrefs(); e.target.blur(); if(ui.scope === 'marked' && !lesson.sentences.some(x => x.shadow)) toast('수업 탭에서 ‘따라 말하기 문장 지정’을 누르고 문장을 고르세요.', 3500); };
 $('#selRepeat').onchange = e => { ui.repeat = +e.target.value; savePrefs(); e.target.blur(); };
 $('#selGap').onchange = e => { ui.gap = +e.target.value; if(!ui.gap) clearGap(); savePrefs(); e.target.blur(); };
 $('#chkAdvance').onchange = e => { ui.advance = e.target.checked; savePrefs(); };
@@ -1223,7 +1365,13 @@ document.addEventListener('keydown', e => {
   if(e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
   if(e.ctrlKey || e.metaKey || e.altKey) return;
   if($('#helpDlg').open) return;
-  if(ui.tap && e.key === 'Enter'){ e.preventDefault(); tapMark(); return; }
+  if(tm.open){
+    if(e.key === 'Enter'){ e.preventDefault(); timingMark(); }
+    else if(e.code === 'Space'){ e.preventDefault(); $('#tmPlay').click(); }
+    else if(e.key === 'Backspace'){ e.preventDefault(); timingUndo(); }
+    else if(e.key === 'Escape'){ closeTiming(); }
+    return;
+  }
   switch(e.code){
     case 'Space': e.preventDefault(); togglePlay(); break;
     case 'ArrowLeft': e.preventDefault(); goTo(E.target - 1); break;
@@ -1240,7 +1388,7 @@ document.addEventListener('keydown', e => {
 function openLesson(l){
   lesson = l;
   lesson.blank = Object.assign({mode:'random', ratio:0.3, seed:1}, lesson.blank || {});
-  E.target = 0; E.plays = 0; E.endedAt = -1; clearGap(); ui.revealed.clear(); ui.tap = false;
+  E.target = 0; E.plays = 0; E.endedAt = -1; clearGap(); ui.revealed.clear(); ui.tap = false; tm.open = false; document.body.classList.remove('timing');
   ui.ab = {a:null, b:null, on:false};
   const src = lesson.source;
   if(src && src.kind === 'youtube'){
