@@ -68,6 +68,8 @@ body.hc #ccCover{background:#000}
 .sent.sh .snum{border:2px solid var(--teal);color:var(--teal)}
 .sent.sh.on .snum{color:#fff}
 .tool-shadow .sent{cursor:copy}
+.tool-split .w{cursor:col-resize}
+.tool-split .w:hover{box-shadow:-3px 0 0 var(--warn)}
 
 /* ---------- caption (presentation) ---------- */
 .caption{display:none;text-align:center;padding:4px 12px 0}
@@ -439,6 +441,7 @@ body.hc .caption .ko{color:#fff}
           <button class="chip" data-tool="pause">| 포즈</button>
           <button class="chip" data-tool="erase">표시 지우기</button>
           <button class="chip" data-tool="shadow">따라 말하기 문장 지정</button>
+          <button class="chip" data-tool="split">문장 나누기</button>
         </div>
       </div>
       <div class="script" id="script"></div>
@@ -861,6 +864,39 @@ function parseYTTranscript(raw){
   });
   return good;
 }
+let lastSplitMode = 'sentence';
+const STRONG = {because:3, but:3, so:2, which:3, who:2, when:3, if:3, then:2, well:3, and:2, or:1, although:3, while:2, where:2, until:2, since:2, therefore:3, however:3};
+const NOBREAK_PREV = new Set('not the a an to of our my your their his her its this that these those in on at for with from by and but or is are was were be been very so as i we you they he she will would can could should must just only even no every some any more most'.split(' '));
+function chunkUnpunctuated(words){
+  const MIN = 4, MAX = 14, TARGET = 9, n = words.length;
+  const lw = i => words[i].w.toLowerCase().replace(/[^a-z']/g, '');
+  // 경계 j = words[j] 앞에서 자르는 점수
+  const score = j => {
+    if(j >= n) return 1;
+    let sc = 0;
+    const next = lw(j), prev = lw(j - 1);
+    sc += STRONG[next] || 0;
+    if(words[j].first) sc += 1.5;                 // 자막 줄이 바뀌는 곳
+    if(words[j - 1].e - words[j - 1].s > 0.9) sc += 2; // 앞 단어 뒤에 쉼이 있는 것으로 보임
+    if(NOBREAK_PREV.has(prev)) sc -= 6;            // 'not', 'the' 같은 말 뒤에서는 자르지 않음
+    if(/[,;:]$/.test(words[j - 1].w)) sc += 2;
+    return sc;
+  };
+  const out = []; let i = 0;
+  while(i < n){
+    if(n - i <= MIN + 2){ out.push([i, n]); break; }
+    let best = -1, bestSc = -Infinity;
+    for(let j = i + MIN; j <= Math.min(i + MAX, n); j++){
+      const sc = score(j) - 0.15 * Math.abs((j - i) - TARGET);
+      if(sc > bestSc){ bestSc = sc; best = j; }
+    }
+    if(n - i <= MAX && bestSc < 1.5) best = n;
+    if(n - best < 3 && n - i <= MAX + 3) best = n;   // 꼬리가 너무 짧으면 붙임
+    out.push([i, best]); i = best;
+  }
+  return out;
+}
+
 function cuesToSentences(cues){
   const words = [];
   for(const c of cues){
@@ -872,6 +908,18 @@ function cuesToSentences(cues){
       words.push({w, s, e:c.start + dur * acc / total, first:j === 0, last:j === toks.length - 1});
     });
   }
+  // 마침표가 거의 없는 자막(유튜브 자동 자막)은 뜻 단위로 나눔
+  const ends = words.filter(x => /[.?!]["'”’)\]]*$/.test(x.w)).length;
+  if(words.length > 20 && ends < words.length / 40){
+    lastSplitMode = 'chunk';
+    return chunkUnpunctuated(words).map(([a, b]) => {
+      const seg = words.slice(a, b), aligned = seg[0].first && seg[seg.length - 1].last;
+      let text = seg.map(x => x.w).join(' ');
+      text = text.charAt(0).toUpperCase() + text.slice(1);
+      return mkSent(text, seg[0].s, seg[seg.length - 1].e, aligned ? 'subtitle' : 'estimated');
+    });
+  }
+  lastSplitMode = 'sentence';
   const out = []; let cur = [];
   const flush = () => {
     if(!cur.length) return;
@@ -891,6 +939,7 @@ function splitSentences(text){
 }
 function buildSentences(raw, unit){
   raw = raw.replace(/\r\n?/g, '\n').replace(/^\uFEFF/, '');
+  lastSplitMode = 'sentence';
   let cues = null, kind = 'text';
   if(/^\s*WEBVTT/.test(raw) || /-->/.test(raw)){ cues = parseSubtitle(raw); kind = 'subtitle'; }
   else if(looksLikeYTTranscript(raw)){ cues = parseYTTranscript(raw); kind = 'youtube'; }
@@ -954,6 +1003,22 @@ function toggleMark(si, wi, tool){
   if(!m.stress) delete m.stress; if(!m.tone) delete m.tone; if(!m.pause) delete m.pause;
   if(Object.keys(m).length) s.marks[wi] = m; else delete s.marks[wi];
   afterTextChange();
+}
+// 문장 나누기: 누른 단어부터 새 문장으로 (시간은 글자 수 비율로 나눔)
+function splitSentence(si, wi){
+  const s = lesson.sentences[si], toks = tokens(s.text);
+  if(wi <= 0 || wi >= toks.length){ toast('문장의 첫 단어에서는 나눌 수 없습니다. 새 문장이 시작될 단어를 누르세요.'); return; }
+  const before = toks.slice(0, wi).map(t => t.raw).join(' '), after = toks.slice(wi).map(t => t.raw).join(' ');
+  const cut = r2(s.start + (s.end - s.start) * before.length / (before.length + after.length + 1));
+  const ns = mkSent(after.charAt(0).toUpperCase() + after.slice(1), cut, s.end, 'estimated');
+  const m1 = {}, m2 = {};
+  for(const [k, v] of Object.entries(s.marks || {})){ if(+k < wi) m1[k] = v; else m2[+k - wi] = v; }
+  ns.marks = m2; ns.blanks = (s.blanks || []).filter(w => w >= wi).map(w => w - wi); ns.shadow = s.shadow;
+  s.marks = m1; s.blanks = (s.blanks || []).filter(w => w < wi);
+  s.text = before; s.end = cut; s.timing = 'estimated';
+  lesson.sentences.splice(si + 1, 0, ns);
+  renderAll(); save();
+  toast(`${si + 1}번을 둘로 나눴습니다. 나눈 지점의 시간은 짐작값이니, 자료 편집에서 들어 보고 맞춰 주세요.`, 4000);
 }
 let lastShadowClick = null;
 function toggleShadow(i, range){
@@ -1417,7 +1482,8 @@ $('#btnImport').onclick = () => {
   E.target = 0; E.plays = 0; E.endedAt = -1; clearGap();
   const est = sents.filter(s => s.timing === 'estimated').length;
   const kindLbl = {subtitle:'자막 파일', youtube:'유튜브 스크립트', text:'일반 텍스트'}[kind];
-  $('#importStatus').textContent = `${kindLbl}에서 ${sents.length}개 문장을 만들었습니다.` + (est ? ` 그중 ${est}개는 시간이 추정값이니 들어 보고 맞춰 주세요.` : '');
+  const chunkNote = unit === 'sentence' && kind !== 'text' && lastSplitMode === 'chunk' ? ' 마침표가 없는 자동 자막이라 뜻 단위로 나눴습니다. 어색한 곳은 수업 탭의 ‘문장 나누기’나 자료 편집의 ‘다음 문장과 합치기’로 고치세요.' : '';
+  $('#importStatus').textContent = `${kindLbl}에서 ${sents.length}개 문장을 만들었습니다.` + chunkNote + (est ? ` 그중 ${est}개는 시간이 추정값이니 들어 보고 맞춰 주세요.` : '');
   renderAll(); save();
 };
 $('#btnAddEnd').onclick = () => {
@@ -1461,6 +1527,7 @@ function onTextClick(e){
       case 'speak': speak(tok.core); return;
       case 'blank': toggleBlank(si, wi); return;
       case 'stress': case 'rise': case 'fall': case 'pause': case 'erase': toggleMark(si, wi, ui.tool); return;
+      case 'split': splitSentence(si, wi); return;
     }
   }
   const sent = e.target.closest('.sent');
