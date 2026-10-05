@@ -30,6 +30,9 @@ button{cursor:pointer}
 .brand{font-weight:600;font-size:16px;white-space:nowrap}
 .title-input{flex:1;min-width:120px;max-width:520px;background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 10px;color:var(--stage-text);font-size:16px}
 .title-input:hover,.title-input:focus{border-color:var(--stage-line);background:var(--stage2)}
+.save-state{font-size:12.5px;color:var(--stage-muted);white-space:nowrap}
+.save-state.ok{color:#8FD9B0}
+.save-state.err{color:#FF9C8A;font-weight:600}
 .top-actions{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
 .tbtn{background:var(--stage2);border:1px solid var(--stage-line);color:var(--stage-text);border-radius:8px;padding:7px 12px}
 .tbtn:hover{border-color:#5A6F97}
@@ -282,6 +285,7 @@ body.hc .caption .ko{color:#fff}
 <header class="top">
   <div class="brand">쉐도잉 교실</div>
   <input id="lessonTitle" class="title-input" aria-label="수업 제목">
+  <span id="saveState" class="save-state" role="status" aria-live="polite"></span>
   <div class="top-actions">
     <button class="tbtn primary" id="btnHub">공용 자료실</button>
     <button class="tbtn" id="btnLib">수업 목록</button>
@@ -627,9 +631,16 @@ const DRAFT_KEY = 'shadowroom.draft.v1', PREF_KEY = 'shadowroom.prefs.v2';
 const LIB_KEY = 'shadowroom.lessons.v1', CUR_KEY = 'shadowroom.current.v1';
 // 수업 보관함: {수업ID: 수업} — 이 브라우저에 저장
 function loadLib(){ try{ return JSON.parse(localStorage.getItem(LIB_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function setSaveState(kind){
+  const el = $('#saveState'); if(!el) return;
+  const d = new Date(), hm = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  el.className = 'save-state' + (kind === 'ok' ? ' ok' : kind === 'err' ? ' err' : '');
+  el.textContent = kind === 'ok' ? `✓ 저장됨 ${hm}` : kind === 'err' ? '⚠ 저장 실패' : '저장 중…';
+  el.title = kind === 'ok' ? '이 컴퓨터의 브라우저에 자동 저장되었습니다' : kind === 'err' ? '저장 공간이 부족하거나 저장이 막혀 있습니다' : '';
+}
 function writeLib(lib){
   try{ localStorage.setItem(LIB_KEY, JSON.stringify(lib)); return true; }
-  catch(e){ toast('저장 공간이 부족합니다. 안 쓰는 수업을 파일로 내보낸 뒤 지워 주세요.', 5000); return false; }
+  catch(e){ setSaveState('err'); toast('저장 공간이 부족합니다. 안 쓰는 수업을 파일로 내보낸 뒤 지워 주세요.', 5000); return false; }
 }
 let saveTimer;
 function saveNow(){
@@ -637,9 +648,9 @@ function saveNow(){
   if(!lesson) return;
   lesson.updatedAt = Date.now();
   const lib = loadLib(); lib[lesson.id] = lesson;
-  if(writeLib(lib)) try{ localStorage.setItem(CUR_KEY, lesson.id); }catch(e){}
+  if(writeLib(lib)){ try{ localStorage.setItem(CUR_KEY, lesson.id); }catch(e){} setSaveState('ok'); }
 }
-function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveNow(); renderSubmitBox(); }, 400); }
+function save(){ setSaveState('busy'); clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveNow(); renderSubmitBox(); }, 400); }
 window.addEventListener('beforeunload', saveNow);
 window.addEventListener('pagehide', saveNow);
 function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH, ytCC:ui.ytCC})); }catch(e){} }
