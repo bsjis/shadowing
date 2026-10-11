@@ -460,7 +460,7 @@ body.hc .caption .ko{color:#fff}
     <!-- 편집 탭 -->
     <div class="tabpane" id="pane-edit" hidden>
       <div class="edit">
-        <div class="sbanner" id="submitBanner" hidden>모든 문장의 시간을 맞췄습니다. 이 수업을 협의회 자료실에 보낼까요?<span class="spacer"></span><button class="btn main sm" id="btnSubmitBanner">자료실에 보내기</button></div>
+        <div class="sbanner" id="submitBanner" hidden>모든 문장의 시간을 맞췄습니다. 이 수업을 협의회 자료실에 공유 신청할까요?<span class="spacer"></span><button class="btn main sm" id="btnSubmitBanner">자료실에 보내기</button></div>
         <section class="box">
           <h3>영상</h3>
           <p class="desc">유튜브 주소(일반·youtu.be·쇼츠·시작 시간 포함 주소 모두 가능)를 넣거나, 내 컴퓨터의 파일을 고르세요. 파일은 업로드되지 않고 이 브라우저에서만 재생됩니다.</p>
@@ -514,10 +514,10 @@ body.hc .caption .ko{color:#fff}
         </section>
 
         <section class="box" id="submitBox">
-          <h3>자료실에 보내기</h3>
+          <h3>공유 신청하기</h3>
           <p class="desc">이 수업을 영이들 협의회 자료실에 보냅니다. 관리자가 확인하고 승인하면 다른 선생님들이 가져다 쓸 수 있습니다. 내 수업은 그대로 남습니다.</p>
           <div id="submitCheck"></div>
-          <button class="btn main" id="btnSubmitOpen">자료실에 보내기</button>
+          <button class="btn main" id="btnSubmitOpen">공유 신청하기</button>
         </section>
       </div>
     </div>
@@ -530,7 +530,7 @@ body.hc .caption .ko{color:#fff}
   <div id="hubBody"></div>
 </dialog>
 <dialog id="submitDlg" class="lib">
-  <div class="lib-head"><h3>자료실에 보내기</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div class="lib-head"><h3>공유 신청하기</h3><form method="dialog"><button class="btn">닫기</button></form></div>
   <p class="note" style="margin:6px 0 0">보낼 수업: <b id="sbTitle"></b></p>
   <div class="form">
     <label id="sbCodeWrap" class="full">회원 코드 <input class="inp" id="sbCode" autocomplete="off" placeholder="협의회에서 안내받은 회원 코드"></label>
@@ -541,17 +541,17 @@ body.hc .caption .ko{color:#fff}
     <label class="full">활용 메모 (선택) <textarea class="inp" id="sbNote" rows="4" style="font-family:var(--ui)" placeholder="어느 학년에서 어떻게 쓰면 좋은지, 학생들이 어려워한 부분 등을 짧게 적어 주세요."></textarea></label>
   </div>
   <p class="issues" id="sbMsg" style="list-style:none;padding:0;margin-top:8px"></p>
-  <div class="lib-foot"><span class="note">보낸 뒤에도 내 수업은 그대로 고칠 수 있습니다.</span><span class="spacer"></span><button class="btn main" id="sbSend">보내기</button></div>
+  <div class="lib-foot"><span class="note">신청한 뒤에도 내 수업은 그대로 고칠 수 있습니다.</span><span class="spacer"></span><button class="btn main" id="sbSend">신청하기</button></div>
 </dialog>
 <dialog id="libDlg" class="lib">
   <div class="lib-head"><h3>수업 목록</h3><form method="dialog"><button class="btn">닫기</button></form></div>
-  <p class="note" style="margin:0 0 10px">만든 수업은 모두 자동 저장됩니다. 저장 위치는 <b>이 컴퓨터의 이 브라우저</b>입니다. 다른 컴퓨터에서 쓰거나 백업하려면 ‘파일로 내보내기’를 쓰세요.</p>
+  <p class="note" style="margin:0 0 10px">만든 수업은 모두 자동 저장됩니다. 저장 위치는 <b>이 컴퓨터의 이 브라우저</b>입니다. 다른 컴퓨터에서 쓰거나 백업하려면 ‘백업 파일로 저장’을 쓰세요. 파일에는 영상이 아니라 문장·시간·해석만 담깁니다.</p>
   <div id="libList"></div>
   <div class="lib-foot">
     <button class="btn" id="libSample">샘플 수업 추가</button>
     <span class="spacer"></span>
-    <button class="btn" id="libExportAll">전체를 파일로 내보내기</button>
-    <label class="filebtn">파일에서 가져오기<input type="file" id="libImport" accept=".json,application/json"></label>
+    <button class="btn" id="libExportAll">전체 백업 파일로 저장</button>
+    <label class="filebtn">백업 파일 불러오기<input type="file" id="libImport" accept=".json,application/json"></label>
   </div>
 </dialog>
 <dialog id="helpDlg">
@@ -627,7 +627,7 @@ function sampleLesson(){
   };
 }
 function newLesson(){
-  return {schema:1, id:uid(), title:'새 수업', createdAt:Date.now(), updatedAt:Date.now(), source:null, blank:{mode:'random', ratio:0.3, seed:1}, sentences:[]};
+  return {schema:1, id:uid(), title:'새 수업', createdAt:Date.now(), updatedAt:Date.now(), source:null, final:false, blank:{mode:'random', ratio:0.3, seed:1}, sentences:[]};
 }
 function mkSent(text, start, end, timing){ return {id:uid(), text:text.trim(), start:r2(start), end:r2(end), ko:'', timing, marks:{}, blanks:[]}; }
 
@@ -1636,20 +1636,48 @@ $('#btnNew').onclick = () => {
   toast('새 수업을 만들었습니다. 맨 위에 수업 제목을 적어 주세요. 이전 수업은 ‘수업 목록’에 그대로 있습니다.', 4200);
 };
 function fmtDate(ms){ const d = new Date(ms); return `${d.getMonth() + 1}월 ${d.getDate()}일 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
+let libTab = 'final';
+function finalIssues(l){
+  const block = [], warn = [], S = l.sentences || [];
+  if(!l.title || /^새 수업$/.test(l.title.trim())) block.push('수업 제목을 새로 적어 주세요. (현재 “새 수업”)');
+  if(S.length < 2) block.push('문장이 2개 이상 있어야 합니다.');
+  if(S.some(s => !s.text.trim())) block.push('내용이 빈 문장이 있습니다.');
+  if(S.some(s => !(s.end > s.start))) block.push('끝 시간이 시작보다 빠른 문장이 있습니다.');
+  const est = S.filter(s => s.timing === 'estimated').length;
+  if(est) warn.push(`${est}개 문장의 시간이 아직 추정값입니다.`);
+  return {block, warn};
+}
+const isFinal = l => l.final === undefined ? (!!l.origin || finalIssues(l).block.length === 0) : !!l.final;
+function libItemHTML(l){
+  const n = (l.sentences || []).length, src = l.source ? (l.source.kind === 'youtube' ? '유튜브' : '내 컴퓨터 파일') : '영상 없음';
+  const est = (l.sentences || []).filter(s => s.timing === 'estimated').length;
+  const fin = isFinal(l), cur = l.id === lesson.id;
+  const badge = fin ? (est ? `<span class="free-pill" style="background:#B7791F">시간 ${est}문장 확인 필요</span>` : '<span class="free-pill">완성</span>') : '';
+  return `<div class="litem${cur ? ' cur' : ''}" data-id="${esc(l.id)}">
+    <div class="lt"><strong>${badge}${esc(l.title || '제목 없음')}</strong><span>문장 ${n}개 · ${src} · ${fmtDate(l.updatedAt || l.createdAt || Date.now())} 저장</span>
+      ${l.origin ? `<span class="origin">자료실에서 가져옴 · 원작 ${esc(l.origin.author || '')}</span>` : l.submittedAt ? '<span class="origin">공유 신청함</span>' : ''}</div>
+    ${cur ? '<span class="note">지금 열려 있음</span>' : '<button class="btn main sm" data-lib="open">열기</button>'}
+    ${fin ? '' : '<button class="btn sm" data-lib="final">완성으로 올리기</button>'}
+    <details class="lmenu"><summary class="btn sm">더보기</summary><div class="row" style="margin-top:6px">
+      ${fin ? '<button class="btn sm" data-lib="draft">작업 중으로 되돌리기</button>' : ''}<button class="btn sm" data-lib="copy">복사본 만들기</button><button class="btn sm" data-lib="export">백업 파일로 저장</button><button class="btn sm danger" data-lib="del">삭제</button></div></details>
+  </div>`;
+}
+function backupNote(){
+  let t = 0; try{ t = +localStorage.getItem('shadowroom.lastBackup') || 0; }catch(e){}
+  const days = t ? Math.floor((Date.now() - t) / 864e5) : -1;
+  return days < 0 ? '아직 백업 파일을 저장한 적이 없습니다.' : days === 0 ? '오늘 백업했습니다.' : `마지막 백업: ${days}일 전`;
+}
 function renderLib(){
   saveNow();
   const items = Object.values(loadLib()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-  $('#libList').innerHTML = items.length ? items.map(l => {
-    const src = l.source ? (l.source.kind === 'youtube' ? '유튜브' : '내 컴퓨터 파일') : '영상 없음';
-    return `<div class="litem${l.id === lesson.id ? ' cur' : ''}" data-id="${esc(l.id)}">
-      <div class="lt"><strong>${esc(l.title || '제목 없음')}</strong><span>문장 ${(l.sentences || []).length}개 · ${src} · ${fmtDate(l.updatedAt || l.createdAt || Date.now())} 저장</span>
-        ${l.origin ? `<span class="origin">자료실에서 가져옴 · 원작 ${esc(l.origin.author || '')}${l.origin.school ? ' (' + esc(l.origin.school) + ')' : ''}</span>` : l.submittedAt ? '<span class="origin">자료실에 보냄</span>' : ''}</div>
-      ${l.id === lesson.id ? '<span class="note">지금 열려 있음</span>' : '<button class="btn main sm" data-lib="open">열기</button>'}
-      <button class="btn sm" data-lib="copy">복사본 만들기</button>
-      <button class="btn sm" data-lib="export">파일로 내보내기</button>
-      <button class="btn sm danger" data-lib="del">삭제</button>
-    </div>`;
-  }).join('') : '<p class="note">저장된 수업이 없습니다.</p>';
+  const fin = items.filter(isFinal), dr = items.filter(l => !isFinal(l));
+  const list = libTab === 'final' ? fin : dr;
+  const empty = dr.filter(l => !(l.sentences || []).length && l.id !== lesson.id);
+  const hint = libTab === 'final' ? '제목을 정하고 문장·시간을 마친 수업입니다. 공유 신청과 무료 공개는 이 수업들로 합니다.' : '만드는 중인 수업과 연습·실험 기록입니다. 자동으로 지워지지 않습니다. 다 만들면 ‘완성으로 올리기’를 누르세요.';
+  $('#libList').innerHTML = `<div class="row" style="margin-bottom:8px"><button class="chip" data-libtab="final" aria-pressed="${libTab === 'final'}">완성한 수업 ${fin.length}</button><button class="chip" data-libtab="draft" aria-pressed="${libTab === 'draft'}">작업 중 ${dr.length}</button><span class="spacer"></span><span class="note">${backupNote()}</span></div>
+    <p class="note" style="margin:0 0 6px">${hint}</p>`
+    + (list.length ? list.map(libItemHTML).join('') : `<p class="note">${libTab === 'final' ? '완성한 수업이 아직 없습니다. 이전에 저장한 백업 파일이 있다면 아래 ‘백업 파일 불러오기’로 복원하세요.' : '작업 중인 수업이 없습니다.'}</p>`)
+    + (libTab === 'draft' && empty.length ? `<p><button class="btn sm danger" data-libclear="1">내용 없는 빈 수업 ${empty.length}개 한 번에 지우기</button></p>` : '');
 }
 function download(name, obj){
   const blob = new Blob([JSON.stringify(obj, null, 1)], {type:'application/json'});
@@ -1659,13 +1687,22 @@ function download(name, obj){
 const safeName = t => (t || '수업').replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 40) || '수업';
 $('#btnLib').onclick = () => { renderLib(); $('#libDlg').showModal(); };
 $('#libList').addEventListener('click', e => {
-  const b = e.target.closest('[data-lib]'); if(!b) return;
+  const tb = e.target.closest('[data-libtab]'); if(tb){ libTab = tb.dataset.libtab; return renderLib(); }
+  const b = e.target.closest('[data-lib]'); if(!b || !b.closest('.litem')) return;
   const id = b.closest('.litem').dataset.id, lib = loadLib(), l = lib[id]; if(!l) return;
   switch(b.dataset.lib){
     case 'open': $('#libDlg').close(); switchLesson(l); setTab('lesson'); toast(`“${l.title}” 수업을 열었습니다.`); break;
+    case 'final': case 'draft': {
+      const v = b.dataset.lib === 'final';
+      if(v){ const {block, warn} = finalIssues(l);
+        if(block.length) return alert('완성으로 올리기 전에 고칠 것이 있습니다.\n\n· ' + block.join('\n· ') + '\n\n수업을 열어 고쳐 주세요.');
+        if(warn.length && !confirm(warn.join('\n') + '\n\n그래도 완성으로 올릴까요?')) return; }
+      if(id === lesson.id){ lesson.final = v; saveNow(); } else { l.final = v; lib[id] = l; writeLib(lib); }
+      libTab = v ? 'final' : 'draft'; renderLib(); toast(v ? '완성한 수업으로 올렸습니다.' : '작업 중으로 되돌렸습니다.'); break;
+    }
     case 'copy': {
       const c = JSON.parse(JSON.stringify(l));
-      c.id = uid(); c.title = (l.title || '수업') + ' (복사본)'; c.createdAt = c.updatedAt = Date.now(); delete c.submittedAt;
+      c.id = uid(); c.final = false; c.title = (l.title || '수업') + ' (복사본)'; c.createdAt = c.updatedAt = Date.now(); delete c.submittedAt;
       c.sentences.forEach(s => s.id = uid());
       lib[c.id] = c; writeLib(lib); renderLib(); break;
     }
@@ -1681,9 +1718,15 @@ $('#libList').addEventListener('click', e => {
     }
   }
 });
+$('#libList').addEventListener('click', e => {
+  if(!e.target.closest('[data-libclear]')) return;
+  const lib = loadLib(), ids = Object.keys(lib).filter(k => !(lib[k].sentences || []).length && k !== lesson.id);
+  if(!ids.length || !confirm(`문장이 없는 빈 수업 ${ids.length}개를 지울까요? (내용이 없어 잃는 것은 없습니다)`)) return;
+  ids.forEach(k => delete lib[k]); writeLib(lib); renderLib(); toast('빈 수업을 지웠습니다.');
+});
 $('#libSample').onclick = () => { $('#libDlg').close(); switchLesson(sampleLesson()); setTab('lesson'); };
 $('#libExportAll').onclick = () => {
-  saveNow();
+  saveNow(); try{ localStorage.setItem('shadowroom.lastBackup', String(Date.now())); }catch(e){}
   const all = Object.values(loadLib());
   const d = new Date();
   download(`쉐도잉_전체수업_${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}.json`, {app:'shadowroom', version:1, lessons:all});
@@ -1756,7 +1799,7 @@ async function renderOpenBox(){
   const list = await loadOpenLessons();
   box.innerHTML = `<div class="openbox"><h4><span class="free-pill">무료</span>누구나 바로 쓰는 수업</h4><p class="note">코드 없이 열 수 있습니다. 아래 자료실의 다른 수업은 내 수업을 1개 기여하면 열립니다.</p>` +
     list.map((l, i) => `<div class="hcard" data-open="${i}">${l.source && l.source.videoId ? `<img class="hthumb" src="https://i.ytimg.com/vi/${esc(l.source.videoId)}/mqdefault.jpg" alt="" loading="lazy">` : ''}
-      <div class="hinfo"><strong>${esc(l.title)}</strong><span class="hmeta">문장 ${l.sentences.length}개 · 한글 해석 포함</span>
+      <div class="hinfo"><strong>${esc(l.title)}</strong><span class="hmeta">문장 ${l.sentences.length}개${l.credit && l.credit.author ? ' · 작성 ' + esc(l.credit.author) : ''}</span>
       <div class="hbtns"><button class="btn main sm" data-openget="${i}">이 수업으로 연습하기</button></div></div></div>`).join('') + '</div>' +
     '<h4 class="lockhead">🔒 협의회 자료실</h4>';
 }
@@ -1916,7 +1959,7 @@ async function hubGet(subId, btn){
 }
 function importLibLesson(l, meta, forCheck){
   const c = JSON.parse(JSON.stringify(l));
-  c.id = uid(); c.createdAt = c.updatedAt = Date.now();
+  c.id = uid(); c.final = !forCheck; c.createdAt = c.updatedAt = Date.now();
   c.sentences.forEach(s => { s.id = uid(); });
   delete c.submittedAt; delete c.libMeta;
   c.origin = {library:HUB_CONFIG.name, subId:meta.subId, lessonId:meta.lessonId, author:meta.author, school:meta.school, importedAt:Date.now(), check:!!forCheck};
@@ -1928,7 +1971,7 @@ function importLibLesson(l, meta, forCheck){
 function renderHubGate(subId){
   hubBody().innerHTML = `<div class="gate">
     <h4>${subId ? '무료로 가져갈 수 있는 수업을 모두 쓰셨습니다' : '기여 코드 넣기'}</h4>
-    <p>내가 만든 수업 1개를 자료실에 보내 관리자 승인을 받으면, 관리자가 단톡방으로 <b>기여 코드</b>를 알려 드립니다. 기여 코드를 넣으면 자료실의 모든 수업을 마음껏 가져갈 수 있습니다.</p>
+    <p>내가 만든 수업 1개를 공유 신청해 관리자 승인을 받으면, 관리자가 단톡방으로 <b>기여 코드</b>를 알려 드립니다. 기여 코드를 넣으면 자료실의 모든 수업을 마음껏 가져갈 수 있습니다.</p>
     <p id="gateMsg" class="issues" style="list-style:none;padding:0"></p>
     <div class="row"><input class="inp" id="hubContrib" placeholder="기여 코드" style="max-width:240px" autocomplete="off"><button class="btn main" id="hubContribOk">확인</button></div>
     <div class="row" style="margin-top:10px"><button class="btn" data-hubgo="make">내 수업 만들러 가기</button><button class="btn" data-hubgo="list">목록으로</button></div></div>`;
@@ -1999,17 +2042,17 @@ function renderAdmin(){
         <div class="hbtns">
           <button class="btn sm" data-adm="check">가져와서 확인</button>
           ${x.url ? `<a class="btn sm" href="${esc(x.url)}" target="_blank" rel="noopener">유튜브</a>` : ''}
-          ${x.status !== '승인' ? '<button class="btn main sm" data-adm="승인">승인</button>' : '<button class="btn sm danger" data-adm="내림">자료실에서 내리기</button>'}
+          ${x.status !== '승인' ? '<button class="btn main sm" data-adm="승인">승인</button>' : '<button class="btn sm" data-adm="openset">★ 무료 공개로 지정</button><button class="btn sm danger" data-adm="내림">자료실에서 내리기</button>'}
           ${x.status === '대기' ? '<button class="btn sm danger" data-adm="반려">반려</button>' : ''}
         </div></div>`).join('') : '<p class="empty">해당하는 수업이 없습니다.</p>'}</div>
     <p class="note" style="margin-top:10px">‘가져와서 확인’은 무료 개수와 상관없이 내 수업 목록에 [검토] 복사본을 만듭니다. 확인 후 지워도 됩니다.</p>`;
 }
 function renderOpenPanel(){
-  const mine = Object.values(loadLib()).filter(l => !l.origin && l.sentences && l.sentences.length).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const mine = Object.values(loadLib()).filter(l => !l.origin && isFinal(l) && l.sentences && l.sentences.length >= 2).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   hubBody().innerHTML = `<div class="hstatus"><strong>★ 무료 공개 수업</strong><span class="spacer"></span><button class="btn sm" data-adm="refresh">← 관리자 첫 화면</button></div>
     <ol class="note" style="line-height:1.8"><li>내 수업 중 완성된 것을 고릅니다.</li><li>‘추가하고 파일 받기’를 누르면 <b>open-lessons.json</b>이 내려받아집니다.</li><li>GitHub 저장소의 같은 이름 파일을 이 파일로 바꿔 올리면 모두에게 공개됩니다.</li></ol>
     <p><strong>지금 공개 중 (${openLessons.length}개)</strong></p>
-    ${openLessons.map((l, i) => `<div class="arow"><div class="row"><strong>${esc(l.title)}</strong><span class="note">문장 ${l.sentences.length}개</span><span class="spacer"></span><button class="btn sm danger" data-adm="openrm" data-i="${i}">공개에서 빼고 파일 받기</button></div></div>`).join('') || '<p class="empty">없음</p>'}
+    ${openLessons.map((l, i) => `<div class="arow"><div class="row"><strong>${esc(l.title)}</strong><span class="note">문장 ${l.sentences.length}개${l.credit ? ' · 작성 ' + esc(l.credit.author) : ''}</span><span class="spacer"></span><button class="btn sm danger" data-adm="openrm" data-i="${i}">공개에서 빼고 파일 받기</button></div></div>`).join('') || '<p class="empty">없음</p>'}
     <p style="margin-top:12px"><strong>내 수업에서 추가</strong></p>
     <div class="row"><select class="inp" id="openPick" style="flex:1">${mine.map(l => `<option value="${esc(l.id)}">${esc(l.title)} (문장 ${l.sentences.length}개)</option>`).join('')}</select><button class="btn main" data-adm="openadd">추가하고 파일 받기</button></div>`;
 }
@@ -2019,6 +2062,18 @@ async function adminAction(act, subId, btn){
     btn.disabled = true;
     try{ const j = await hubApi('admin_get', {adminPassword:adminPw(), subId}); $('#hubDlg').close(); importLibLesson(j.lesson, j.meta, true); toast('[검토] 복사본을 열었습니다. 문장을 눌러 시간이 맞는지 들어 보세요.', 4000); }
     catch(e){ toast(e.message); btn.disabled = false; }
+    return;
+  }
+  if(act === 'openset'){
+    btn.disabled = true;
+    try{
+      const j = await hubApi('admin_get', {adminPassword:adminPw(), subId});
+      await loadOpenLessons();
+      const c = JSON.parse(JSON.stringify(j.lesson)); delete c.origin; delete c.submittedAt; delete c.libMeta; delete c.final;
+      c.id = 'open-' + uid(); c.subId = subId; c.credit = {author:j.meta.author || '', school:j.meta.school || ''};
+      if(!confirm(`“${c.title}” (작성 ${c.credit.author || '미상'})을 누구나 쓰는 무료 수업으로 지정할까요?\n\n다음 단계로 open-lessons.json 파일이 내려받아집니다. 그 파일을 GitHub에 같은 이름으로 올려 바꾸면 공개됩니다.`)){ btn.disabled = false; return; }
+      saveOpenFile(openLessons.filter(x => x.subId !== subId).concat([c]));
+    }catch(e){ toast(e.message); btn.disabled = false; }
     return;
   }
   if(act === '내림' && !confirm('이 수업을 자료실에서 내릴까요? (시트에는 남아 있어 다시 승인할 수 있습니다)')) return;
@@ -2049,7 +2104,7 @@ $('#hubBody').addEventListener('click', e => {
     if(g === 'list' || g === 'back') return openHub();
     if(g === 'gate') return renderHubGate(null);
     if(g === 'relogin'){ hub.memberCode = ''; saveHub(); return renderHubLogin(); }
-    if(g === 'make'){ $('#hubDlg').close(); setTab('edit'); toast('수업을 만들고 시간 맞추기를 마친 뒤, 아래쪽 ‘자료실에 보내기’를 누르세요.', 4500); return; }
+    if(g === 'make'){ $('#hubDlg').close(); setTab('edit'); toast('수업을 만들고 시간 맞추기를 마친 뒤, 아래쪽 ‘공유 신청하기’를 누르세요.', 4500); return; }
   }
   const card = e.target.closest('.hcard');
   const hb = e.target.closest('[data-hub]');
@@ -2092,23 +2147,24 @@ function submitIssues(l){
 function renderSubmitBox(){
   if(!lesson || !$('#submitBox')) return;
   const {block, warn} = submitIssues(lesson);
-  const sent = lesson.submittedAt ? `<p class="okmsg">${fmtDate(lesson.submittedAt)}에 자료실로 보냈습니다. 고쳐서 다시 보내면 관리자 승인 후 새 버전으로 바뀝니다.</p>` : '';
+  const sent = lesson.submittedAt ? `<p class="okmsg">${fmtDate(lesson.submittedAt)}에 공유 신청했습니다. 고쳐서 다시 신청하면 관리자 승인 후 새 버전으로 바뀝니다.</p>` : '';
   $('#submitCheck').innerHTML = sent + (block.length || warn.length
     ? `<ul class="issues">${block.map(x => `<li>${esc(x)}</li>`).join('')}${warn.map(x => `<li style="color:#8A5A00">${esc(x)}</li>`).join('')}</ul>`
     : (sent ? '' : '<p class="okmsg">보낼 준비가 되었습니다.</p>'));
   $('#btnSubmitOpen').disabled = block.length > 0;
-  $('#btnSubmitOpen').textContent = lesson.submittedAt ? '고친 내용 다시 보내기' : '자료실에 보내기';
+  $('#btnSubmitOpen').textContent = lesson.submittedAt ? '고친 내용 다시 신청하기' : '공유 신청하기';
   $('#submitBanner').hidden = !(block.length === 0 && warn.length === 0 && !lesson.submittedAt && !lesson.origin);
 }
 function openSubmit(){
   const {block, warn} = submitIssues(lesson);
-  if(block.length){ setTab('edit'); renderSubmitBox(); $('#submitBox').scrollIntoView({block:'center'}); toast('보내기 전에 고칠 것이 있습니다.'); return; }
+  if(block.length){ setTab('edit'); renderSubmitBox(); $('#submitBox').scrollIntoView({block:'center'}); toast('신청하기 전에 고칠 것이 있습니다.'); return; }
   if(warn.length && !confirm(warn.join('\n') + '\n\n그래도 보낼까요?')) return;
   const meta = lesson.libMeta || {};
+  lesson.final = true; saveNow();
   $('#sbAuthor').value = hub.author || ''; $('#sbSchool').value = hub.school || '';
   $('#sbLevel').value = meta.level || '중'; $('#sbTopic').value = meta.topic || '연설'; $('#sbNote').value = meta.note || '';
   $('#sbCodeWrap').hidden = !!hub.memberCode; $('#sbCode').value = '';
-  $('#sbMsg').textContent = ''; $('#sbSend').disabled = false; $('#sbSend').textContent = '보내기';
+  $('#sbMsg').textContent = ''; $('#sbSend').disabled = false; $('#sbSend').textContent = '신청하기';
   $('#sbTitle').textContent = lesson.title;
   $('#submitDlg').showModal();
 }
@@ -2119,7 +2175,7 @@ async function sendSubmit(){
   if(!code){ $('#sbMsg').textContent = '회원 코드를 적어 주세요.'; return; }
   const meta = {author, school:$('#sbSchool').value.trim(), level:$('#sbLevel').value, topic:$('#sbTopic').value, note:$('#sbNote').value.trim(),
     duration:Math.max(0, ...lesson.sentences.map(s => s.end))};
-  $('#sbSend').disabled = true; $('#sbSend').textContent = '보내는 중…';
+  $('#sbSend').disabled = true; $('#sbSend').textContent = '신청하는 중…';
   try{
     saveNow();
     const copy = JSON.parse(JSON.stringify(lesson)); delete copy.submittedAt; delete copy.libMeta;
@@ -2128,10 +2184,10 @@ async function sendSubmit(){
     lesson.submittedAt = Date.now(); lesson.libMeta = {level:meta.level, topic:meta.topic, note:meta.note};
     saveNow(); renderSubmitBox();
     $('#submitDlg').close();
-    toast('보냈습니다! 관리자 승인 후 자료실에 올라갑니다. 승인되면 단톡방으로 기여 코드를 받으실 수 있습니다.', 5500);
+    toast('공유 신청했습니다! 승인 전에는 나만 볼 수 있고, 관리자 승인 후 자료실에 올라갑니다. 승인되면 단톡방으로 기여 코드를 받으실 수 있습니다.', 5500);
   }catch(e){
     if(e.code === 'wrongmember'){ hub.memberCode = ''; saveHub(); $('#sbCodeWrap').hidden = false; }
-    $('#sbMsg').textContent = e.message; $('#sbSend').disabled = false; $('#sbSend').textContent = '보내기';
+    $('#sbMsg').textContent = e.message; $('#sbSend').disabled = false; $('#sbSend').textContent = '신청하기';
   }
 }
 $('#btnSubmitOpen').onclick = openSubmit;
@@ -2142,7 +2198,7 @@ function maybeAskSubmit(){
   if(!lesson || lesson.submittedAt || lesson.origin || !hubEndpoint()) return;
   const {block, warn} = submitIssues(lesson);
   if(block.length || warn.length) return;
-  setTimeout(() => { if(confirm('모든 문장의 시간을 맞췄습니다. 이 수업을 협의회 자료실에 보낼까요?')) openSubmit(); }, 300);
+  setTimeout(() => { if(confirm('모든 문장의 시간을 맞췄습니다. 이 수업을 협의회 자료실에 공유 신청할까요?')) openSubmit(); }, 300);
 }
 
 
