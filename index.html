@@ -213,6 +213,7 @@ dialog.lib{max-width:720px;width:calc(100% - 32px)}
 .lib-foot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
 /* ---------- 공용 자료실 ---------- */
 dialog.hub{max-width:840px}
+#hubOpen{margin-bottom:14px}.openbox{border:2px solid var(--accent,#2A7F7A);border-radius:14px;padding:12px 14px;background:rgba(42,127,122,.07)}.openbox h4{margin:0 0 4px}.openbox .hcard{margin-top:8px}.free-pill{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:99px;background:#2A7F7A;color:#fff;margin-right:6px}.lockhead{margin:14px 0 6px}
 .hstatus{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--teal-weak);border-radius:8px;padding:10px 12px;margin:6px 0 10px;font-size:14px}
 .hfilters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .hfilters select.inp{width:auto}
@@ -525,6 +526,7 @@ body.hc .caption .ko{color:#fff}
 
 <dialog id="hubDlg" class="lib hub">
   <div class="lib-head"><h3 id="hubTitle">영이들 협의회 쉐도잉 자료실</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="hubOpen"></div>
   <div id="hubBody"></div>
 </dialog>
 <dialog id="submitDlg" class="lib">
@@ -1740,6 +1742,32 @@ const HUB_CONFIG = {
   name: '영이들 협의회 쉐도잉 자료실',
   endpoint: 'https://script.google.com/macros/s/AKfycbzXRGUYiUR-qB1XX8soo21P0T8ow8spMdEo925ejmAcpGx2RSjPsseAs0Yu08dQePVHww/exec'   // ← Apps Script 배포 주소
 };
+/* ---------- 무료 공개 수업 (누구나, 코드 없이) ---------- */
+const OPEN_FALLBACK = [{"schema":1,"id":"open-jfk-moon","title":"JFK “We choose to go to the moon” (1962)","createdAt":1791224919905,"updatedAt":1791226623752,"source":{"kind":"youtube","videoId":"aA1LOz9liag","startAt":0,"url":"https://www.youtube.com/watch?v=aA1LOz9liag"},"blank":{"mode":"random","ratio":0.3,"seed":1},"sentences":[{"id":"ymmzsmk3sp8","text":"We choose to go to the moon in this decade and do the other things.","start":0,"end":4.44,"ko":"우리는 이 10년이 가기 전에 달에 가기로, 그리고 다른 일들도 해내기로 선택했습니다.","timing":"measured","marks":{},"blanks":[]},{"id":"0tmt26h3sp8","text":"Not because they are easy but because they are hard.","start":4.56,"end":8.07,"ko":"쉬워서가 아니라, 어렵기 때문입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"20lvw103sp8","text":"Because that goal will serve to organize and measure the best","start":8.07,"end":13.48,"ko":"그 목표가 우리가 가진 최선을 모으고 가늠하는 데 도움이 될 것이기 때문입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"1syo77o3sp8","text":"Of our energies and skills","start":13.48,"end":15.03,"ko":"우리의 에너지와 기술의 최선을 말입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"516f5gp3sp8","text":"Because that challenge is one that we're willing to accept","start":15.23,"end":19.3,"ko":"그 도전은 우리가 기꺼이 받아들이려는 것이기 때문입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"ws2hjze3sp8","text":"One we are unwilling to postpone","start":19.3,"end":22,"ko":"미루고 싶지 않은 도전이기 때문입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"cv4oodk3sp8","text":"And one we intend to win and the others too","start":22.1,"end":28,"ko":"그리고 우리가 반드시 이기려는 도전이며, 다른 도전들도 마찬가지입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"mlriksp3sp8","text":"Many years ago the great British explorer George Mallory","start":28,"end":32.3,"ko":"오래전 영국의 위대한 탐험가 조지 맬러리는","timing":"measured","marks":{},"blanks":[]},{"id":"qjma4np3sp8","text":"Who was to die on mount Everest was asked why did he want to climb it","start":32.4,"end":38.56,"ko":"훗날 에베레스트에서 숨을 거두게 되는데, 왜 그 산에 오르려 하느냐는 질문을 받았습니다.","timing":"measured","marks":{},"blanks":[]},{"id":"mh357vu3sp8","text":"He said because it is there","start":38.57,"end":40.4,"ko":"그는 '그곳에 있으니까'라고 답했습니다.","timing":"measured","marks":{},"blanks":[]},{"id":"8ipypju3sp8","text":"Well space is there and we're going to climb it","start":40.4,"end":44,"ko":"자, 우주도 거기에 있고, 우리는 그곳에 오를 것입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"dmk1utx3sp8","text":"And the moon and the planets are there","start":44,"end":46.25,"ko":"달과 행성들도 거기에 있습니다.","timing":"measured","marks":{},"blanks":[]},{"id":"bh2eciv3sp8","text":"And new hopes for knowledge and peace are there","start":46.25,"end":49.25,"ko":"지식과 평화에 대한 새로운 희망도 거기에 있습니다.","timing":"measured","marks":{},"blanks":[]},{"id":"u79hmia3sp8","text":"And therefore as we set sail we ask god's blessing","start":49.25,"end":54,"ko":"그래서 우리는 돛을 올리며 신의 축복을 구합니다.","timing":"subtitle","marks":{},"blanks":[]},{"id":"swvemmr3sp8","text":"On the most hazardous and dangerous","start":54,"end":57,"ko":"인류가 이제껏 해 본 가장 위험하고","timing":"subtitle","marks":{},"blanks":[]},{"id":"mz8ld5e3sp8","text":"And greatest adventure on which man has ever embarked.","start":57,"end":60.3,"ko":"가장 위대한 모험을 위해서 말입니다.","timing":"measured","marks":{},"blanks":[]},{"id":"1ulf0ac0cr5","text":"Thank you","start":60.3,"end":62.93,"ko":"감사합니다.","timing":"measured","marks":{},"blanks":[]}],"libMeta":{"level":"중","topic":"연설","note":"무료 공개 수업"}}];
+let openLessons = null;
+async function loadOpenLessons(){
+  if(openLessons) return openLessons;
+  try{ const r = await fetch('open-lessons.json', {cache:'no-store'}); const j = await r.json(); openLessons = (j.lessons || []).filter(x => x && x.sentences); }catch(e){}
+  if(!openLessons || !openLessons.length) openLessons = OPEN_FALLBACK;
+  return openLessons;
+}
+async function renderOpenBox(){
+  const box = $('#hubOpen'); box.hidden = false;
+  const list = await loadOpenLessons();
+  box.innerHTML = `<div class="openbox"><h4><span class="free-pill">무료</span>누구나 바로 쓰는 수업</h4><p class="note">코드 없이 열 수 있습니다. 아래 자료실의 다른 수업은 내 수업을 1개 기여하면 열립니다.</p>` +
+    list.map((l, i) => `<div class="hcard" data-open="${i}">${l.source && l.source.videoId ? `<img class="hthumb" src="https://i.ytimg.com/vi/${esc(l.source.videoId)}/mqdefault.jpg" alt="" loading="lazy">` : ''}
+      <div class="hinfo"><strong>${esc(l.title)}</strong><span class="hmeta">문장 ${l.sentences.length}개 · 한글 해석 포함</span>
+      <div class="hbtns"><button class="btn main sm" data-openget="${i}">이 수업으로 연습하기</button></div></div></div>`).join('') + '</div>' +
+    '<h4 class="lockhead">🔒 협의회 자료실</h4>';
+}
+function openFreeLesson(i){
+  const l = openLessons[i]; if(!l) return;
+  $('#hubDlg').close();
+  importLibLesson(l, {subId:'open-' + l.id, lessonId:l.id, author:'공개 수업', school:''}, false);
+  const c = lesson; delete c.origin; c.title = l.title; renderAll(); save();
+  toast(`“${l.title}” 수업을 열었습니다. 내 수업 목록에도 저장됩니다.`, 4000);
+}
+
 const HUB_KEY = 'shadowroom.hub.v1', HUB_EP_KEY = 'shadowroom.hub.endpoint', HUB_ADMIN_KEY = 'shadowroom.hub.admin';
 function loadJSON(k){ try{ return JSON.parse(localStorage.getItem(k) || '{}') || {}; }catch(e){ return {}; } }
 // 이 기기의 자료실 이용 기록 (3단계에서 로그인 계정으로 옮길 수 있게 따로 보관)
@@ -1781,6 +1809,7 @@ let hubItems = [], hubFilter = {q:'', level:'', topic:''};
 function openHub(){
   $('#hubTitle').textContent = HUB_CONFIG.name;
   if(!$('#hubDlg').open) $('#hubDlg').showModal();
+  renderOpenBox();
   if(!hubEndpoint()) return renderHubNoEndpoint();
   if(!hub.memberCode) return renderHubLogin();
   loadHubList();
@@ -1921,13 +1950,13 @@ function renderHubGate(subId){
 let adminTab = '대기', adminItems = [];
 const adminPw = () => { try{ return sessionStorage.getItem(HUB_ADMIN_KEY) || ''; }catch(e){ return ''; } };
 function renderHubAdminLogin(msg){
+  $('#hubOpen').hidden = true;
   hubBody().innerHTML = `<div class="gate"><h4>관리자</h4>
-    <p>우편함 주소는 Apps Script ‘배포’ 후 나오는 …/exec 로 끝나는 주소입니다. 관리자 비밀번호는 Apps Script 코드 맨 위에 적은 것입니다.</p>
+    <p>관리자 비밀번호만 넣으면 됩니다.</p>
     ${msg ? `<p class="issues" style="list-style:none;padding:0">${esc(msg)}</p>` : ''}
-    <label class="note" style="display:block;margin-bottom:4px">우편함 주소</label>
-    <input class="inp" id="admEp" value="${esc(hubEndpoint())}" placeholder="https://script.google.com/macros/s/…/exec" style="margin-bottom:8px">
-    <label class="note" style="display:block;margin-bottom:4px">관리자 비밀번호</label>
-    <div class="row"><input class="inp" type="password" id="admPw" style="max-width:240px"><button class="btn main" id="admOk">들어가기</button></div></div>
+    <div class="row"><input class="inp" type="password" id="admPw" placeholder="관리자 비밀번호" style="max-width:240px"><button class="btn main" id="admOk">들어가기</button></div>
+    <details style="margin-top:12px"><summary class="note">고급: 우편함 주소 바꾸기</summary>
+    <input class="inp" id="admEp" value="${esc(hubEndpoint())}" placeholder="https://script.google.com/macros/s/…/exec" style="margin-top:6px"></details></div>
     <div class="hfoot"><button class="linky" data-hubgo="back">자료실로</button></div>`;
   const go = async () => {
     const ep = $('#admEp').value.trim(), pw = $('#admPw').value;
@@ -1953,12 +1982,15 @@ async function loadAdmin(){
   }
 }
 function renderAdmin(){
+  $('#hubOpen').hidden = true;
   const groups = {'대기':x => x.status === '대기', '승인':x => x.status === '승인', '그 밖':x => x.status !== '대기' && x.status !== '승인'};
+  const TABN = {'대기':'① 승인 기다림', '승인':'② 공개 중', '그 밖':'③ 반려·내림'};
   const list = adminItems.filter(groups[adminTab]);
   hubBody().innerHTML = `
-    <div class="hstatus"><strong>관리자 화면</strong><span class="spacer"></span>
-      <button class="btn sm" data-adm="refresh">새로 고침</button><button class="btn sm" data-adm="backup">자료실 전체 백업</button><button class="btn sm" data-adm="logout">관리자 나가기</button></div>
-    <div class="atabs">${Object.keys(groups).map(k => `<button class="chip" data-atab="${k}" aria-pressed="${k === adminTab}">${k === '그 밖' ? '반려·내림·교체됨' : k} ${adminItems.filter(groups[k]).length}</button>`).join('')}</div>
+    <div class="hstatus"><strong>관리자</strong><span class="spacer"></span>
+      <button class="btn sm" data-adm="refresh">새로 고침</button><button class="btn sm" data-adm="backup">자료실 백업 받기</button><button class="btn sm" data-adm="logout">관리자 나가기</button></div>
+    <div class="atabs">${Object.keys(groups).map(k => `<button class="chip" data-atab="${k}" aria-pressed="${k === adminTab}">${TABN[k]} ${adminItems.filter(groups[k]).length}</button>`).join('')}<button class="chip" data-adm="openpanel">★ 무료 공개 수업</button></div>
+    <p class="note">${adminTab === '대기' ? '‘가져와서 확인’으로 들어 본 뒤 승인하면 협의회 자료실에 올라갑니다.' : adminTab === '승인' ? '자료실에 공개된 수업입니다. 문제가 있으면 내릴 수 있습니다.' : '반려하거나 내린 수업입니다.'}</p>
     <div id="hubList">${list.length ? list.map(x => `
       <div class="arow" data-sub="${esc(x.subId)}">
         <div class="row"><strong>${esc(x.title)}</strong><span class="st-pill">${esc(x.status)}</span></div>
@@ -1972,6 +2004,16 @@ function renderAdmin(){
         </div></div>`).join('') : '<p class="empty">해당하는 수업이 없습니다.</p>'}</div>
     <p class="note" style="margin-top:10px">‘가져와서 확인’은 무료 개수와 상관없이 내 수업 목록에 [검토] 복사본을 만듭니다. 확인 후 지워도 됩니다.</p>`;
 }
+function renderOpenPanel(){
+  const mine = Object.values(loadLib()).filter(l => !l.origin && l.sentences && l.sentences.length).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  hubBody().innerHTML = `<div class="hstatus"><strong>★ 무료 공개 수업</strong><span class="spacer"></span><button class="btn sm" data-adm="refresh">← 관리자 첫 화면</button></div>
+    <ol class="note" style="line-height:1.8"><li>내 수업 중 완성된 것을 고릅니다.</li><li>‘추가하고 파일 받기’를 누르면 <b>open-lessons.json</b>이 내려받아집니다.</li><li>GitHub 저장소의 같은 이름 파일을 이 파일로 바꿔 올리면 모두에게 공개됩니다.</li></ol>
+    <p><strong>지금 공개 중 (${openLessons.length}개)</strong></p>
+    ${openLessons.map((l, i) => `<div class="arow"><div class="row"><strong>${esc(l.title)}</strong><span class="note">문장 ${l.sentences.length}개</span><span class="spacer"></span><button class="btn sm danger" data-adm="openrm" data-i="${i}">공개에서 빼고 파일 받기</button></div></div>`).join('') || '<p class="empty">없음</p>'}
+    <p style="margin-top:12px"><strong>내 수업에서 추가</strong></p>
+    <div class="row"><select class="inp" id="openPick" style="flex:1">${mine.map(l => `<option value="${esc(l.id)}">${esc(l.title)} (문장 ${l.sentences.length}개)</option>`).join('')}</select><button class="btn main" data-adm="openadd">추가하고 파일 받기</button></div>`;
+}
+function saveOpenFile(arr){ download('open-lessons.json', {app:'shadowroom-open', version:1, lessons:arr}); openLessons = arr; renderOpenPanel(); toast('open-lessons.json을 받았습니다. GitHub의 같은 이름 파일과 바꿔 올리면 공개됩니다.', 5000); }
 async function adminAction(act, subId, btn){
   if(act === 'check'){
     btn.disabled = true;
@@ -1998,6 +2040,7 @@ async function adminBackup(){
 }
 
 /* ---------- 자료실 대화창 클릭 ---------- */
+$('#hubOpen').addEventListener('click', e => { const b = e.target.closest('[data-openget]'); if(b) openFreeLesson(+b.dataset.openget); });
 $('#hubBody').addEventListener('click', e => {
   const go = e.target.closest('[data-hubgo]');
   if(go){
@@ -2021,6 +2064,9 @@ $('#hubBody').addEventListener('click', e => {
   if(ad){
     const act = ad.dataset.adm;
     if(act === 'refresh') return loadAdmin();
+    if(act === 'openpanel') return loadOpenLessons().then(renderOpenPanel);
+    if(act === 'openrm') return saveOpenFile(openLessons.filter((_, i) => i !== +ad.dataset.i));
+    if(act === 'openadd'){ const l = loadLib()[$('#openPick').value]; if(!l) return; const c = JSON.parse(JSON.stringify(l)); delete c.origin; delete c.submittedAt; c.id = 'open-' + uid(); return saveOpenFile(openLessons.concat([c])); }
     if(act === 'backup') return adminBackup();
     if(act === 'logout'){ try{ sessionStorage.removeItem(HUB_ADMIN_KEY); }catch(_){} return openHub(); }
     const row = ad.closest('.arow'); if(row) adminAction(act, row.dataset.sub, ad);
