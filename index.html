@@ -540,6 +540,11 @@ body.hc .caption .ko{color:#fff}
     <label>주제 <select class="inp" id="sbTopic"><option>연설</option><option>뉴스</option><option>인터뷰</option><option>강연(TED 등)</option><option>드라마·영화</option><option>광고</option><option>일상 대화</option><option>기타</option></select></label>
     <label class="full">활용 메모 (선택) <textarea class="inp" id="sbNote" rows="4" style="font-family:var(--ui)" placeholder="어느 학년에서 어떻게 쓰면 좋은지, 학생들이 어려워한 부분 등을 짧게 적어 주세요."></textarea></label>
   </div>
+  <div class="srcbox" style="margin-top:10px;padding:10px 12px;border:1.5px solid var(--line,#ccc);border-radius:12px">
+    <label class="full">출처 (필수) <input class="inp" id="sbSource" maxlength="120" placeholder="예: 유튜브 ○○ 공식 채널 ‘영상 제목’ / VOA Learning English"></label>
+    <label style="display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:13px"><input type="checkbox" id="sbRights" style="margin-top:3px">
+      <span>이 영상은 <b>공식 채널 영상이거나 공개 이용이 허락된 영상(CC·퍼블릭 도메인 등)</b>이며, 영상 파일이나 자막 파일을 그대로 복사해 넣지 않았음을 확인합니다. 영화·드라마 장면은 공유하지 말고 내 수업에서만 쓰세요.</span></label>
+  </div>
   <p class="issues" id="sbMsg" style="list-style:none;padding:0;margin-top:8px"></p>
   <div class="lib-foot"><span class="note">신청한 뒤에도 내 수업은 그대로 고칠 수 있습니다.</span><span class="spacer"></span><button class="btn main" id="sbSend">신청하기</button></div>
 </dialog>
@@ -2160,7 +2165,7 @@ function openSubmit(){
   if(block.length){ setTab('edit'); renderSubmitBox(); $('#submitBox').scrollIntoView({block:'center'}); toast('신청하기 전에 고칠 것이 있습니다.'); return; }
   if(warn.length && !confirm(warn.join('\n') + '\n\n그래도 보낼까요?')) return;
   const meta = lesson.libMeta || {};
-  lesson.final = true; saveNow();
+  $('#sbSource').value = lesson.sourceCredit || ''; $('#sbRights').checked = false;
   $('#sbAuthor').value = hub.author || ''; $('#sbSchool').value = hub.school || '';
   $('#sbLevel').value = meta.level || '중'; $('#sbTopic').value = meta.topic || '연설'; $('#sbNote').value = meta.note || '';
   $('#sbCodeWrap').hidden = !!hub.memberCode; $('#sbCode').value = '';
@@ -2171,17 +2176,20 @@ function openSubmit(){
 async function sendSubmit(){
   const author = $('#sbAuthor').value.trim();
   if(!author){ $('#sbMsg').textContent = '작성자 이름을 적어 주세요.'; return; }
+  const srcCredit = $('#sbSource').value.trim();
+  if(srcCredit.length < 3){ $('#sbMsg').textContent = '영상의 출처를 적어 주세요. (채널 이름과 영상 제목)'; return; }
+  if(!$('#sbRights').checked){ $('#sbMsg').textContent = '출처·이용 조건 확인에 체크해 주세요.'; return; }
   const code = hub.memberCode || $('#sbCode').value.trim();
   if(!code){ $('#sbMsg').textContent = '회원 코드를 적어 주세요.'; return; }
-  const meta = {author, school:$('#sbSchool').value.trim(), level:$('#sbLevel').value, topic:$('#sbTopic').value, note:$('#sbNote').value.trim(),
+  const meta = {author, school:$('#sbSchool').value.trim(), level:$('#sbLevel').value, topic:$('#sbTopic').value, note:'[출처] ' + srcCredit + ($('#sbNote').value.trim() ? '\n' + $('#sbNote').value.trim() : ''),
     duration:Math.max(0, ...lesson.sentences.map(s => s.end))};
   $('#sbSend').disabled = true; $('#sbSend').textContent = '신청하는 중…';
   try{
-    saveNow();
-    const copy = JSON.parse(JSON.stringify(lesson)); delete copy.submittedAt; delete copy.libMeta;
+    lesson.sourceCredit = srcCredit; saveNow();
+    const copy = JSON.parse(JSON.stringify(lesson)); delete copy.submittedAt; delete copy.libMeta; copy.sourceCredit = srcCredit;
     await hubApi('submit', {memberCode:code, lesson:copy, meta});
     hub.memberCode = code; hub.author = author; hub.school = meta.school; saveHub();
-    lesson.submittedAt = Date.now(); lesson.libMeta = {level:meta.level, topic:meta.topic, note:meta.note};
+    lesson.submittedAt = Date.now(); lesson.final = true; lesson.libMeta = {level:meta.level, topic:meta.topic, note:$('#sbNote').value.trim()};
     saveNow(); renderSubmitBox();
     $('#submitDlg').close();
     toast('공유 신청했습니다! 승인 전에는 나만 볼 수 있고, 관리자 승인 후 자료실에 올라갑니다. 승인되면 단톡방으로 기여 코드를 받으실 수 있습니다.', 5500);
