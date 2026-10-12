@@ -542,8 +542,9 @@ body.hc .caption .ko{color:#fff}
   </div>
   <div class="srcbox" style="margin-top:10px;padding:10px 12px;border:1.5px solid var(--line,#ccc);border-radius:12px">
     <label class="full">출처 (필수) <input class="inp" id="sbSource" maxlength="120" placeholder="예: 유튜브 ○○ 공식 채널 ‘영상 제목’ / VOA Learning English"></label>
-    <label class="full" style="margin-top:8px">영상 종류 <select class="inp" id="sbKind" onchange="document.getElementById('sbCC').hidden=this.value!=='cc'">
-      <option value="official">공식 채널·정부·공공 영상 (퍼블릭 도메인 등)</option><option value="cc">유튜브 CC BY 영상 (다른 사람이 올린 영상)</option><option value="own">내가 직접 만든 영상</option></select></label>
+    <label class="full" style="margin-top:8px">영상 종류 <select class="inp" id="sbKind" onchange="document.getElementById('sbCC').hidden=this.value!=='cc';document.getElementById('sbFilm').hidden=this.value!=='film';document.getElementById('sbSend').disabled=this.value==='film'">
+      <option value="official">공식 채널·정부·공공 영상 (퍼블릭 도메인 등)</option><option value="cc">유튜브 CC BY 영상 (다른 사람이 올린 영상)</option><option value="own">내가 직접 만든 영상</option><option value="film">영화·드라마·방송 장면 (FilmRise 등 무료 공개 채널 포함)</option></select></label>
+    <div id="sbFilm" hidden class="issues" style="margin-top:8px;padding:10px 12px;border-radius:10px">영화·드라마·방송 장면은 <b>공유 신청할 수 없습니다.</b> 무료로 볼 수 있는 영상이라도 수업 자료로 나누어 줄 허락은 아닙니다. 이 수업은 <b>내 수업에서만</b> 쓰세요. (신청하지 않으면 서버로 아무것도 보내지 않습니다.)</div>
     <div id="sbCC" hidden style="margin-top:8px;font-size:13px;display:grid;gap:6px">
       <label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="sbCC1" style="margin-top:3px"><span>영상 설명란에서 <b>‘크리에이티브 커먼즈 저작자 표시(재사용 허용)’</b>를 직접 확인했습니다.</span></label>
       <label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="sbCC2" style="margin-top:3px"><span>올린 사람이 <b>직접 만든 영상</b>이고, 타인의 음악·영화·방송 클립·사진이 길게 쓰이지 않았음을 확인했습니다.</span></label>
@@ -2171,7 +2172,7 @@ function openSubmit(){
   if(block.length){ setTab('edit'); renderSubmitBox(); $('#submitBox').scrollIntoView({block:'center'}); toast('신청하기 전에 고칠 것이 있습니다.'); return; }
   if(warn.length && !confirm(warn.join('\n') + '\n\n그래도 보낼까요?')) return;
   const meta = lesson.libMeta || {};
-  $('#sbSource').value = lesson.sourceCredit || ''; $('#sbRights').checked = false; $('#sbKind').value = lesson.sourceKind || 'official'; $('#sbCC').hidden = $('#sbKind').value !== 'cc'; $('#sbCC1').checked = $('#sbCC2').checked = false;
+  $('#sbSource').value = lesson.sourceCredit || ''; $('#sbRights').checked = false; $('#sbKind').value = lesson.sourceKind || 'official'; $('#sbCC').hidden = $('#sbKind').value !== 'cc'; $('#sbFilm').hidden = $('#sbKind').value !== 'film'; $('#sbSend').disabled = $('#sbKind').value === 'film'; $('#sbCC1').checked = $('#sbCC2').checked = false;
   $('#sbAuthor').value = hub.author || ''; $('#sbSchool').value = hub.school || '';
   $('#sbLevel').value = meta.level || '중'; $('#sbTopic').value = meta.topic || '연설'; $('#sbNote').value = meta.note || '';
   $('#sbCodeWrap').hidden = !!hub.memberCode; $('#sbCode').value = '';
@@ -2185,6 +2186,7 @@ async function sendSubmit(){
   const srcCredit = $('#sbSource').value.trim();
   if(srcCredit.length < 3){ $('#sbMsg').textContent = '영상의 출처를 적어 주세요. (채널 이름과 영상 제목)'; return; }
   if(!$('#sbRights').checked){ $('#sbMsg').textContent = '출처·이용 조건 확인에 체크해 주세요.'; return; }
+  if($('#sbKind').value === 'film'){ $('#sbMsg').textContent = '영화·드라마·방송 장면은 공유 신청할 수 없습니다. 내 수업에서만 사용하세요.'; return; }
   const kind = $('#sbKind').value, kindLabel = {official:'공식·공공 영상', cc:'유튜브 CC BY', own:'직접 제작'}[kind];
   if(kind === 'cc' && !($('#sbCC1').checked && $('#sbCC2').checked)){ $('#sbMsg').textContent = 'CC BY 영상은 두 가지 확인 항목에 모두 체크해야 신청할 수 있습니다.'; return; }
   const srcUrl = (lesson.source && lesson.source.url) || '';
