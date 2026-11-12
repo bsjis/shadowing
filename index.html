@@ -28,9 +28,14 @@ button{cursor:pointer}
 /* ---------- header ---------- */
 .top{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--stage);color:var(--stage-text);border-bottom:1px solid var(--stage-line)}
 .brand{font-weight:600;font-size:16px;white-space:nowrap}
-.title-input{flex:1;min-width:120px;max-width:520px;background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 10px;color:var(--stage-text);font-size:16px}
+.title-input{flex:1;min-width:120px;max-width:520px;background:var(--stage2);border:1px solid var(--stage-line);border-radius:6px;padding:6px 10px;color:var(--stage-text);font-size:16px}
 .title-input:hover,.title-input:focus{border-color:var(--stage-line);background:var(--stage2)}
 .save-state{font-size:12.5px;color:var(--stage-muted);white-space:nowrap}
+.title-box{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;max-width:560px}
+.title-label{font-size:12px;color:var(--stage-muted)}
+.tbtn.weak{background:transparent;border-style:dashed;color:var(--stage-muted)}
+.welcome-btn{font-size:18px;padding:14px 26px;border-radius:12px}
+.welcome-msg{font-size:16px;line-height:1.7}
 .save-state.ok{color:#8FD9B0}
 .save-state.err{color:#FF9C8A;font-weight:600}
 .top-actions{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
@@ -288,15 +293,16 @@ body.hc .caption .ko{color:#fff}
 
 <header class="top">
   <div class="brand">쉐도잉 교실</div>
-  <input id="lessonTitle" class="title-input" aria-label="수업 제목">
-  <span id="saveState" class="save-state" role="status" aria-live="polite"></span>
+  <div class="title-box">
+    <label class="title-label" for="lessonTitle">영상 제목 ✎</label>
+    <input id="lessonTitle" class="title-input" aria-label="영상 제목" placeholder="영상 제목을 적어 주세요">
+    <span id="saveState" class="save-state" role="status" aria-live="polite"></span>
+  </div>
   <div class="top-actions">
-    <button class="tbtn primary" id="btnHub">공용 자료실</button>
-    <button class="tbtn" id="btnLib">수업 목록</button>
-    <button class="tbtn" id="btnNew">새 수업</button>
-    <button class="tbtn" id="btnHelp" aria-label="단축키 보기">단축키</button>
-    <button class="tbtn" id="btnTiming">시간 맞추기</button>
-    <button class="tbtn" id="btnPresent">발표 모드</button>
+    <button class="tbtn primary" id="btnHub">📚 공용 자료실</button>
+    <button class="tbtn" id="btnLib">📂 수업 목록</button>
+    <button class="tbtn weak" id="btnNew">＋ 새 수업</button>
+    <button class="tbtn weak" id="btnHelp" aria-label="단축키 보기">⌨ 단축키</button>
   </div>
 </header>
 
@@ -310,6 +316,11 @@ body.hc .caption .ko{color:#fff}
       <div class="overlay" id="emptyOverlay">
         <p>아직 영상이 없습니다. 유튜브 주소나 내 컴퓨터의 mp4·mp3 파일을 불러오세요.</p>
         <button class="linkbtn" data-open-tab="edit">영상 불러오기</button>
+      </div>
+      <div class="overlay welcome" id="welcomeOverlay" hidden>
+        <p class="welcome-msg">처음 오셨군요.<br>아래 버튼을 누르면 바로 연습을 시작할 수 있습니다.</p>
+        <button class="btn main welcome-btn" data-free-start>무료 수업으로 연습해 보기</button>
+        <button class="linkbtn" data-open-tab="edit">직접 수업 만들기 (선생님용)</button>
       </div>
       <div class="overlay" id="blockedOverlay" hidden></div>
       <div class="gap" id="gapOverlay" hidden>
@@ -427,6 +438,7 @@ body.hc .caption .ko{color:#fff}
             <button data-view="blank">영상 + 빈칸</button>
           </div>
           <label class="toggle"><input type="checkbox" id="chkKo"> 한글 해석</label>
+          <button class="btn sm" id="btnPresent">발표 모드</button>
         </div>
         <div class="row" id="blankRow">
           <span class="lbl">빈칸</span>
@@ -557,13 +569,12 @@ body.hc .caption .ko{color:#fff}
 </dialog>
 <dialog id="libDlg" class="lib">
   <div class="lib-head"><h3>수업 목록</h3><form method="dialog"><button class="btn">닫기</button></form></div>
-  <p class="note" style="margin:0 0 10px">만든 수업은 모두 자동 저장됩니다. 저장 위치는 <b>이 컴퓨터의 이 브라우저</b>입니다. 다른 컴퓨터에서 쓰거나 백업하려면 ‘백업 파일로 저장’을 쓰세요. 파일에는 영상이 아니라 문장·시간·해석만 담깁니다.</p>
+  <p class="note" style="margin:0 0 10px">이 컴퓨터에만 저장되어 있어요. 컴퓨터를 바꾸거나 기록을 지우면 사라질 수 있어요. <b>[파일로 내려받기]</b>로 받아 두세요.</p>
   <div id="libList"></div>
   <div class="lib-foot">
-    <button class="btn" id="libSample">샘플 수업 추가</button>
     <span class="spacer"></span>
-    <button class="btn" id="libExportAll">전체 백업 파일로 저장</button>
-    <label class="filebtn">백업 파일 불러오기<input type="file" id="libImport" accept=".json,application/json"></label>
+    <button class="btn" id="libExportAll">내 수업 전체를 파일로 내려받기</button>
+    <label class="filebtn">내려받은 파일에서 수업 가져오기<input type="file" id="libImport" accept=".json,application/json"></label>
   </div>
 </dialog>
 <dialog id="helpDlg">
@@ -645,6 +656,7 @@ function mkSent(text, start, end, timing){ return {id:uid(), text:text.trim(), s
 
 /* ---------------- 상태 ---------------- */
 let lesson;
+let welcome = false; // 수업이 하나도 없는 처음 방문 상태: 안내만 보여 주고 아무것도 저장하지 않음
 const ui = {view:'script', ko:false, tool:'move', repeat:2, gap:1.5, advance:true, rate:1,
   ab:{a:null, b:null, on:false}, tap:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18, scope:'marked', ytCC:false, pad:0.3};
 const E = {target:0, plays:0, gap:null, ignoreUntil:0, lastT:0, endedAt:-1, single:false, seekTo:null, seekDeadline:0};
@@ -668,7 +680,7 @@ function writeLib(lib){
 let saveTimer;
 function saveNow(){
   clearTimeout(saveTimer);
-  if(!lesson) return;
+  if(!lesson || welcome) return;
   lesson.updatedAt = Date.now();
   const lib = loadLib(); lib[lesson.id] = lesson;
   if(writeLib(lib)){ try{ localStorage.setItem(CUR_KEY, lesson.id); }catch(e){} setSaveState('ok'); }
@@ -1195,7 +1207,7 @@ function renderScript(){
   const box = $('#script');
   document.body.classList.toggle('view-video', ui.view === 'video');
   box.className = 'script tool-' + ui.tool;
-  if(!N()){ box.innerHTML = '<div class="empty">문장이 없습니다. ‘자료 편집’에서 스크립트를 넣어 주세요.<br><br><button class="btn main" data-open-tab="edit">스크립트 넣기</button></div>'; return; }
+  if(!N()){ box.innerHTML = welcome ? '<div class="empty">무료 수업을 열면 여기에 문장이 나옵니다.</div>' : '<div class="empty">문장이 없습니다. ‘자료 편집’에서 스크립트를 넣어 주세요.<br><br><button class="btn main" data-open-tab="edit">스크립트 넣기</button></div>'; return; }
   if(ui.view === 'video'){ box.innerHTML = '<div class="empty">영상만 보는 중입니다. 학생들이 소리에만 집중하게 할 때 쓰세요.<br>위의 ‘영상 + 스크립트’를 누르면 다시 보입니다.</div>'; return; }
   box.innerHTML = lesson.sentences.map((s, i) => `
     <div class="sent${i === E.target ? ' on' : ''}${s.shadow ? ' sh' : ''}" data-i="${i}">
@@ -1452,7 +1464,6 @@ function timingRestart(){
   Player.seek(0); E.ignoreUntil = performance.now() + 400; Player.play();
   E.target = 0; onCurChange(); renderTiming();
 }
-$('#btnTiming').onclick = openTiming;
 document.addEventListener('click', e => { if(e.target.closest('[data-open-timing]')) openTiming(); });
 $('#tmClose').onclick = closeTiming;
 $('#tmMark').onclick = timingMark;
@@ -1561,6 +1572,7 @@ $('#script').addEventListener('click', onTextClick);
 $('#caption').addEventListener('click', onTextClick);
 
 document.addEventListener('click', e => {
+  if(e.target.closest('[data-free-start]')){ loadOpenLessons().then(list => { if(list.length) openFreeLesson(0); }); return; }
   const v = e.target.closest('[data-view]'); if(v){ setView(v.dataset.view); }
   if(e.target.closest('[data-toggle-ko]')) setKo(!ui.ko);
   const ot = e.target.closest('[data-open-tab]'); if(ot) setTab(ot.dataset.openTab);
@@ -1574,6 +1586,7 @@ $('#bShuffle').onclick = () => { if(lesson.blank.mode === 'random') lesson.blank
 
 function setTab(tab){
   ui.tab = tab;
+  if(tab === 'edit' && welcome){ welcome = false; renderWelcome(); }
   $$('.tabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
   $('#pane-lesson').hidden = tab !== 'lesson';
   $('#pane-edit').hidden = tab !== 'edit';
@@ -1668,10 +1681,13 @@ function libItemHTML(l){
   return `<div class="litem${cur ? ' cur' : ''}" data-id="${esc(l.id)}">
     <div class="lt"><strong>${badge}${esc(l.title || '제목 없음')}</strong><span>문장 ${n}개 · ${src} · ${fmtDate(l.updatedAt || l.createdAt || Date.now())} 저장</span>
       ${l.origin ? `<span class="origin">자료실에서 가져옴 · 원작 ${esc(l.origin.author || '')}</span>` : l.submittedAt ? '<span class="origin">공유 신청함</span>' : ''}</div>
-    ${cur ? '<span class="note">지금 열려 있음</span>' : '<button class="btn main sm" data-lib="open">열기</button>'}
-    ${fin ? '' : '<button class="btn sm" data-lib="final">완성으로 올리기</button>'}
-    <details class="lmenu"><summary class="btn sm">더보기</summary><div class="row" style="margin-top:6px">
-      ${fin ? '<button class="btn sm" data-lib="draft">작업 중으로 되돌리기</button>' : ''}<button class="btn sm" data-lib="copy">복사본 만들기</button><button class="btn sm" data-lib="export">백업 파일로 저장</button><button class="btn sm danger" data-lib="del">삭제</button></div></details>
+    <div class="lbtns" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+      ${cur ? '<span class="note">지금 열려 있음</span>' : '<button class="btn main sm" data-lib="open">열기</button>'}
+      ${fin ? '<button class="btn sm" data-lib="draft">작업 중으로 되돌리기</button>' : '<button class="btn sm" data-lib="final">완성으로 올리기</button>'}
+      <button class="btn sm" data-lib="export">파일로 내려받기</button>
+      <button class="btn sm" data-lib="copy">복사본 만들기</button>
+      <button class="btn sm danger" data-lib="del">삭제</button>
+    </div>
   </div>`;
 }
 function backupNote(){
@@ -1686,7 +1702,7 @@ function renderLib(){
   const list = libTab === 'final' ? fin : dr;
   const empty = dr.filter(l => !(l.sentences || []).length && l.id !== lesson.id);
   const hint = libTab === 'final' ? '제목을 정하고 문장·시간을 마친 수업입니다. 공유 신청과 무료 공개는 이 수업들로 합니다.' : '만드는 중인 수업과 연습·실험 기록입니다. 자동으로 지워지지 않습니다. 다 만들면 ‘완성으로 올리기’를 누르세요.';
-  $('#libList').innerHTML = `<div class="row" style="margin-bottom:8px"><button class="chip" data-libtab="final" aria-pressed="${libTab === 'final'}">완성한 수업 ${fin.length}</button><button class="chip" data-libtab="draft" aria-pressed="${libTab === 'draft'}">작업 중 ${dr.length}</button><span class="spacer"></span><span class="note">${backupNote()}</span></div>
+  $('#libList').innerHTML = `<div class="row" style="margin-bottom:8px"><button class="chip" data-libtab="final" aria-pressed="${libTab === 'final'}">완성한 수업 ${fin.length}</button><button class="chip" data-libtab="draft" aria-pressed="${libTab === 'draft'}">작업 중 ${dr.length}</button><span class="spacer"></span><button class="btn sm" data-libexport="1">지금 파일로 내려받기</button><span class="note">${backupNote()}</span></div>
     <p class="note" style="margin:0 0 6px">${hint}</p>`
     + (list.length ? list.map(libItemHTML).join('') : `<p class="note">${libTab === 'final' ? '완성한 수업이 아직 없습니다. 이전에 저장한 백업 파일이 있다면 아래 ‘백업 파일 불러오기’로 복원하세요.' : '작업 중인 수업이 없습니다.'}</p>`)
     + (libTab === 'draft' && empty.length ? `<p><button class="btn sm danger" data-libclear="1">내용 없는 빈 수업 ${empty.length}개 한 번에 지우기</button></p>` : '');
@@ -1699,6 +1715,7 @@ function download(name, obj){
 const safeName = t => (t || '수업').replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 40) || '수업';
 $('#btnLib').onclick = () => { renderLib(); $('#libDlg').showModal(); };
 $('#libList').addEventListener('click', e => {
+  if(e.target.closest('[data-libexport]')) return $('#libExportAll').click();
   const tb = e.target.closest('[data-libtab]'); if(tb){ libTab = tb.dataset.libtab; return renderLib(); }
   const b = e.target.closest('[data-lib]'); if(!b || !b.closest('.litem')) return;
   const id = b.closest('.litem').dataset.id, lib = loadLib(), l = lib[id]; if(!l) return;
@@ -1720,7 +1737,12 @@ $('#libList').addEventListener('click', e => {
     }
     case 'export': download(`쉐도잉_${safeName(l.title)}.json`, {app:'shadowroom', version:1, lessons:[l]}); break;
     case 'del': {
-      if(!confirm(`“${l.title}” 수업을 지울까요? 되돌릴 수 없습니다.`)) return;
+      // 마지막으로 파일을 내려받은 뒤 바뀌었거나 한 번도 내려받지 않은 수업이면 한 번 더 확인
+      const lastBk = (() => { try{ return +localStorage.getItem('shadowroom.lastBackup') || 0; }catch(_){ return 0; } })();
+      const unsaved = !lastBk || (l.updatedAt || 0) > lastBk;
+      let msg = `“${l.title}” 수업을 지울까요? 되돌릴 수 없습니다.`;
+      if(unsaved) msg = `“${l.title}”은(는) 파일로 내려받은 뒤 바뀌었거나 아직 내려받은 적이 없습니다.\n\n지우기 전에 [취소]를 누르고 ‘파일로 내려받기’를 먼저 눌러 주세요.\n\n그래도 지울까요? 되돌릴 수 없습니다.`;
+      if(!confirm(msg)) return;
       delete lib[id]; writeLib(lib);
       if(id === lesson.id){
         const rest = Object.values(lib).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
@@ -1736,7 +1758,6 @@ $('#libList').addEventListener('click', e => {
   if(!ids.length || !confirm(`문장이 없는 빈 수업 ${ids.length}개를 지울까요? (내용이 없어 잃는 것은 없습니다)`)) return;
   ids.forEach(k => delete lib[k]); writeLib(lib); renderLib(); toast('빈 수업을 지웠습니다.');
 });
-$('#libSample').onclick = () => { $('#libDlg').close(); switchLesson(sampleLesson()); setTab('lesson'); };
 $('#libExportAll').onclick = () => {
   saveNow(); try{ localStorage.setItem('shadowroom.lastBackup', String(Date.now())); }catch(e){}
   const all = Object.values(loadLib());
@@ -1819,7 +1840,6 @@ function openFreeLesson(i){
   const l = openLessons[i]; if(!l) return;
   $('#hubDlg').close();
   importLibLesson(l, {subId:'open-' + l.id, lessonId:l.id, author:'공개 수업', school:''}, false);
-  const c = lesson; delete c.origin; c.title = l.title; renderAll(); save();
   toast(`“${l.title}” 수업을 열었습니다. 내 수업 목록에도 저장됩니다.`, 4000);
 }
 
@@ -1970,6 +1990,11 @@ async function hubGet(subId, btn){
   }
 }
 function importLibLesson(l, meta, forCheck){
+  // 이미 가져온 수업이면 새로 복사하지 않고 기존 수업을 연다 (누를 때마다 목록이 늘어나는 문제 방지)
+  if(!forCheck){
+    const ex = Object.values(loadLib()).find(x => x.origin && x.origin.subId === meta.subId && !x.origin.check);
+    if(ex){ switchLesson(ex); setTab('lesson'); return; }
+  }
   const c = JSON.parse(JSON.stringify(l));
   c.id = uid(); c.final = !forCheck; c.createdAt = c.updatedAt = Date.now();
   c.sentences.forEach(s => { s.id = uid(); });
@@ -2010,15 +2035,10 @@ function renderHubAdminLogin(msg){
     <p>관리자 비밀번호만 넣으면 됩니다.</p>
     ${msg ? `<p class="issues" style="list-style:none;padding:0">${esc(msg)}</p>` : ''}
     <div class="row"><input class="inp" type="password" id="admPw" placeholder="관리자 비밀번호" style="max-width:240px"><button class="btn main" id="admOk">들어가기</button></div>
-    <details style="margin-top:12px"><summary class="note">고급: 우편함 주소 바꾸기</summary>
-    <input class="inp" id="admEp" value="${esc(hubEndpoint())}" placeholder="https://script.google.com/macros/s/…/exec" style="margin-top:6px"></details></div>
+    </div>
     <div class="hfoot"><button class="linky" data-hubgo="back">자료실로</button></div>`;
   const go = async () => {
-    const ep = $('#admEp').value.trim(), pw = $('#admPw').value;
-    if(ep && ep !== hubEndpoint()){
-      if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(ep)) return renderHubAdminLogin('우편함 주소는 https://script.google.com/macros/s/ 로 시작하고 /exec 로 끝나야 합니다.');
-      try{ localStorage.setItem(HUB_EP_KEY, ep); }catch(e){}
-    }
+    const pw = $('#admPw').value;
     try{ sessionStorage.setItem(HUB_ADMIN_KEY, pw); }catch(e){}
     loadAdmin();
   };
@@ -2221,7 +2241,7 @@ function maybeAskSubmit(){
 }
 
 
-function openLesson(l){
+function openLesson(l, opts){
   lesson = l;
   lesson.blank = Object.assign({mode:'random', ratio:0.3, seed:1}, lesson.blank || {});
   E.target = 0; E.plays = 0; E.endedAt = -1; clearGap(); ui.revealed.clear(); ui.tap = false; tm.open = false; document.body.classList.remove('timing');
@@ -2241,8 +2261,10 @@ function openLesson(l){
     $('#ytUrl').value = ''; $('#srcStatus').textContent = '';
   }
   $('#rawScript').value = ''; $('#importStatus').textContent = '';
-  renderAll(); save();
+  welcome = !!(opts && opts.welcome);
+  renderAll(); if(!welcome) save(); renderWelcome();
 }
+function renderWelcome(){ const w = $('#welcomeOverlay'); if(w) w.hidden = !(welcome && !N()); }
 loadPrefs();
 Player.rate = ui.rate;
 (function init(){
@@ -2255,7 +2277,8 @@ Player.rate = ui.rate;
   }catch(e){}
   let curId = null; try{ curId = localStorage.getItem(CUR_KEY); }catch(e){}
   const all = Object.values(lib).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-  openLesson(lib[curId] || all[0] || sampleLesson());
+  if(!all.length) openLesson(newLesson(), {welcome:true});
+  else openLesson(lib[curId] || all[0]);
 })();
 </script>
 </body>
