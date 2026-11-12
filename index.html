@@ -31,8 +31,13 @@ button{cursor:pointer}
 .title-input{flex:1;min-width:120px;max-width:520px;background:var(--stage2);border:1px solid var(--stage-line);border-radius:6px;padding:6px 10px;color:var(--stage-text);font-size:16px}
 .title-input:hover,.title-input:focus{border-color:var(--stage-line);background:var(--stage2)}
 .save-state{font-size:12.5px;color:var(--stage-muted);white-space:nowrap}
-.title-box{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;max-width:560px}
-.title-label{font-size:12px;color:var(--stage-muted)}
+.top-actions.left{margin-left:0}
+.title-box{display:flex;flex-direction:column;gap:0;min-width:0;flex:1;max-width:560px;background:#fff;color:#1d2633;border:2px solid #1f8a70;border-radius:10px;padding:5px 12px}
+.title-box:focus-within{box-shadow:0 0 0 3px #7fd3c4}
+.title-label{font-size:12px;color:#1f6e5c;font-weight:700}
+.title-box .title-input,.title-box .title-input:hover,.title-box .title-input:focus{background:transparent;border:none;color:#1d2633;padding:2px 0;max-width:none;font-size:17px;font-weight:600;outline:none}
+.title-box .save-state,.title-box .save-state.ok{color:#1f6e5c;font-size:12px}
+.title-box .save-state.err{color:#b3261e}
 .tbtn.weak{background:transparent;border-style:dashed;color:var(--stage-muted)}
 .welcome-btn{font-size:18px;padding:14px 26px;border-radius:12px}
 .welcome-msg{font-size:16px;line-height:1.7}
@@ -293,14 +298,16 @@ body.hc .caption .ko{color:#fff}
 
 <header class="top">
   <div class="brand">쉐도잉 교실</div>
+  <div class="top-actions left">
+    <button class="tbtn primary" id="btnHub">📚 공용 자료실</button>
+    <button class="tbtn" id="btnLib">📂 수업 목록</button>
+  </div>
   <div class="title-box">
-    <label class="title-label" for="lessonTitle">영상 제목 ✎</label>
-    <input id="lessonTitle" class="title-input" aria-label="영상 제목" placeholder="영상 제목을 적어 주세요">
+    <label class="title-label" for="lessonTitle">✎ 영상 제목</label>
+    <input id="lessonTitle" class="title-input" aria-label="영상 제목" placeholder="여기에 영상 제목을 적으세요">
     <span id="saveState" class="save-state" role="status" aria-live="polite"></span>
   </div>
   <div class="top-actions">
-    <button class="tbtn primary" id="btnHub">📚 공용 자료실</button>
-    <button class="tbtn" id="btnLib">📂 수업 목록</button>
     <button class="tbtn weak" id="btnNew">＋ 새 수업</button>
     <button class="tbtn weak" id="btnHelp" aria-label="단축키 보기">⌨ 단축키</button>
   </div>
