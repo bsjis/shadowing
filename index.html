@@ -18,7 +18,7 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font-family:var(--ui);color:var(--ink);background:var(--paper);font-size:15px;line-height:1.5}
+body{display:flex;flex-direction:column;font-family:var(--ui);color:var(--ink);background:var(--paper);font-size:15px;line-height:1.5}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid #5BB8C0;outline-offset:2px}
@@ -26,7 +26,7 @@ button{cursor:pointer}
 .en{font-family:var(--en)}
 
 /* ---------- header ---------- */
-.top{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--stage);color:var(--stage-text);border-bottom:1px solid var(--stage-line)}
+.top{display:flex;flex:none;align-items:center;gap:12px;padding:10px 16px;background:var(--stage);color:var(--stage-text);border-bottom:1px solid var(--stage-line)}
 .brand{font-weight:600;font-size:16px;white-space:nowrap}
 .title-input{flex:1;min-width:120px;max-width:520px;background:var(--stage2);border:1px solid var(--stage-line);border-radius:6px;padding:6px 10px;color:var(--stage-text);font-size:16px}
 .title-input:hover,.title-input:focus{border-color:var(--stage-line);background:var(--stage2)}
@@ -41,15 +41,19 @@ button{cursor:pointer}
 .tbtn.weak{background:transparent;border-style:dashed;color:var(--stage-muted)}
 .welcome-btn{font-size:18px;padding:14px 26px;border-radius:12px}
 .welcome-msg{font-size:16px;line-height:1.7}
+#emptyOverlay p{background:#fff;color:#1d2633;padding:12px 18px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .save-state.ok{color:#8FD9B0}
 .save-state.err{color:#FF9C8A;font-weight:600}
 .top-actions{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
 .tbtn{background:var(--stage2);border:1px solid var(--stage-line);color:var(--stage-text);border-radius:8px;padding:7px 12px}
 .tbtn:hover{border-color:#5A6F97}
 .tbtn.primary{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
+.tbtn.hub{background:transparent;border-color:#6FD3C0;color:#6FD3C0;font-weight:600}
+.tbtn.hub small{font-size:11px;font-weight:500;opacity:.85;margin-left:2px}
+.hub-sep{width:1px;align-self:stretch;background:var(--stage-line);margin:0 4px}
 
 /* ---------- layout ---------- */
-.layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(360px,1fr);height:calc(100% - 57px)}
+.layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(360px,1fr);flex:1;min-height:0}
 .stage{background:var(--stage);color:var(--stage-text);padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto}
 .panel{display:flex;flex-direction:column;min-height:0;border-left:1px solid var(--line);background:var(--paper)}
 
@@ -285,7 +289,7 @@ body.hc .caption .ko{color:#fff}
 
 /* ---------- responsive ---------- */
 @media (max-width:920px){
-  .layout{grid-template-columns:1fr;height:auto}
+  .layout{grid-template-columns:1fr;height:auto;flex:none;min-height:auto}
   .panel{border-left:0;border-top:1px solid var(--line);min-height:70vh}
   .script,.edit{overflow:visible}
   .stage{overflow:visible}
@@ -299,8 +303,7 @@ body.hc .caption .ko{color:#fff}
 <header class="top">
   <div class="brand">쉐도잉 교실</div>
   <div class="top-actions left">
-    <button class="tbtn primary" id="btnHub">📚 공용 자료실</button>
-    <button class="tbtn" id="btnLib">📂 수업 목록</button>
+    <button class="tbtn" id="btnLib">📂 내 수업</button>
   </div>
   <div class="title-box">
     <label class="title-label" for="lessonTitle">✎ 영상 제목</label>
@@ -308,8 +311,10 @@ body.hc .caption .ko{color:#fff}
     <span id="saveState" class="save-state" role="status" aria-live="polite"></span>
   </div>
   <div class="top-actions">
-    <button class="tbtn weak" id="btnNew">＋ 새 수업</button>
+    <button class="tbtn weak" id="btnNew">＋ 수업 만들기</button>
     <button class="tbtn weak" id="btnHelp" aria-label="단축키 보기">⌨ 단축키</button>
+    <span class="hub-sep" aria-hidden="true"></span>
+    <button class="tbtn hub" id="btnHub">📚 공용 자료실 <small>협의회</small></button>
   </div>
 </header>
 
@@ -575,7 +580,7 @@ body.hc .caption .ko{color:#fff}
   <div class="lib-foot"><span class="note">신청한 뒤에도 내 수업은 그대로 고칠 수 있습니다.</span><span class="spacer"></span><button class="btn main" id="sbSend">신청하기</button></div>
 </dialog>
 <dialog id="libDlg" class="lib">
-  <div class="lib-head"><h3>수업 목록</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div class="lib-head"><h3>내 수업</h3><form method="dialog"><button class="btn">닫기</button></form></div>
   <p class="note" style="margin:0 0 10px">이 컴퓨터에만 저장되어 있어요. 컴퓨터를 바꾸거나 기록을 지우면 사라질 수 있어요. <b>[파일로 내려받기]</b>로 받아 두세요.</p>
   <div id="libList"></div>
   <div class="lib-foot">
@@ -1665,7 +1670,7 @@ function switchLesson(l){ saveNow(); openLesson(l); }
 $('#btnNew').onclick = () => {
   switchLesson(newLesson()); setTab('edit');
   setTimeout(() => { const t = $('#lessonTitle'); t.focus(); t.select(); }, 0);
-  toast('새 수업을 만들었습니다. 맨 위에 수업 제목을 적어 주세요. 이전 수업은 ‘수업 목록’에 그대로 있습니다.', 4200);
+  toast('새 수업을 만들었습니다. 맨 위에 수업 제목을 적어 주세요. 이전 수업은 ‘내 수업’에 그대로 있습니다.', 4200);
 };
 function fmtDate(ms){ const d = new Date(ms); return `${d.getMonth() + 1}월 ${d.getDate()}일 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
 let libTab = 'final';
@@ -1847,7 +1852,7 @@ function openFreeLesson(i){
   const l = openLessons[i]; if(!l) return;
   $('#hubDlg').close();
   importLibLesson(l, {subId:'open-' + l.id, lessonId:l.id, author:'공개 수업', school:''}, false);
-  toast(`“${l.title}” 수업을 열었습니다. 내 수업 목록에도 저장됩니다.`, 4000);
+  toast(`“${l.title}” 수업을 열었습니다. 내 수업에도 저장됩니다.`, 4000);
 }
 
 const HUB_KEY = 'shadowroom.hub.v1', HUB_EP_KEY = 'shadowroom.hub.endpoint', HUB_ADMIN_KEY = 'shadowroom.hub.admin';
@@ -1990,7 +1995,7 @@ async function hubGet(subId, btn){
     if(!already){ hub.imported.push(subId); if(!hub.contrib) hub.freeUsed.push(subId); saveHub(); }
     $('#hubDlg').close();
     importLibLesson(j.lesson, j.meta, false);
-    toast(`“${j.meta.title}” 수업을 내 수업 목록으로 가져왔습니다.` + (!hub.contrib && !already ? ` 무료 가져가기 ${freeLeft()}개 남음.` : ''), 4000);
+    toast(`“${j.meta.title}” 수업을 내 수업으로 가져왔습니다.` + (!hub.contrib && !already ? ` 무료 가져가기 ${freeLeft()}개 남음.` : ''), 4000);
   }catch(e){
     if(btn){ btn.disabled = false; btn.textContent = '가져가기'; }
     toast(e.message, 4000);
@@ -2084,7 +2089,7 @@ function renderAdmin(){
           ${x.status !== '승인' ? '<button class="btn main sm" data-adm="승인">승인</button>' : '<button class="btn sm" data-adm="openset">★ 무료 공개로 지정</button><button class="btn sm danger" data-adm="내림">자료실에서 내리기</button>'}
           ${x.status === '대기' ? '<button class="btn sm danger" data-adm="반려">반려</button>' : ''}
         </div></div>`).join('') : '<p class="empty">해당하는 수업이 없습니다.</p>'}</div>
-    <p class="note" style="margin-top:10px">‘가져와서 확인’은 무료 개수와 상관없이 내 수업 목록에 [검토] 복사본을 만듭니다. 확인 후 지워도 됩니다.</p>`;
+    <p class="note" style="margin-top:10px">‘가져와서 확인’은 무료 개수와 상관없이 내 수업에 [검토] 복사본을 만듭니다. 확인 후 지워도 됩니다.</p>`;
 }
 function renderOpenPanel(){
   const mine = Object.values(loadLib()).filter(l => !l.origin && isFinal(l) && l.sentences && l.sentences.length >= 2).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
