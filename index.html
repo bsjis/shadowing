@@ -60,7 +60,13 @@ body.is-playing .title-input{cursor:default}
 .tbtn.hub small{font-size:11px;font-weight:500;opacity:.85;margin-left:2px}
 .hub-sep{width:1px;align-self:stretch;background:var(--stage-line);margin:0 4px}
 body[data-role="student"] #btnLib,body[data-role="student"] #btnNew,body[data-role="student"] #btnHub,body[data-role="student"] .hub-sep,body[data-role="student"] [data-tab="edit"],body[data-role="student"] #pane-edit,body[data-role="student"] #emptyOverlay .linkbtn,body[data-role="student"] #submitBox{display:none!important}
-body[data-role="general"] #btnLib,body[data-role="general"] #btnHub,body[data-role="general"] .hub-sep,body[data-role="general"] #submitBox{display:none!important}
+body[data-role="general"] #btnLib,body[data-role="general"] #btnHub,body[data-role="general"] .hub-sep{display:none!important}
+#titleText{display:none}
+.title-text{font-size:15px;font-weight:500;color:#E8EDF7;padding:1px 0 3px;min-height:20px;max-width:460px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body[data-role="student"] #lessonTitle,body[data-role="student"] .title-label{display:none!important}
+body[data-role="student"] #titleText{display:block}
+body[data-role="student"] .title-box{border-bottom-color:transparent}
+.free-pick{display:flex;flex-direction:column;gap:10px;align-items:center}
 
 /* ---------- layout ---------- */
 .layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(360px,1fr);flex:1;min-height:0}
@@ -318,6 +324,7 @@ body.hc .caption .ko{color:#fff}
   <div class="title-box">
     <label class="title-label" for="lessonTitle">✎ 영상 제목</label>
     <input id="lessonTitle" class="title-input" aria-label="영상 제목" placeholder="여기에 영상 제목을 적으세요">
+    <div id="titleText" class="title-text" aria-label="수업 제목"></div>
     <span id="saveState" class="save-state" role="status" aria-live="polite"></span>
   </div>
   <div class="top-actions">
@@ -342,7 +349,8 @@ body.hc .caption .ko{color:#fff}
       <div class="overlay welcome" id="welcomeOverlay" hidden>
         <p class="welcome-msg">원어민 영상을 따라 말하며 연습하는<br>쉐도잉 교실에 오신 것을 환영합니다.</p>
         <button class="btn main welcome-btn" data-free-start>연습하기</button>
-        <button class="linkbtn" data-teacher-code>선생님이신가요? 코드 입력</button>
+        <div class="free-pick" id="freePick" hidden></div>
+        <button class="linkbtn" data-teacher-code>선생님이신가요?</button>
       </div>
       <div class="overlay" id="blockedOverlay" hidden></div>
       <div class="gap" id="gapOverlay" hidden>
@@ -566,6 +574,7 @@ body.hc .caption .ko{color:#fff}
 <dialog id="submitDlg" class="lib">
   <div class="lib-head"><h3>공유 신청하기</h3><form method="dialog"><button class="btn">닫기</button></form></div>
   <p class="note" style="margin:6px 0 0">보낼 수업: <b id="sbTitle"></b></p>
+  <p class="note" id="sbUnsaved" hidden style="color:#8A5A00">저장되지 않은 수업입니다. 창을 닫거나 새로고침하면 수업이 사라지니, 신청은 지금 마치세요.</p>
   <div class="form">
     <label id="sbCodeWrap" class="full">회원 코드 <input class="inp" id="sbCode" autocomplete="off" placeholder="협의회에서 안내받은 회원 코드"></label>
     <label>작성자 이름 (자료실에 표시) <input class="inp" id="sbAuthor" maxlength="20" placeholder="예: 김○○"></label>
@@ -588,6 +597,10 @@ body.hc .caption .ko{color:#fff}
   </div>
   <p class="issues" id="sbMsg" style="list-style:none;padding:0;margin-top:8px"></p>
   <div class="lib-foot"><span class="note">신청한 뒤에도 원래 수업은 그대로 고칠 수 있습니다.</span><span class="spacer"></span><button class="btn main" id="sbSend">신청하기</button></div>
+</dialog>
+<dialog id="teacherDlg" class="lib">
+  <div class="lib-head"><h3>선생님 입구</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="teacherBody"></div>
 </dialog>
 <dialog id="libDlg" class="lib">
   <div class="lib-head"><h3>저장</h3><form method="dialog"><button class="btn">닫기</button></form></div>
@@ -674,7 +687,7 @@ function applyRole(){
   document.body.dataset.role = r;
   const t = $('#lessonTitle'); if(t) t.readOnly = r === 'student';
 }
-setInterval(() => { document.body.classList.toggle('is-playing', Player.isPlaying()); }, 200);
+setInterval(() => { document.body.classList.toggle('is-playing', Player.isPlaying()); const tt = $('#titleText'); if(tt && lesson) tt.textContent = lesson.title || ''; }, 200);
 
 /* ---------------- 저장 ---------------- */
 const DRAFT_KEY = 'shadowroom.draft.v1', PREF_KEY = 'shadowroom.prefs.v2';
@@ -1588,8 +1601,9 @@ $('#script').addEventListener('click', onTextClick);
 $('#caption').addEventListener('click', onTextClick);
 
 document.addEventListener('click', e => {
-  if(e.target.closest('[data-free-start]')){ loadOpenLessons().then(list => { if(list.length) openFreeLesson(0); }); return; }
-  if(e.target.closest('[data-teacher-code]')){ openHub(); return; }
+  const fp = e.target.closest('[data-free-pick]'); if(fp){ openFreeLesson(+fp.dataset.freePick); return; }
+  if(e.target.closest('[data-free-start]')){ loadOpenLessons().then(list => { if(list.length === 1) openFreeLesson(0); else if(list.length > 1) showFreePick(list); }); return; }
+  if(e.target.closest('[data-teacher-code]')){ openTeacherEntry(); return; }
   const v = e.target.closest('[data-view]'); if(v){ setView(v.dataset.view); }
   if(e.target.closest('[data-toggle-ko]')) setKo(!ui.ko);
   const ot = e.target.closest('[data-open-tab]'); if(ot) setTab(ot.dataset.openTab);
@@ -1879,6 +1893,68 @@ function marksHTML(text, marks){
   }).join(' ');
 }
 function fmtLen(sec){ sec = Math.round(sec || 0); const m = Math.floor(sec / 60), s = sec % 60; return m ? `${m}분${s ? ' ' + s + '초' : ''}` : `${s}초`; }
+
+/* ---------- 선생님 입구 (회원 코드 / 처음 오신 선생님) ---------- */
+function showFreePick(list){
+  const sb = document.querySelector('[data-free-start]'); if(sb) sb.hidden = true;
+  const box = $('#freePick'); box.hidden = false;
+  box.innerHTML = '<p class="note" style="margin:0 0 4px">연습할 수업을 고르세요</p>' + list.map((l, i) => `<button class="btn main welcome-btn" data-free-pick="${i}" style="font-size:16px;padding:12px 20px">${esc(l.title)}</button>`).join('');
+}
+function openTeacherEntry(msg){
+  const d = $('#teacherDlg'); if(!d.open) d.showModal();
+  $('#teacherBody').innerHTML = `
+    <div class="gate">
+      <h4>회원 코드가 있어요</h4>
+      <p>협의회 승인 후 받은 회원 코드를 넣으면 저장과 공용 자료실을 쓸 수 있습니다.</p>
+      <div class="row"><input class="inp" id="tCode" placeholder="회원 코드" style="max-width:240px" autocomplete="off"><button class="btn main" id="tCodeOk">확인</button></div>
+      ${msg ? `<p class="issues" style="padding:0;list-style:none">${esc(msg)}</p>` : ''}
+    </div>
+    <div class="gate" style="margin-top:14px">
+      <h4>처음이에요</h4>
+      <p>이름, 학교, 이메일을 적으면 바로 수업을 만들고 편집할 수 있습니다. 저장은 승인 후에 가능합니다.</p>
+      <div class="row"><button class="btn" id="tFirst">처음 오신 선생님으로 시작</button></div>
+    </div>`;
+  const go = async () => {
+    const code = $('#tCode').value.trim(); if(!code) return;
+    $('#tCodeOk').disabled = true;
+    try{
+      const j = await hubApi('info', {memberCode:code});
+      const role = j.role === 'general' ? 'general' : 'approved';
+      hub.memberCode = role === 'approved' ? code : ''; hub.freeLimit = j.freeLimit ?? 1; saveHub();
+      setRole(role);
+      $('#teacherDlg').close();
+      if(role === 'general'){ toast('수업 만들기와 편집을 쓸 수 있습니다. 저장과 공용 자료실은 승인 후에 쓸 수 있습니다.', 5000); return; }
+      openHub();
+    }catch(e){ openTeacherEntry(e.message); }
+  };
+  $('#tCodeOk').onclick = go;
+  $('#tCode').onkeydown = e => { if(e.key === 'Enter') go(); };
+  $('#tFirst').onclick = () => renderFirstForm();
+}
+function renderFirstForm(msg){
+  const d = $('#teacherDlg'); if(!d.open) d.showModal();
+  $('#teacherBody').innerHTML = `<div class="gate">
+    <h4>처음 오신 선생님</h4>
+    <div class="form">
+      <label>이름 <input class="inp" id="tName" value="${esc(hub.author || '')}"></label>
+      <label>학교 이름 <input class="inp" id="tSchool" value="${esc(hub.school || '')}"></label>
+      <label>교육청 이메일 <input class="inp" id="tEmail" placeholder="예: name@○○.go.kr" value="${esc(hub.email || '')}"></label>
+    </div>
+    ${msg ? `<p class="issues" style="padding:0;list-style:none">${esc(msg)}</p>` : ''}
+    <div class="row" style="margin-top:10px"><button class="btn main" id="tStart">시작하기</button><button class="linky" id="tBack">뒤로</button></div>
+    <p class="note" style="margin-top:10px">수업 만들기, 편집, 공유 신청을 할 수 있습니다. 저장과 공용 자료실은 승인 후에 쓸 수 있습니다. 이메일은 승인 후 회원 코드를 보내는 데만 씁니다.</p>
+  </div>`;
+  $('#tBack').onclick = () => openTeacherEntry();
+  $('#tStart').onclick = () => {
+    const name = $('#tName').value.trim(), school = $('#tSchool').value.trim(), email = $('#tEmail').value.trim();
+    if(!name || !school || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return renderFirstForm('이름, 학교, 이메일을 모두 바르게 적어 주세요.');
+    hub.author = name; hub.school = school; hub.email = email; saveHub();
+    if(getRole() === 'student') setRole('general');
+    $('#teacherDlg').close();
+    switchLesson(newLesson()); setTab('edit');
+    toast('수업을 만들고 편집할 수 있습니다. 저장은 승인 후에 됩니다.', 4500);
+  };
+}
 
 /* ---------- 열기 / 회원 코드 ---------- */
 let hubItems = [], hubFilter = {q:'', level:'', topic:''};
@@ -2200,7 +2276,8 @@ function openSubmit(){
   $('#sbSource').value = lesson.sourceCredit || ''; $('#sbRights').checked = false; $('#sbKind').value = lesson.sourceKind || 'official'; $('#sbCC').hidden = $('#sbKind').value !== 'cc'; $('#sbFilm').hidden = $('#sbKind').value !== 'film'; $('#sbSend').disabled = $('#sbKind').value === 'film'; $('#sbCC1').checked = $('#sbCC2').checked = false;
   $('#sbAuthor').value = hub.author || ''; $('#sbSchool').value = hub.school || '';
   $('#sbLevel').value = meta.level || '중'; $('#sbTopic').value = meta.topic || '연설'; $('#sbNote').value = meta.note || '';
-  $('#sbCodeWrap').hidden = !!hub.memberCode; $('#sbCode').value = '';
+  $('#sbCodeWrap').hidden = !!hub.memberCode || getRole() === 'general'; $('#sbCode').value = '';
+  $('#sbUnsaved').hidden = getRole() !== 'general';
   $('#sbMsg').textContent = ''; $('#sbSend').disabled = false; $('#sbSend').textContent = '신청하기';
   $('#sbTitle').textContent = lesson.title;
   $('#submitDlg').showModal();
@@ -2216,15 +2293,15 @@ async function sendSubmit(){
   if(kind === 'cc' && !($('#sbCC1').checked && $('#sbCC2').checked)){ $('#sbMsg').textContent = 'CC BY 영상은 두 가지 확인 항목에 모두 체크해야 신청할 수 있습니다.'; return; }
   const srcUrl = (lesson.source && lesson.source.url) || '';
   const code = hub.memberCode || $('#sbCode').value.trim();
-  if(!code){ $('#sbMsg').textContent = '회원 코드를 적어 주세요.'; return; }
+  if(!code && getRole() !== 'general'){ $('#sbMsg').textContent = '회원 코드를 적어 주세요.'; return; }
   const meta = {author, school:$('#sbSchool').value.trim(), level:$('#sbLevel').value, topic:$('#sbTopic').value, note:'[출처] ' + srcCredit + ' / ' + kindLabel + (srcUrl ? ' / ' + srcUrl : '') + (kind === 'cc' ? ' / 설명란 CC BY 확인함' : '') + ($('#sbNote').value.trim() ? '\n' + $('#sbNote').value.trim() : ''),
     duration:Math.max(0, ...lesson.sentences.map(s => s.end))};
   $('#sbSend').disabled = true; $('#sbSend').textContent = '신청하는 중…';
   try{
     lesson.sourceCredit = srcCredit; lesson.sourceKind = kind; saveNow();
     const copy = JSON.parse(JSON.stringify(lesson)); delete copy.submittedAt; delete copy.libMeta; copy.sourceCredit = srcCredit;
-    await hubApi('submit', {memberCode:code, lesson:copy, meta});
-    hub.memberCode = code; hub.author = author; hub.school = meta.school; saveHub();
+    await hubApi('submit', {memberCode:code, applicant:{name:author, school:meta.school, email:hub.email || ''}, lesson:copy, meta});
+    if(code) hub.memberCode = code; hub.author = author; hub.school = meta.school; saveHub();
     lesson.submittedAt = Date.now(); lesson.final = true; lesson.libMeta = {level:meta.level, topic:meta.topic, note:$('#sbNote').value.trim()};
     saveNow(); renderSubmitBox();
     $('#submitDlg').close();
@@ -2239,7 +2316,7 @@ $('#btnSubmitBanner').onclick = openSubmit;
 $('#sbSend').onclick = sendSubmit;
 // 시간 맞추기를 끝냈을 때 한 번 물어봄
 function maybeAskSubmit(){
-  if(!lesson || lesson.submittedAt || lesson.origin || !hubEndpoint() || !canSave()) return;
+  if(!lesson || lesson.submittedAt || lesson.origin || !hubEndpoint() || getRole() === 'student') return;
   const {block, warn} = submitIssues(lesson);
   if(block.length || warn.length) return;
   setTimeout(() => { if(confirm('모든 문장의 시간을 맞췄습니다. 이 수업을 협의회 자료실에 공유 신청할까요?')) openSubmit(); }, 300);
@@ -2269,7 +2346,8 @@ function openLesson(l, opts){
   welcome = !!(opts && opts.welcome);
   renderAll(); if(!welcome) save(); renderWelcome();
 }
-function renderWelcome(){ const w = $('#welcomeOverlay'); if(w) w.hidden = !(welcome && !N()); }
+function renderWelcome(){ const w = $('#welcomeOverlay'); if(w) w.hidden = !(welcome && !N());
+  const sb = document.querySelector('[data-free-start]'); if(sb) sb.hidden = false; const fp = $('#freePick'); if(fp) fp.hidden = true; }
 loadPrefs();
 Player.rate = ui.rate;
 (function init(){
