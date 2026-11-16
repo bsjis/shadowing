@@ -291,6 +291,8 @@ dialog.hub{max-width:840px}
 .lockpill{font-size:12.5px;color:var(--muted);border:1px dashed var(--line);border-radius:6px;padding:4px 8px}
 .dup{margin:2px 0;font-size:13px;color:#8A5A00;background:#FFF4D6;border-radius:6px;padding:4px 8px}
 .status.warn{color:#8A5A00;background:#FFF4D6;border-radius:8px;padding:8px 10px}
+.aibox{margin-top:12px;border:1.5px dashed var(--teal);border-radius:10px;padding:10px 12px;background:#F6FBFB}
+.aibox.off #aiRow{display:none!important}
 .copyright{flex:none;text-align:center;font-size:11px;color:var(--muted);padding:3px 8px;background:var(--paper);border-top:1px solid var(--line)}
 body.present .copyright,body.timing .copyright{display:none}
 @media (max-width:600px){.hcard{flex-direction:column}.hthumb{width:100%}.form{grid-template-columns:1fr}}
@@ -551,6 +553,20 @@ body.hc .caption .ko{color:#fff}
             <button class="btn main" id="btnImport">문장 목록 만들기</button>
           </div>
           <div class="status" id="importStatus"></div>
+          <div class="aibox" id="aiBox">
+            <div class="row"><b>자막이 없으면 AI로 받아 적기</b><span class="spacer"></span><span class="note" id="aiLeft"></span></div>
+            <div class="row" id="aiRow" style="margin-top:6px">
+              <span class="note">구간</span>
+              <input class="inp" id="aiFrom" value="0:00" style="width:5.5em;font-family:var(--en)" aria-label="받아 적기 시작">
+              <span>~</span>
+              <input class="inp" id="aiTo" value="3:00" style="width:5.5em;font-family:var(--en)" aria-label="받아 적기 끝">
+              <span class="note">최대 5분</span>
+              <span class="spacer"></span>
+              <button class="btn main" id="btnAi">AI로 받아 적기</button>
+            </div>
+            <p class="note" id="aiNote" style="margin:6px 0 0">AI 초안입니다. 꼭 들어 보고 고치세요. 공개 유튜브 영상만 되고, 회원은 하루 5번까지 쓸 수 있습니다. 위의 ‘지금 목록을 새로 바꾸기 / 끝에 이어 붙이기’ 선택을 따릅니다.</p>
+            <div class="status" id="aiStatus"></div>
+          </div>
         </section>
 
         <section class="tapbar">
@@ -704,6 +720,7 @@ function applyRole(){
   const r = getRole();
   document.body.dataset.role = r;
   const t = $('#lessonTitle'); if(t) t.readOnly = r === 'student';
+  if(typeof renderAiBox === 'function' && $('#aiBox')) renderAiBox();
 }
 setInterval(() => { document.body.classList.toggle('is-playing', Player.isPlaying()); const tt = $('#titleText'); if(tt && lesson) tt.textContent = welcome ? '' : (lesson.title || ''); }, 200);   // 학생 첫 화면에는 제목을 비움
 
@@ -1332,7 +1349,7 @@ function syncToolbar(){
   $('#lessonTitle').value = lesson.title || '';
 }
 function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
-function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); }
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); }
 function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 
@@ -1551,6 +1568,7 @@ $('#btnYt').onclick = () => {
   $('#srcStatus').textContent = `유튜브 영상 ${p.id}${p.start ? ` · ${fmt(p.start)}부터` : ''}을 불러왔습니다. 재생이 막힌 영상이면 화면에 안내가 나옵니다.`;
   save();
   checkVideoDup(p.id);   // 같은 영상 수업이 자료실에 있으면 알려 줌
+  aiDefaultRange(); $('#aiStatus').textContent = '';
 };
 $('#ytUrl').addEventListener('keydown', e => { if(e.key === 'Enter') $('#btnYt').click(); });
 $('#mediaFile').onchange = e => {
@@ -1961,7 +1979,15 @@ const HUB_ERR = {
   alreadymember:'이미 회원으로 가입된 이메일입니다. ‘선생님 입구’의 ‘이메일로 다시 받기’로 회원 코드를 받으세요.',
   alreadypending:'이 이메일로 낸 가입 신청이 이미 승인을 기다리고 있습니다.',
   bademail:'이메일 주소를 확인해 주세요.', badform:'이름과 학교를 적어 주세요.', noconsent:'무료 공개 동의에 체크해 주세요.',
-  badstatus:'지금 상태에서는 할 수 없는 일입니다. 새로 고침 후 다시 확인해 주세요.', busy:'서버가 바쁩니다. 잠시 뒤 다시 시도해 주세요.'
+  badstatus:'지금 상태에서는 할 수 없는 일입니다. 새로 고침 후 다시 확인해 주세요.', busy:'서버가 바쁩니다. 잠시 뒤 다시 시도해 주세요.',
+  ailimit:'오늘 AI 받아 적기 5번을 모두 쓰셨어요. 내일 다시 하거나 스크립트를 붙여 넣으세요.',
+  aiquota:'오늘 AI 사용 한도가 끝났어요. 내일 다시 하거나 스크립트를 붙여 넣으세요.',
+  ainokey:'서버에 AI 키가 아직 설정되지 않았어요. 관리자에게 알려 주세요.',
+  aikey:'AI 키가 맞지 않거나 사용이 막혀 있어요. 관리자에게 알려 주세요.',
+  aibadvideo:'AI가 이 영상을 열지 못했어요. 공개 영상인지, 연령 제한이 없는지 확인해 주세요.',
+  aitoolong:'구간은 5분 이하로 골라 주세요. (끝이 시작보다 뒤여야 합니다)',
+  aiempty:'AI가 이 구간에서 영어 말소리를 찾지 못했어요. 다른 구간을 골라 보세요.',
+  aifail:'AI 받아 적기에 실패했어요. 잠시 뒤 다시 해 보세요.'
 };
 function hubError(code, detail){
   const base = HUB_ERR[code];
@@ -2611,6 +2637,55 @@ async function checkVideoDup(videoId){
   }catch(e){}
 }
 
+/* ---------- AI 받아 적기 (자막 없는 영상) ---------- */
+// 서버(Apps Script)가 Gemini에 유튜브 주소와 구간만 보내고, 문장·시간·해석 초안을 받아 옵니다.
+function renderAiBox(){
+  const box = $('#aiBox'); if(!box) return;
+  const ok = ['member', 'approved', 'admin'].includes(getRole());
+  box.classList.toggle('off', !ok);
+  if(!ok){ $('#aiNote').textContent = '회원이 되면 쓸 수 있어요. 자막이 없는 공개 유튜브 영상의 영어 문장을 AI가 받아 적어 줍니다.'; $('#aiLeft').textContent = ''; return; }
+  $('#aiNote').textContent = 'AI 초안입니다. 꼭 들어 보고 고치세요. 공개 유튜브 영상만 되고, 회원은 하루 5번까지 쓸 수 있습니다. 위의 ‘지금 목록을 새로 바꾸기 / 끝에 이어 붙이기’ 선택을 따릅니다.';
+}
+function aiDefaultRange(){
+  const st = lesson && lesson.source && lesson.source.kind === 'youtube' ? (lesson.source.startAt || 0) : 0;
+  $('#aiFrom').value = fmtClock(st); $('#aiTo').value = fmtClock(st + 180);
+}
+$('#btnAi').onclick = async () => {
+  const say = (t, cls) => { const el = $('#aiStatus'); el.className = 'status' + (cls ? ' ' + cls : ''); el.textContent = t; };
+  if(!['member', 'approved', 'admin'].includes(getRole())) return say('회원만 쓸 수 있어요.', 'err');
+  if(!lesson.source || lesson.source.kind !== 'youtube') return say('먼저 위 ‘영상’ 칸에서 유튜브 주소를 불러오세요.', 'err');
+  const s = parseClock($('#aiFrom').value), e = parseClock($('#aiTo').value);
+  if(isNaN(s) || isNaN(e)) return say('구간은 1:30처럼 적어 주세요.', 'err');
+  if(!(e > s)) return say('끝이 시작보다 뒤여야 해요.', 'err');
+  if(e - s > 300) return say('구간은 5분 이하로 골라 주세요.', 'err');
+  const append = $('input[name="imode"]:checked').value === 'append';
+  if(N() && !append && !confirm('지금 문장 목록을 AI가 받아 적은 문장으로 새로 바꿀까요? 해석·빈칸·표시도 함께 지워집니다.\n(기존 문장 뒤에 붙이려면 [취소]를 누르고 ‘지금 목록 끝에 이어 붙이기’를 고르세요.)')) return;
+  const btn = $('#btnAi'); btn.disabled = true; btn.textContent = '받아 적는 중…';
+  say(`AI가 ${fmtClock(s)}~${fmtClock(e)} 구간을 듣고 받아 적는 중이에요. 30초~1분쯤 걸려요. 창을 닫지 마세요.`);
+  const vid = lesson.source.videoId, lessonId = lesson.id;
+  try{
+    const j = await hubApi('ai_transcribe', Object.assign({videoId:vid, start:s, end:e}, authData()));
+    if(!lesson || lesson.id !== lessonId) return;   // 그사이 다른 수업을 열었으면 넣지 않음
+    const list = j.sentences || [];
+    const sents = list.map((x, i) => {
+      const next = list[i + 1];
+      let end = Number(x.end);
+      if(!(end > x.start)) end = next ? next.start : x.start + Math.max(1.2, x.text.split(/\s+/).length / 2.6);
+      if(next && end > next.start + 0.3) end = next.start;
+      const m = mkSent(x.text, x.start, Math.max(end, x.start + 0.4), 'estimated'); m.ko = x.ko || ''; return m;
+    });
+    if(append) lesson.sentences = lesson.sentences.concat(sents).sort((a, b) => a.start - b.start);
+    else { lesson.sentences = sents; lesson.blank.mode = 'random'; ui.revealed.clear(); }
+    E.target = 0; E.plays = 0; E.endedAt = -1; clearGap();
+    renderAll(); save();
+    say(`AI가 ${sents.length}개 문장을 받아 적었어요${j.left != null ? ` (오늘 남은 횟수 ${j.left}번)` : ''}. AI 초안이니 들어 보고 틀린 단어를 고치세요. 시간은 아래 ‘시간 맞추기’로 다듬으면 정확해져요.`, 'warn');
+    if(j.left != null) $('#aiLeft').textContent = `오늘 남은 횟수 ${j.left}번`;
+  }catch(err){
+    say(err.message, 'err');
+    if(err.code === 'wrongmember' || err.code === 'suspended') forceStudent(err.message + ' 선생님 입구에서 다시 들어와 주세요.');
+  }finally{ btn.disabled = false; btn.textContent = 'AI로 받아 적기'; }
+};
+
 function openLesson(l, opts){
   lesson = l;
   lesson.blank = Object.assign({mode:'random', ratio:0.3, seed:1}, lesson.blank || {});
@@ -2632,7 +2707,7 @@ function openLesson(l, opts){
     $('#emptyOverlay p').textContent = '아직 영상이 없습니다. 유튜브 주소나 내 컴퓨터의 mp4·mp3 파일을 불러오세요.';
     $('#ytUrl').value = ''; $('#srcStatus').className = 'status'; $('#srcStatus').textContent = '';
   }
-  $('#rawScript').value = ''; $('#importStatus').textContent = '';
+  $('#rawScript').value = ''; $('#importStatus').textContent = ''; $('#aiStatus').textContent = ''; aiDefaultRange();
   welcome = !!(opts && opts.welcome);
   renderAll(); if(!welcome) save(); renderWelcome();
 }
