@@ -5,6 +5,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>쉐도잉 교실</title>
+<meta name="theme-color" content="#15203A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="쉐도잉">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
@@ -33,13 +41,25 @@ button{cursor:pointer}
 .title-input:hover,.title-input:focus{border-color:var(--stage-line);background:var(--stage2)}
 .save-state{font-size:12.5px;color:var(--stage-muted);white-space:nowrap}
 .top-actions.left{margin-left:0}
-.title-box{display:flex;flex-direction:column;gap:0;min-width:0;flex:1;max-width:460px;background:transparent;color:#E8EDF7;border:none;border-bottom:1px dashed rgba(232,237,247,.35);border-radius:0;padding:0 2px}
-.title-box:focus-within{border-bottom:1px solid #6FD3C0}
+.title-box{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1;max-width:460px;background:transparent;color:#E8EDF7;border:none;padding:0 2px}
 .title-label{font-size:11px;color:#9fb0c8;font-weight:500}
-.title-box .title-input,.title-box .title-input:hover,.title-box .title-input:focus{background:transparent;border:none;color:#E8EDF7;padding:1px 0 3px;max-width:none;font-size:15px;font-weight:500;outline:none}
+.title-box .title-input{background:rgba(255,255,255,.08);border:1px solid rgba(232,237,247,.45);border-radius:6px;color:#E8EDF7;padding:4px 9px;max-width:none;font-size:15px;font-weight:500;outline:none;cursor:text}
+.title-box .title-input:hover{border-color:rgba(232,237,247,.75)}
+.title-box .title-input:focus{border-color:#6FD3C0;background:rgba(255,255,255,.12)}
+.title-box .title-input::placeholder{color:#FFD27A;opacity:1}
+.title-box .title-input.need{border-color:#FFC266}
+.title-box .title-input.blink{animation:titleBlink .45s ease-in-out 4}
+@keyframes titleBlink{50%{box-shadow:0 0 0 4px #FFE066;border-color:#FFE066}}
+.state-row{display:flex;align-items:center;gap:8px;min-height:16px}
+.link-state{background:#FFE066;color:#3A2E00;border:0;border-radius:10px;padding:1px 9px;font-size:11.5px;font-weight:600;line-height:1.5}
+.linkurl{display:flex;gap:6px;align-items:center;margin:6px 0}
+.linkurl input{flex:1;min-width:0;font-family:var(--en);font-size:13px}
+.linkok{color:#1E6B3A;font-size:13.5px}.linkwarn{color:#8A5A00;background:#FFF4D6;border-radius:6px;padding:6px 9px;font-size:13.5px}
+body[data-role="student"] #linkBox,body[data-role="student"] #linkState{display:none!important}
+.linky.goto{color:var(--warn);text-decoration:underline;font:inherit;text-align:left;padding:0}
 .title-box .save-state,.title-box .save-state.ok{color:#8FD9B0;font-size:11px}
 .title-box .save-state.err{color:#FF9C8A}
-body.is-playing .title-box{border-bottom-color:transparent}
+body.is-playing .title-input:not(:focus){background:transparent;border-color:transparent}
 body.is-playing .title-label{display:none}
 body.is-playing .title-input{cursor:default}
 .tbtn.weak{background:transparent;border-style:dashed;color:var(--stage-muted)}
@@ -67,6 +87,7 @@ body:not([data-role="student"]) #btnTeacher{display:none!important}
 body[data-role="student"] #lessonTitle,body[data-role="student"] .title-label{display:none!important}
 body[data-role="student"] #titleText{display:block}
 body[data-role="student"] .title-box{border-bottom-color:transparent}
+.last-link{background:#fff;border:1.5px solid var(--teal);color:#0B5F65;font-size:15px;max-width:90%}
 .free-pick{display:flex;flex-direction:column;gap:10px;align-items:center}
 
 /* ---------- layout ---------- */
@@ -79,9 +100,17 @@ body[data-role="student"] .title-box{border-bottom-color:transparent}
 .video-wrap iframe,.video-wrap video,#ytHost{position:absolute;inset:0;width:100%;height:100%;border:0}
 .video-wrap video.audio{background:#0d1526 radial-gradient(circle at 50% 50%,#22345a 0,#0d1526 60%)}
 #shield{position:absolute;inset:0;display:none;cursor:pointer}
-#ccCover{position:absolute;left:0;right:0;bottom:0;height:18%;background:#0B1222;pointer-events:none;display:none;border-top:1px solid #2A3A5C}
+/* 자막 가리개: 위치·크기는 영상 크기에 대한 비율(%)로 저장 → 휴대폰에서도 같은 자리를 가림 */
+#ccCover{position:absolute;left:10%;top:72%;width:80%;height:18%;display:none;pointer-events:none;z-index:3;background:#000;border-radius:4px}
 #ccCover.on{display:block}
-body.hc #ccCover{background:#000}
+#ccCover.s-dim{background:rgba(0,0,0,.62)}
+#ccCover.s-blur{background:rgba(10,16,30,.28);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#ccCover.s-blur.noblur{background:rgba(0,0,0,.72)}
+#ccCover.edit{pointer-events:auto;cursor:move;outline:2px dashed #FFE066;outline-offset:-2px;touch-action:none}
+#ccCover .cv-h{display:none;position:absolute;right:0;bottom:0;width:22px;height:22px;background:#FFE066;border-radius:4px 0 4px 0;cursor:nwse-resize;touch-action:none}
+#ccCover .cv-tag{display:none;position:absolute;left:6px;top:3px;font-size:11.5px;color:#FFE066;white-space:nowrap;pointer-events:none}
+#ccCover.edit .cv-h,#ccCover.edit .cv-tag{display:block}
+body[data-role="student"] #coverCtrl,body[data-role="student"] #bCover{display:none!important}
 .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px;background:rgba(10,16,30,.92);color:var(--stage-text)}
 .overlay p{margin:0;max-width:34em}
 .overlay a,.overlay .linkbtn{color:#8FD3D8}
@@ -302,6 +331,48 @@ dialog table{border-collapse:collapse;width:100%;font-size:14px}
 dialog td{padding:6px 4px;border-bottom:1px solid var(--line)}
 kbd{font-family:var(--en);background:var(--paper);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 7px;font-size:13px}
 
+/* ---------- 휴대폰 화면 (좁은 화면에서만) ---------- */
+.mcard,.mchips,.mnote{display:none}
+dialog.sheet{margin:auto auto 0;width:100%;max-width:640px;max-height:78vh;border-radius:16px 16px 0 0;padding:12px 14px 18px;border:0}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}.sheet-head form{margin-left:auto}
+.sheet-list{list-style:none;margin:0;padding:0;overflow:auto;max-height:64vh}
+.sheet-list button{display:flex;gap:10px;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid var(--line);padding:11px 6px;font-size:15px;line-height:1.45}
+.sheet-list button b{flex:none;min-width:2em;color:var(--teal);font-family:var(--en)}
+.sheet-list button.on{background:var(--teal-weak);font-weight:600}
+@media (max-width:700px){
+  body.mob{padding-bottom:calc(128px + env(safe-area-inset-bottom))}
+  body.mob .layout{display:block}
+  body.mob .panel,body.mob .ctrls,body.mob .present-ctrl,body.mob .caption,body.mob .where,body.mob #btnNew,body.mob #btnHub,body.mob .hub-sep,body.mob #btnHelp,body.mob .title-label{display:none!important}
+  body.mob .top{padding:8px 10px;gap:8px;flex-wrap:wrap}
+  body.mob .top-actions{gap:6px}
+  body.mob .tbtn{padding:6px 10px;font-size:13.5px}
+  body.mob .title-box{order:3;flex-basis:100%;max-width:none}
+  body.mob .stage{padding:10px;gap:10px;overflow:visible}
+  body.mob .video-wrap{border-radius:8px}
+  body.mob.is-welcome .video-wrap{aspect-ratio:auto;min-height:420px}
+  body.mob .mcard{display:block;background:var(--stage2);border:1px solid var(--stage-line);border-radius:14px;padding:12px 14px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+  body.mob.is-welcome .mcard,body.mob.is-welcome .mchips{display:none}
+  .mpos{display:flex;align-items:center;justify-content:space-between;color:var(--stage-muted);font-size:13.5px;font-variant-numeric:tabular-nums}
+  .mlist-btn{background:transparent;border:1px solid var(--stage-line);color:var(--stage-text);border-radius:16px;padding:5px 12px;font-size:13.5px}
+  .mtext{font-size:21px;line-height:1.55;margin:10px 0 8px;color:#fff;min-height:3em}
+  .mko-btn{background:transparent;border:0;color:#8FD3D8;padding:4px 0;font-size:14.5px}
+  .mko{margin:4px 0 0;color:var(--stage-muted);font-size:16px;line-height:1.5}
+  .mhint{margin:8px 0 0;font-size:12.5px;color:#FFE066;text-align:center}
+  body.mob .mchips{display:flex;flex-wrap:wrap;gap:8px}
+  .mchips label{display:flex;align-items:center;gap:6px;background:var(--stage2);border:1px solid var(--stage-line);border-radius:18px;padding:4px 6px 4px 12px;color:var(--stage-muted);font-size:13.5px}
+  .mchips select{background:transparent;border:0;color:var(--stage-text);font-size:14px;padding:2px}
+  .mchips option{color:#111}
+  body.mob:not([data-role="student"]) .mnote{display:block;margin:0;font-size:12.5px;color:var(--stage-muted)}
+  body.mob .transport{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--stage);border-top:1px solid var(--stage-line)}
+  body.mob .transport .sbtn{min-height:52px;font-size:15.5px;border-radius:12px;padding:8px}
+  body.mob .transport .sbtn.play{min-height:58px;font-size:17px;min-width:0}
+  body.mob #bRepeat{grid-column:1 / -1;min-height:40px}
+  body.mob.is-welcome .transport{display:none}
+  body.mob{background:var(--stage)}
+  body.mob .copyright{margin-bottom:0;background:var(--stage);color:var(--stage-muted);border-top:0}
+  body.mob #ccCover .cv-tag{display:none!important}
+}
+
 /* ---------- presentation mode ---------- */
 body.present .top,body.present .panel{display:none}
 body.present .layout{grid-template-columns:1fr;height:100%}
@@ -347,7 +418,7 @@ body.hc .caption .ko{color:#fff}
     <label class="title-label" for="lessonTitle">✎ 영상 제목</label>
     <input id="lessonTitle" class="title-input" aria-label="영상 제목" placeholder="여기에 영상 제목을 적으세요">
     <div id="titleText" class="title-text" aria-label="수업 제목"></div>
-    <span id="saveState" class="save-state" role="status" aria-live="polite"></span>
+    <span class="state-row"><span id="saveState" class="save-state" role="status" aria-live="polite"></span><button id="linkState" class="link-state" hidden title="고친 내용을 학생용 링크에도 반영합니다">↻ 학생 링크에 반영</button></span>
   </div>
   <div class="top-actions">
     <button class="tbtn weak" id="btnNew">＋ 수업 만들기</button>
@@ -364,7 +435,7 @@ body.hc .caption .ko{color:#fff}
     <div class="video-wrap" id="videoWrap">
       <div id="ytHost"></div>
       <video id="fileVideo" playsinline hidden></video>
-      <div id="ccCover" aria-hidden="true"></div>
+      <div id="ccCover" aria-hidden="true"><span class="cv-tag">끌어서 옮기기 · 모서리로 크기</span><span class="cv-h"></span></div>
       <div id="shield" title="클릭하면 재생/정지"></div>
       <div class="overlay" id="emptyOverlay">
         <p>아직 영상이 없습니다. 유튜브 주소나 내 컴퓨터의 mp4·mp3 파일을 불러오세요.</p>
@@ -373,6 +444,8 @@ body.hc .caption .ko{color:#fff}
       <div class="overlay welcome" id="welcomeOverlay" hidden>
         <p class="welcome-msg">원어민 영상을 따라 말하며 연습하는<br>쉐도잉 교실에 오신 것을 환영합니다.</p>
         <button class="btn main welcome-btn" data-free-start>연습하기</button>
+        <button class="btn welcome-btn last-link" id="btnLastLink" hidden></button>
+        <p class="welcome-msg" id="linkMsg" hidden></p>
         <div class="free-pick" id="freePick" hidden></div>
         <button class="linkbtn" data-teacher-code>선생님이신가요?</button>
       </div>
@@ -385,6 +458,21 @@ body.hc .caption .ko{color:#fff}
         </div>
       </div>
     </div>
+
+    <!-- 휴대폰 화면 (학생 연습용) -->
+    <div class="mcard" id="mCard" aria-live="polite">
+      <div class="mpos"><span id="mPos"></span><button class="mlist-btn" id="mListBtn">문장 목록</button></div>
+      <p class="en mtext" id="mText"></p>
+      <div class="mko-row"><button class="mko-btn" id="mKoBtn" aria-pressed="false">뜻 보기</button></div>
+      <p class="mko" id="mKo" hidden></p>
+      <p class="mhint" id="mHint" hidden>← 옆으로 밀면 문장을 넘길 수 있어요 →</p>
+    </div>
+    <div class="mchips" id="mChips">
+      <label>속도 <select id="mRate" aria-label="재생 속도"><option value="0.5">0.5배</option><option value="0.75">0.75배</option><option value="1">1배</option><option value="1.25">1.25배</option></select></label>
+      <label>따라 말하기 <select id="mScope" aria-label="따라 말하기"><option value="off">끔</option><option value="marked">지정한 문장만</option><option value="all">모든 문장</option></select></label>
+      <label>반복 <select id="mRepeat" aria-label="반복 횟수"><option value="1">1번</option><option value="2">2번</option><option value="3">3번</option><option value="5">5번</option></select></label>
+    </div>
+    <p class="mnote" id="mNote">수업 만들기와 자료 편집은 컴퓨터에서 해 주세요. 휴대폰에서는 연습 화면만 보입니다.</p>
 
     <div class="timing" id="timingPanel">
       <div class="t-head">
@@ -462,9 +550,11 @@ body.hc .caption .ko{color:#fff}
         <button class="sbtn mini" id="bYtCC" aria-pressed="false">끔</button>
         <span class="note" style="color:var(--stage-muted)">영어 자막을 켜고 끕니다</span>
       </div>
-      <div class="ctrl"><span>영상에 박힌 자막</span>
-        <label><input type="checkbox" id="chkCover"> 아래쪽 가리기</label>
-        <input type="range" id="rngCover" min="8" max="40" step="1" value="18" aria-label="가리는 높이">
+      <div class="ctrl" id="coverCtrl"><span>자막 가리개</span>
+        <label><input type="checkbox" id="chkCover"> 켜기</label>
+        <select id="selCover" aria-label="가리개 색"><option value="black">검정</option><option value="dim">반투명</option><option value="blur">흐림</option></select>
+        <button class="sbtn mini" id="bCoverEdit" aria-pressed="false">위치·크기 조절</button>
+        <span class="note" id="coverNote" style="color:var(--stage-muted)">영상에 박힌 자막을 가립니다. 수업마다 저장되고 학생 화면에도 똑같이 보입니다.</span>
       </div>
       <div class="ctrl"><span>구간 반복</span>
         <button class="sbtn mini" id="bA">A 지점</button>
@@ -593,6 +683,12 @@ body.hc .caption .ko{color:#fff}
             <span class="note">추가한 문장은 수업 탭에도 바로 나타납니다.</span></div>
         </section>
 
+        <section class="box" id="linkBox">
+          <h3>학생용 링크</h3>
+          <p class="desc" id="linkDesc"></p>
+          <div id="linkBody"></div>
+        </section>
+
         <section class="box" id="submitBox">
           <h3 id="submitH">공유 신청하기</h3>
           <p class="desc" id="submitDesc"></p>
@@ -645,6 +741,10 @@ body.hc .caption .ko{color:#fff}
   <p class="note" style="margin-top:12px">유튜브 화면 안을 직접 클릭하면 키 입력이 유튜브로 넘어갑니다. 그럴 땐 영상 바깥을 한 번 클릭하세요. 발표 모드에서는 영상을 클릭해도 단축키가 유지됩니다.</p>
   <form method="dialog" style="text-align:right;margin-top:10px"><button class="btn main">닫기</button></form>
 </dialog>
+<dialog id="listDlg" class="sheet" aria-label="문장 목록">
+  <div class="sheet-head"><b>문장 목록</b><span class="note">누르면 그 문장으로 갑니다</span><form method="dialog"><button class="btn">닫기</button></form></div>
+  <ol class="sheet-list" id="listOl"></ol>
+</dialog>
 <div id="toast" role="status"></div>
 
 <script>
@@ -695,7 +795,7 @@ const ui = {view:'script', ko:false, tool:'move', repeat:2, gap:1.5, advance:tru
   ab:{a:null, b:null, on:false}, tap:false, cap:52, hc:false, present:false, autoScroll:true, revealed:new Set(), tab:'lesson', cover:false, coverH:18, scope:'marked', ytCC:false, pad:0.3};
 const E = {target:0, plays:0, gap:null, ignoreUntil:0, lastT:0, endedAt:-1, single:false, seekTo:null, seekDeadline:0};
 
-/* ---------------- 역할: 학생(기본) / 처음 온 교사 / 회원 / 승인 교사 / 관리자 ---------------- */
+/* ---------------- 역할: 학생(기본) / 처음 온 교사 / 새싹 교사(member) / 기여 교사(approved) / 관리자 ---------------- */
 // 화면을 나누는 표시일 뿐입니다. 자료실 내용과 권한은 서버에서 다시 확인합니다.
 const ROLE_KEY = 'shadowroom.role.v1';
 const HUB_KEY = 'shadowroom.hub.v2', HUB_EP_KEY = 'shadowroom.hub.endpoint', HUB_ADMIN_KEY = 'shadowroom.hub.admin';
@@ -753,7 +853,7 @@ function setSaveState(kind){
   const el = $('#saveState'); if(!el) return;
   const d = new Date(), hm = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
   el.className = 'save-state' + (kind === 'ok' ? ' ok' : kind === 'err' ? ' err' : '');
-  el.textContent = kind === 'none' ? '' : kind === 'free' ? '무료 수업 · 고친 내용은 저장되지 않아요' : kind === 'ok' ? `✓ 저장됨 ${hm}` : kind === 'err' ? '⚠ 저장 실패' : '저장 중…';
+  el.textContent = kind === 'none' ? '' : kind === 'free' ? '무료 수업 · 고친 내용은 저장되지 않아요' : kind === 'link' ? '학생용 링크 수업 · 고친 내용은 저장되지 않아요' : kind === 'ok' ? `✓ 저장됨 ${hm}` : kind === 'err' ? '⚠ 저장 실패' : '저장 중…';
   el.title = kind === 'ok' ? '이 컴퓨터의 브라우저에 자동 저장되었습니다' : kind === 'err' ? '저장 공간이 부족하거나 저장이 막혀 있습니다' : kind === 'free' ? '‘내 수업’ 창에서 ‘내 수업으로 복사’를 누르면 고쳐서 저장할 수 있습니다' : '';
 }
 let saveTimer;
@@ -761,14 +861,14 @@ function saveNow(){
   clearTimeout(saveTimer);
   if(!lesson || welcome) return;
   if(!canSave()){ setSaveState('none'); return; }
-  if(lesson.transient){ setSaveState('free'); return; }
+  if(lesson.transient){ setSaveState(lesson.fromLink ? 'link' : 'free'); return; }
   const lib = loadLib();
   if(isEmptyLesson(lesson)){ if(lib[lesson.id]){ delete lib[lesson.id]; writeLib(lib); } setSaveState('none'); return; }   // 빈 수업은 남기지 않음
   lesson.updatedAt = Date.now();
   lib[lesson.id] = lesson;
   if(writeLib(lib)){ try{ localStorage.setItem(curKey(), lesson.id); }catch(e){} setSaveState('ok'); }
 }
-function save(){ setSaveState('busy'); clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveNow(); renderSubmitBox(); }, 400); }
+function save(){ setSaveState('busy'); clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveNow(); renderSubmitBox(); renderLinkBox(); }, 400); }
 window.addEventListener('beforeunload', saveNow);
 window.addEventListener('pagehide', saveNow);
 function savePrefs(){ try{ localStorage.setItem(PREF_KEY, JSON.stringify({view:ui.view, ko:ui.ko, repeat:ui.repeat, gap:ui.gap, scope:ui.scope, advance:ui.advance, rate:ui.rate, cap:ui.cap, hc:ui.hc, autoScroll:ui.autoScroll, cover:ui.cover, coverH:ui.coverH, ytCC:ui.ytCC, pad:ui.pad})); }catch(e){} }
@@ -838,8 +938,8 @@ const Player = {
     this.yt = new YT.Player('ytHost', {
       videoId:id, width:'100%', height:'100%', playerVars:vars,
       events:{
-        onReady:() => { this.ready = true; clearTimeout(this.readyTimer); showOverlay(null); this.setRate(this.rate); this.applyCC(); },
-        onStateChange:e => { if((e.data === 1 || e.data === 3) && !this.ccApplied){ this.ccApplied = true; this.applyCC(); } },
+        onReady:() => { this.ready = true; clearTimeout(this.readyTimer); showOverlay(null); this.setRate(this.rate); this.applyCC(); maybeAutoTitle(); setTimeout(maybeAutoTitle, 1500); },
+        onStateChange:e => { if((e.data === 1 || e.data === 3) && !this.ccApplied){ this.ccApplied = true; this.applyCC(); } maybeAutoTitle(); },
         onError:e => onPlayerError(e.data)
       }
     });
@@ -1311,7 +1411,7 @@ function onCurChange(){
     const el = $(`#script .sent[data-i="${E.target}"]`);
     el && el.scrollIntoView({block:'center', behavior:reduceMotion ? 'auto' : 'smooth'});
   }
-  renderCaption(); updateTransport();
+  renderCaption(); updateTransport(); renderMobile();
 }
 function updateTransport(){
   const playing = Player.isPlaying();
@@ -1338,19 +1438,18 @@ function syncToolbar(){
   $('#rngRate').value = String(ui.rate); $('#rateOut').textContent = ui.rate.toFixed(2) + '×';
   $('#chkScroll').checked = ui.autoScroll;
   $('#rngCap').value = String(ui.cap); document.documentElement.style.setProperty('--cap', ui.cap + 'px');
-  $('#chkCover').checked = ui.cover; $('#rngCover').value = String(ui.coverH);
-  $('#bCover').setAttribute('aria-pressed', String(ui.cover));
+  syncCover();
   $('#bYtCC').setAttribute('aria-pressed', String(ui.ytCC)); $('#bYtCC').textContent = ui.ytCC ? '켬' : '끔';
   $('#bYtCC2').setAttribute('aria-pressed', String(ui.ytCC));
-  $('#ccCover').classList.toggle('on', ui.cover); $('#ccCover').style.height = ui.coverH + '%';
   $('#bHC').setAttribute('aria-pressed', String(ui.hc)); document.body.classList.toggle('hc', ui.hc);
   $('#bAB').setAttribute('aria-pressed', String(ui.ab.on));
   $('#abLbl').textContent = (ui.ab.a != null ? 'A ' + fmt(ui.ab.a) : '') + (ui.ab.b != null ? '  B ' + fmt(ui.ab.b) : '');
   $('#lessonTitle').value = lesson.title || '';
+  $('#lessonTitle').classList.toggle('need', !lesson.title || /^새 수업$/.test(lesson.title.trim()));
 }
 function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
-function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); }
-function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); renderLinkBox(); renderMobile(); }
+function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); renderMobile(); }
 function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 
 /* ---------------- 편집 화면 ---------------- */
@@ -1718,14 +1817,61 @@ function setPresent(on){
   document.body.classList.toggle('present', on);
   if(on){ if(ui.tab !== 'lesson'){ ui.tab = 'lesson'; setTab('lesson'); ui.present = true; document.body.classList.add('present'); } document.documentElement.requestFullscreen?.().catch(() => {}); }
   else if(document.fullscreenElement) document.exitFullscreen().catch(() => {});
-  renderCaption();
+  renderCaption(); syncCover();
 }
 $('#btnPresent').onclick = () => setPresent(true);
 $('#bExitPresent').onclick = () => setPresent(false);
 $('#bFS').onclick = () => { if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen?.().catch(() => {}); };
-$('#chkCover').onchange = e => { ui.cover = e.target.checked; syncToolbar(); savePrefs(); };
-$('#rngCover').oninput = e => { ui.coverH = +e.target.value; if(!ui.cover) ui.cover = true; syncToolbar(); };
-$('#rngCover').onchange = e => { savePrefs(); e.target.blur(); };
+/* ---------------- 자막 가리개 (수업마다 저장) ---------------- */
+const COVER_DEF = {on:false, x:10, y:72, w:80, h:18, style:'black'};
+const BLUR_OK = !!(window.CSS && (CSS.supports('backdrop-filter', 'blur(2px)') || CSS.supports('-webkit-backdrop-filter', 'blur(2px)')));
+ui.cvEdit = false;
+function coverOf(){ return Object.assign({}, COVER_DEF, (lesson && lesson.cover) || {}); }
+function setCoverOn(on){
+  if(!lesson) return;
+  const first = !lesson.cover;
+  lesson.cover = Object.assign(coverOf(), {on});
+  if(on && first){ ui.cvEdit = true; toast('노란 점선 상자를 끌어서 자막 위에 놓고, 오른쪽 아래 노란 모서리를 끌어 크기를 맞추세요.', 5000); }
+  if(!on) ui.cvEdit = false;
+  syncCover(); save();
+}
+function syncCover(){
+  const c = coverOf(), el = $('#ccCover');
+  const on = !!(lesson && c.on && !welcome);
+  el.classList.toggle('on', on);
+  el.classList.remove('s-black', 's-dim', 's-blur'); el.classList.add('s-' + c.style);
+  el.classList.toggle('noblur', !BLUR_OK);
+  el.classList.toggle('edit', on && ui.cvEdit && canSave() && !ui.present);
+  Object.assign(el.style, {left:c.x + '%', top:c.y + '%', width:c.w + '%', height:c.h + '%'});
+  $('#chkCover').checked = on; $('#selCover').value = c.style;
+  $('#bCover').setAttribute('aria-pressed', String(on));
+  $('#bCoverEdit').setAttribute('aria-pressed', String(on && ui.cvEdit)); $('#bCoverEdit').textContent = on && ui.cvEdit ? '조절 끝내기' : '위치·크기 조절';
+  $('#bCoverEdit').hidden = !on; $('#selCover').hidden = !on;
+  $('#coverNote').textContent = on ? (c.style === 'blur' && !BLUR_OK ? '이 브라우저는 흐림을 못 해서 반투명 검정으로 보입니다.' : '수업마다 저장되고 학생 화면에도 똑같이 가려집니다.') : '영상에 박힌 자막을 가립니다.';
+}
+$('#chkCover').onchange = e => setCoverOn(e.target.checked);
+$('#selCover').onchange = e => { lesson.cover = Object.assign(coverOf(), {style:e.target.value}); syncCover(); save(); e.target.blur(); };
+$('#bCoverEdit').onclick = () => { ui.cvEdit = !ui.cvEdit; syncCover(); };
+(function coverDrag(){
+  const el = $('#ccCover'); let d = null;
+  el.addEventListener('pointerdown', e => {
+    if(!el.classList.contains('edit')) return;
+    e.preventDefault(); e.stopPropagation();
+    const r = $('#videoWrap').getBoundingClientRect();
+    d = {mode:e.target.classList.contains('cv-h') ? 'size' : 'move', x0:e.clientX, y0:e.clientY, W:r.width, H:r.height, c:coverOf()};
+    try{ el.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  el.addEventListener('pointermove', e => {
+    if(!d) return;
+    const dx = (e.clientX - d.x0) / d.W * 100, dy = (e.clientY - d.y0) / d.H * 100, c = Object.assign({}, d.c);
+    if(d.mode === 'move'){ c.x = clamp(c.x + dx, 0, 100 - c.w); c.y = clamp(c.y + dy, 0, 100 - c.h); }
+    else { c.w = clamp(c.w + dx, 6, 100 - c.x); c.h = clamp(c.h + dy, 4, 100 - c.y); }
+    ['x', 'y', 'w', 'h'].forEach(k => c[k] = Math.round(c[k] * 10) / 10);
+    lesson.cover = c; syncCover();
+  });
+  const end = () => { if(d){ d = null; save(); } };
+  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+})();
 function toggleYtCC(){
   ui.ytCC = !ui.ytCC; Player.applyCC(); syncToolbar(); savePrefs();
   if(Player.kind !== 'yt') toast('유튜브 영상에서만 쓰는 기능입니다.');
@@ -1733,12 +1879,86 @@ function toggleYtCC(){
 }
 $('#bYtCC').onclick = toggleYtCC;
 $('#bYtCC2').onclick = toggleYtCC;
-$('#bCover').onclick = () => { ui.cover = !ui.cover; syncToolbar(); savePrefs(); };
+$('#bCover').onclick = () => setCoverOn(!coverOf().on);
 $('#bHC').onclick = () => { ui.hc = !ui.hc; syncToolbar(); savePrefs(); };
 $('#rngCap').oninput = e => { ui.cap = +e.target.value; document.documentElement.style.setProperty('--cap', ui.cap + 'px'); };
 $('#rngCap').onchange = e => { savePrefs(); e.target.blur(); };
 
 $('#btnHelp').onclick = () => $('#helpDlg').showModal();
+
+/* ---------------- 휴대폰 화면 (학생 연습용) ---------------- */
+const mobMQ = matchMedia('(max-width:700px)');
+const isMob = () => mobMQ.matches;
+function applyMob(){ document.body.classList.toggle('mob', isMob()); if(isMob() && ui.present) setPresent(false); renderMobile(); }
+mobMQ.addEventListener ? mobMQ.addEventListener('change', applyMob) : mobMQ.addListener(applyMob);
+let mKoOpen = false, mLastTarget = -1;
+function renderMobile(){
+  if(!lesson || !$('#mCard')) return;
+  if(E.target !== mLastTarget){ mKoOpen = false; mLastTarget = E.target; }
+  const s = curS();
+  $('#mPos').textContent = N() ? `${E.target + 1} / ${N()} 문장` : '문장 없음';
+  $('#mText').innerHTML = s ? sentenceHTML(s, E.target) : (welcome ? '' : '아직 문장이 없어요.');
+  const hasKo = !!(s && s.ko);
+  $('#mKoBtn').hidden = !hasKo;
+  $('#mKoBtn').textContent = mKoOpen ? '뜻 숨기기' : '뜻 보기';
+  $('#mKoBtn').setAttribute('aria-pressed', String(mKoOpen));
+  $('#mKo').hidden = !(hasKo && mKoOpen); $('#mKo').textContent = hasKo ? s.ko : '';
+  $('#mRate').value = String([0.5, 0.75, 1, 1.25].reduce((a, v) => Math.abs(v - ui.rate) < Math.abs(a - ui.rate) ? v : a, 1));
+  $('#mScope').value = ui.scope; $('#mRepeat').value = String(ui.repeat);
+  if($('#listDlg').open) renderList();
+}
+$('#mKoBtn').onclick = () => { mKoOpen = !mKoOpen; renderMobile(); };
+$('#mRate').onchange = e => { ui.rate = +e.target.value; Player.setRate(ui.rate); syncToolbar(); savePrefs(); };
+$('#mScope').onchange = e => { ui.scope = e.target.value; if(ui.scope === 'off') clearGap(); syncToolbar(); savePrefs(); if(ui.scope === 'marked' && !lesson.sentences.some(x => x.shadow)) toast('선생님이 지정한 문장이 없어요. ‘모든 문장’을 고르면 문장마다 따라 말할 시간이 생겨요.', 4000); };
+$('#mRepeat').onchange = e => { ui.repeat = +e.target.value; syncToolbar(); savePrefs(); };
+// 문장 목록 (아래에서 올라오는 창)
+function renderList(){
+  $('#listOl').innerHTML = lesson.sentences.map((x, i) => `<li><button data-mgo="${i}" class="${i === E.target ? 'on' : ''}"><b>${i + 1}</b><span class="en">${esc(x.text)}</span></button></li>`).join('');
+}
+$('#mListBtn').onclick = () => {
+  if(!N()) return;
+  renderList(); $('#listDlg').showModal();
+  const on = $('#listOl .on'); on && on.scrollIntoView({block:'center'});
+};
+$('#listOl').onclick = e => { const b = e.target.closest('[data-mgo]'); if(!b) return; $('#listDlg').close(); goTo(+b.dataset.mgo); };
+// 옆으로 밀어서 문장 넘기기: 오른쪽으로 밀면 앞 문장, 왼쪽으로 밀면 다음 문장
+(function swipe(){
+  const card = $('#mCard'); let sx = 0, sy = 0, st = 0, on = false;
+  card.addEventListener('touchstart', e => { if(e.touches.length !== 1) return; on = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now(); }, {passive:true});
+  card.addEventListener('touchend', e => {
+    if(!on) return; on = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if(Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.3 || Date.now() - st > 900 || !N()) return;
+    if(e.target.closest('button, select')) return;
+    goTo(E.target + (dx > 0 ? -1 : 1));
+    try{ localStorage.setItem(SWIPE_KEY, '1'); }catch(err){}
+    $('#mHint').hidden = true;
+  });
+})();
+const SWIPE_KEY = 'shadowroom.swipeHint';
+function maybeSwipeHint(){
+  if(!isMob() || !N() || welcome) return;
+  try{ if(localStorage.getItem(SWIPE_KEY)) return; localStorage.setItem(SWIPE_KEY, '1'); }catch(e){ return; }
+  $('#mHint').hidden = false; setTimeout(() => { $('#mHint').hidden = true; }, 6000);
+}
+// 휴대폰: 연습하는 동안 화면이 꺼지지 않게 (되는 기기에서만)
+let wakeLock = null;
+async function keepAwake(){
+  if(!isMob() || wakeLock || !('wakeLock' in navigator) || document.visibilityState !== 'visible') return;
+  try{ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); }catch(e){}
+}
+document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'visible' && Player.isPlaying()) keepAwake(); });
+// 휴대폰(특히 아이폰)은 처음 한 번은 영상 화면을 직접 눌러야 소리가 나는 경우가 있음
+let firstTapHinted = false;
+function mobPlayCheck(){
+  if(!isMob()) return;
+  keepAwake();
+  if(firstTapHinted || Player.kind !== 'yt') return;
+  setTimeout(() => {
+    if(!Player.isPlaying() && !E.gap && !firstTapHinted){ firstTapHinted = true; toast('재생이 시작되지 않으면 영상 화면을 한 번 직접 눌러 주세요. 그다음부터는 아래 버튼으로 할 수 있어요.', 6000); }
+  }, 1800);
+}
+['#bPlay', '#bPrev', '#bNext', '#bRepeat'].forEach(sel => $(sel).addEventListener('click', mobPlayCheck));
 /* ---------------- 내 수업 ---------------- */
 function switchLesson(l){ saveNow(); openLesson(l); }
 // 처음 온 교사가 처음 수업을 만들 때 한 번 알림
@@ -1754,7 +1974,7 @@ $('#btnNew').onclick = () => {
   if(!firstNotice()) return;
   switchLesson(newLesson()); setTab('edit');
   setTimeout(() => { const t = $('#lessonTitle'); t.focus(); t.select(); }, 0);
-  toast('새 수업을 만들었습니다. 맨 위에 수업 제목을 적어 주세요. 이전 수업은 ‘내 수업’에 그대로 있습니다.', 4200);
+  toast('새 수업을 만들었습니다. 유튜브 주소를 넣으면 영상 제목이 맨 위 제목 칸에 저절로 들어갑니다. 고쳐도 됩니다.', 4500);
 };
 function fmtDate(ms){ const d = new Date(ms); return `${d.getMonth() + 1}월 ${d.getDate()}일 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
 function fmtClock(sec){ sec = Math.max(0, Math.round(sec || 0)); return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0'); }
@@ -1889,7 +2109,27 @@ $('#libImport').onchange = async e => {
   renderLib();
   toast(`수업 ${added}개를 새로 가져왔습니다.` + (replaced ? ` ${replaced}개는 새 내용으로 바꿨습니다.` : ''), 3500);
 };
-$('#lessonTitle').oninput = e => { lesson.title = e.target.value; save(); };
+$('#lessonTitle').oninput = e => { lesson.title = e.target.value; lesson.titleEdited = true; delete lesson.titleAuto; e.target.classList.toggle('need', !lesson.title.trim() || /^새 수업$/.test(lesson.title.trim())); save(); };
+// '제목을 적어 주세요' 안내를 누르면 맨 위 제목 칸으로 바로 감
+function focusTitle(){
+  if(getRole() === 'student') return;
+  const t = $('#lessonTitle');
+  window.scrollTo({top:0, behavior:reduceMotion ? 'auto' : 'smooth'});
+  t.focus(); t.select();
+  t.classList.remove('blink'); void t.offsetWidth; t.classList.add('blink');
+}
+document.addEventListener('click', e => { if(e.target.closest('[data-focus-title]')){ e.preventDefault(); focusTitle(); } });
+// 제목이 비어 있으면 유튜브 영상 제목을 미리 넣음 (선생님이 한 번 고친 제목은 바꾸지 않음)
+function maybeAutoTitle(){
+  if(!lesson || welcome || lesson.transient || !canSave() || lesson.titleEdited) return;
+  if(lesson.title && !/^새 수업$/.test(lesson.title.trim())) return;
+  if(Player.kind !== 'yt' || !Player.yt || !lesson.source || lesson.source.videoId !== Player.videoId) return;
+  let t = ''; try{ t = String((Player.yt.getVideoData() || {}).title || '').trim(); }catch(e){}
+  if(!t) return;
+  lesson.title = t.slice(0, 120); lesson.titleAuto = true;
+  syncToolbar(); save();
+  toast('유튜브 영상 제목을 넣었어요. 맨 위 제목 칸에서 언제든 고칠 수 있어요.', 4000);
+}
 
 document.addEventListener('keydown', e => {
   if(e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
@@ -1971,7 +2211,7 @@ function hubEndpoint(){ let o = ''; try{ o = localStorage.getItem(HUB_EP_KEY) ||
 const HUB_ERR = {
   wrongmember:'회원 코드가 맞지 않습니다.', suspended:'사용이 멈춘 회원입니다. 협의회 관리자에게 문의해 주세요.',
   wrongadmin:'관리자 비밀번호가 맞지 않습니다.', noadminpw:'서버에 관리자 비밀번호가 아직 설정되지 않았습니다. 설치 안내의 ‘스크립트 속성’ 단계를 확인해 주세요.',
-  needmember:'회원만 쓸 수 있는 기능입니다.', needapproval:'내 수업 1개를 공유해 승인받으면 가져갈 수 있습니다.',
+  needmember:'회원만 쓸 수 있는 기능입니다.', needapproval:'내 수업 1개를 공유해 승인받아 기여 교사가 되면 가져갈 수 있습니다.',
   notfound:'그 항목을 찾을 수 없습니다. 이미 처리되었거나 자료실에서 내려갔을 수 있습니다.', toolarge:'수업이 너무 커서 보낼 수 없습니다. 문장 수를 줄여 주세요.',
   badlesson:'수업 내용이 올바르지 않습니다. 유튜브 영상으로 만든 수업이고 문장이 2개 이상이어야 합니다.', noendpoint:'자료실이 아직 연결되지 않았습니다.',
   network:'자료실에 연결하지 못했습니다. 인터넷 연결을 확인해 주세요.',
@@ -1987,7 +2227,10 @@ const HUB_ERR = {
   aibadvideo:'AI가 이 영상을 열지 못했어요. 공개 영상인지, 연령 제한이 없는지 확인해 주세요.',
   aitoolong:'구간은 5분 이하로 골라 주세요. (끝이 시작보다 뒤여야 합니다)',
   aiempty:'AI가 이 구간에서 영어 말소리를 찾지 못했어요. 다른 구간을 골라 보세요.',
-  aifail:'AI 받아 적기에 실패했어요. 잠시 뒤 다시 해 보세요.'
+  aifail:'AI 받아 적기에 실패했어요. 잠시 뒤 다시 해 보세요.',
+  needcontrib:'학생용 링크는 기여 교사부터 만들 수 있어요. 수업 1개를 공유해 승인받으세요.',
+  notyourlink:'내가 만든 링크가 아니라서 바꿀 수 없어요.',
+  linkoff:'이 링크는 끊겼거나 잘못된 링크예요. 선생님께 새 링크를 받아 주세요.'
 };
 function hubError(code, detail){
   const base = HUB_ERR[code];
@@ -2037,7 +2280,7 @@ function updateRoleFromServer(role){
   const up = role === 'approved' && getRole() === 'member';
   try{ localStorage.setItem(ROLE_KEY, role === 'approved' ? 'approved' : 'member'); }catch(e){}
   applyRole(); renderSubmitBox();
-  if(up) toast('승인 교사가 되셨습니다. 이제 자료실 수업을 모두 가져갈 수 있습니다.', 5000);
+  if(up) toast('기여 교사가 되셨습니다. 이제 자료실 수업을 모두 가져갈 수 있습니다.', 5000);
 }
 function forceStudent(msg){
   hub.memberCode = ''; saveHub();
@@ -2058,7 +2301,7 @@ async function enterCode(code, onErr, onDone){
   const moved = moveOpenDrawer();
   if(onDone) onDone();
   openFromDrawer();
-  toast((j.role === 'approved' ? `${j.name} 선생님, 승인 교사로 들어왔습니다.` : `${j.name} 선생님, 회원으로 들어왔습니다.`) + (moved ? ` 처음 만든 수업 ${moved}개를 내 수업으로 옮겼습니다.` : ''), 5000);
+  toast((j.role === 'approved' ? `${j.name} 선생님, 기여 교사로 들어왔습니다.` : `${j.name} 선생님, 새싹 교사로 들어왔습니다.`) + (moved ? ` 처음 만든 수업 ${moved}개를 내 수업으로 옮겼습니다.` : ''), 5000);
 }
 async function adminLogin(pw, onErr, onDone){
   if(!pw) return onErr('관리자 비밀번호를 넣어 주세요.');
@@ -2072,7 +2315,7 @@ async function adminLogin(pw, onErr, onDone){
   openHub();
   if(moved) toast(`이 브라우저에 있던 수업 ${moved}개를 관리자 내 수업으로 옮겼습니다.`, 4500);
 }
-// 서버에 회원 상태를 다시 물어봄 (승인 교사가 되었는지, 정지되었는지)
+// 서버에 회원 상태를 다시 물어봄 (기여 교사가 되었는지, 정지되었는지)
 async function refreshMe(){
   if(!isMemberRole()) return;
   try{ const j = await hubApi('me', {memberCode:hub.memberCode}); updateRoleFromServer(j.role); }
@@ -2192,7 +2435,7 @@ function readShareFields(p, l){
     duration:Math.max(0, ...l.sentences.map(s => s.end))};
   return {meta, src, kind, userNote};
 }
-function lessonForSend(l){ const c = JSON.parse(JSON.stringify(l)); delete c.submittedAt; delete c.libMeta; delete c.transient; delete c.sharedApproved; return c; }
+function lessonForSend(l){ const c = JSON.parse(JSON.stringify(l)); delete c.submittedAt; delete c.libMeta; delete c.transient; delete c.sharedApproved; delete c.studentLink; delete c.titleEdited; delete c.titleAuto; return c; }
 // 보낸 뒤 내 수업에 '공유함' 표시를 남김
 function markSent(l, f, approved){
   const apply = x => { x.sourceCredit = f.src; x.sourceKind = f.kind; x.submittedAt = Date.now(); x.final = true; x.sharedApproved = !!approved; x.libMeta = {level:f.meta.level, topic:f.meta.topic, note:f.userNote}; };
@@ -2221,7 +2464,7 @@ function openApply(msg, preId){
     </div>
     <label class="chk" style="margin-top:10px"><input type="checkbox" id="apConsent"><span>내가 공유한 수업이 협의회 판단에 따라 <b>무료로 공개될 수 있음</b>에 동의합니다. 이 동의는 철회할 수 없습니다. 수업의 저작권은 나에게 남습니다.</span></label>
     <div class="withbox">
-      <label class="chk"><input type="checkbox" id="apWith"${ls.length ? '' : ' disabled'}${pre ? ' checked' : ''}><span><b>지금 만든 수업도 함께 공유 신청하기</b> ${ls.length ? '— 함께 승인되면 바로 승인 교사가 됩니다.' : '<span class="note">(공유할 수 있는 완성된 유튜브 수업이 아직 없습니다)</span>'}</span></label>
+      <label class="chk"><input type="checkbox" id="apWith"${ls.length ? '' : ' disabled'}${pre ? ' checked' : ''}><span><b>지금 만든 수업도 함께 공유 신청하기</b> ${ls.length ? '— 함께 승인되면 바로 기여 교사가 됩니다.' : '<span class="note">(공유할 수 있는 완성된 유튜브 수업이 아직 없습니다)</span>'}</span></label>
       <div id="apShare"${pre ? '' : ' hidden'} style="margin-top:8px">
         <label class="full" style="display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--muted)">보낼 수업 <select class="inp" id="apLesson">${ls.map(l => `<option value="${esc(l.id)}"${l.id === preId ? ' selected' : ''}>${esc(l.title)} (문장 ${l.sentences.length}개)</option>`).join('')}</select></label>
         <div id="apFields"></div>
@@ -2297,8 +2540,8 @@ async function loadHubList(){
 function renderHubList(){
   const topics = [...new Set(hubItems.map(x => x.topic).filter(Boolean))];
   const status = canGetAll()
-    ? '<strong>승인 교사</strong> — 자료실 수업을 마음껏 가져갈 수 있습니다.'
-    : '<strong>회원</strong> — 목록을 볼 수 있습니다. 내 수업 1개를 공유해 승인받으면 가져갈 수 있습니다. <button class="btn sm" data-hubgo="make">수업 공유하러 가기</button>';
+    ? '<strong>기여 교사</strong> — 자료실 수업을 마음껏 가져갈 수 있습니다.'
+    : '<strong>새싹 교사</strong> — 목록을 볼 수 있습니다. 내 수업 1개를 공유해 승인받으면 기여 교사가 되어 가져갈 수 있습니다. <button class="btn sm" data-hubgo="make">수업 공유하러 가기</button>';
   hubBody().innerHTML = `
     <div class="hstatus">${status}<span class="spacer"></span><span class="note">수업 ${hubItems.length}개</span></div>
     <div class="hfilters">
@@ -2357,7 +2600,7 @@ function importLibLesson(l, meta, forCheck){
   const c = JSON.parse(JSON.stringify(l));
   c.id = uid(); c.final = !forCheck; c.createdAt = c.updatedAt = Date.now();
   c.sentences.forEach(s => { s.id = uid(); });
-  delete c.submittedAt; delete c.libMeta; delete c.transient; delete c.sharedApproved;
+  delete c.submittedAt; delete c.libMeta; delete c.transient; delete c.sharedApproved; delete c.studentLink;
   c.origin = {library:HUB_CONFIG.name, subId:meta.subId, lessonId:meta.lessonId, author:meta.author, school:meta.school, importedAt:Date.now(), check:!!forCheck};
   if(forCheck) c.title = '[검토] ' + (c.title || '');
   switchLesson(c); setTab('lesson');
@@ -2387,7 +2630,7 @@ function adminLists(){
     wait: items.filter(x => x.status === '대기' && !pendingIds.has(x.memberId)),   // 가입 신청과 함께 온 수업은 ①에서 처리
     open: items.filter(x => x.status === '승인'),
     other: items.filter(x => ['반려', '내림', '교체됨'].includes(x.status)),
-    members: members.filter(m => ['회원', '승인교사', '정지'].includes(m.status))
+    members: members.filter(m => ['회원', '승인교사', '새싹교사', '기여교사', '정지'].includes(m.status))
   };
 }
 const segLabel = x => `구간 ${fmtClock(x.start)}~${fmtClock(x.end)}`;
@@ -2415,14 +2658,14 @@ function adminJoinHTML(m){
       ${it.dup ? `<p class="dup">⚠ 같은 영상 수업 있음: ${esc(it.dup)}</p>` : ''}
       ${it.note ? `<p class="hnote">${esc(it.note)}</p>` : ''}
       <div class="hbtns"><button class="btn sm" data-adm="check">가져와서 확인</button>${it.url ? `<a class="btn sm" href="${esc(it.url)}" target="_blank" rel="noopener">유튜브</a>` : ''}</div>
-      <div class="row" style="margin-top:6px;font-size:13.5px"><label class="toggle"><input type="radio" name="wl-${esc(m.memberId)}" value="approve" checked> 수업도 승인 (바로 승인 교사)</label>
-      <label class="toggle"><input type="radio" name="wl-${esc(m.memberId)}" value="reject"> 수업은 반려 (회원만)</label></div></div>` : ''}
+      <div class="row" style="margin-top:6px;font-size:13.5px"><label class="toggle"><input type="radio" name="wl-${esc(m.memberId)}" value="approve" checked> 수업도 승인 (바로 기여 교사)</label>
+      <label class="toggle"><input type="radio" name="wl-${esc(m.memberId)}" value="reject"> 수업은 반려 (새싹 교사로)</label></div></div>` : ''}
     <p class="note" style="margin:4px 0">교육청 업무 메일 주소록에서 이름과 학교를 확인한 뒤 승인하세요.</p>
     <div class="hbtns"><button class="btn main sm" data-mact="approve">승인하고 코드 보내기</button><button class="btn sm danger" data-mact="reject">반려</button></div>
   </div>`;
 }
 function adminMemberHTML(m){
-  const st = m.status === '승인교사' ? '승인 교사' : m.status;
+  const st = (m.status === '승인교사' || m.status === '기여교사') ? '기여 교사' : (m.status === '회원' || m.status === '새싹교사') ? '새싹 교사' : m.status;
   return `<div class="arow" data-mem="${esc(m.memberId)}">
     <div class="row"><strong>${esc(m.name)}</strong><span class="st-pill">${esc(st)}</span><span class="spacer"></span><span class="note en">${esc(m.code)}</span></div>
     <span class="hmeta">${esc(m.school)} · ${esc(m.email)} · ${esc(m.approvedAt)} 승인${m.doneAt ? ' · ' + esc(m.doneAt) + ' 정지' : ''}</span>
@@ -2437,7 +2680,7 @@ function renderAdmin(){
   const hasJfk = adminData.items.some(x => x.status === '승인' && x.free && x.lessonId === OPEN_FALLBACK[0].id);
   const desc = {
     join:'신청한 선생님의 소속을 확인하고 승인하면 회원 코드가 이메일로 갑니다. 수업을 함께 보냈으면 수업도 같이 결정합니다.',
-    wait:'회원이 공유한 수업입니다. 승인하면 자료실에 올라가고, 그 선생님은 승인 교사가 됩니다.',
+    wait:'새싹 교사가 공유한 수업입니다. 승인하면 자료실에 올라가고, 그 선생님은 기여 교사가 됩니다.',
     open:'자료실에 공개된 수업입니다. ★ 무료로 지정하면 학생을 포함해 누구나 열 수 있습니다.',
     other:'반려하거나 내린 수업입니다. ‘교체됨’은 같은 수업의 새 버전이 올라와 바뀐 것입니다.',
     members:'회원 코드가 새어 나갔으면 ‘새 코드 발급’, 더 이상 쓰지 않을 선생님은 ‘정지’를 누르세요.'
@@ -2468,7 +2711,7 @@ async function adminAction(act, subId, btn){
     if(act === '내림' && !confirm('이 수업을 자료실에서 내릴까요? (시트에는 남아 있어 다시 공개할 수 있습니다)')){ btn.disabled = false; return; }
     if(act === '반려' && !confirm('이 수업을 반려할까요?')){ btn.disabled = false; return; }
     const j = await hubApi('admin_set', {adminPassword:pw, subId, status:act});
-    if(act === '승인') toast(j.promoted ? `승인했습니다. 보낸 선생님이 승인 교사가 되었습니다.${j.mailed ? ' 안내 메일을 보냈습니다.' : ' (안내 메일은 보내지 못했습니다)'}` : '승인했습니다. 자료실에 올라갔습니다.', 5000);
+    if(act === '승인') toast(j.promoted ? `승인했습니다. 보낸 선생님이 기여 교사가 되었습니다.${j.mailed ? ' 안내 메일을 보냈습니다.' : ' (안내 메일은 보내지 못했습니다)'}` : '승인했습니다. 자료실에 올라갔습니다.', 5000);
     openLessons = null; loadAdmin();
   }catch(e){ toast(e.message, 4500); btn.disabled = false; }
 }
@@ -2483,7 +2726,7 @@ async function memberAction(act, memberId, row, btn){
   try{
     const j = await hubApi('admin_member', data);
     if(j.code && !j.mailed) alert(`메일을 보내지 못했습니다. 아래 코드를 선생님께 직접 알려 주세요.\n\n${j.name || m.name}: ${j.code}`);
-    else toast({approve:j.role === 'approved' ? '승인했습니다. 승인 교사로 등록하고 회원 코드를 보냈습니다.' : '승인했습니다. 회원 코드를 보냈습니다.',
+    else toast({approve:j.role === 'approved' ? '승인했습니다. 기여 교사로 등록하고 회원 코드를 보냈습니다.' : '승인했습니다. 회원 코드를 보냈습니다.',
       reject:'반려했습니다.', resend:'회원 코드를 다시 보냈습니다.', newcode:'새 코드를 발급해 보냈습니다.', suspend:'정지했습니다.', resume:'다시 쓸 수 있게 했습니다.'}[act] || '처리했습니다.', 4500);
     openLessons = null; loadAdmin();
   }catch(e){ toast(e.message, 4500); btn.disabled = false; }
@@ -2540,12 +2783,14 @@ $('#hubBody').addEventListener('click', e => {
 $('#btnHub').onclick = openHub;
 
 /* ---------- 공유하기 ---------- */
+const TITLE_MSG = '맨 위 제목 칸에 수업 제목을 적어 주세요.';
+const issueLI = x => x === TITLE_MSG ? `<li><button class="linky goto" data-focus-title>${esc(x)} (눌러서 바로 가기)</button></li>` : `<li>${esc(x)}</li>`;
 function submitIssues(l){
   if(l.transient) return {block:['무료 수업은 보낼 수 없습니다.'], warn:[]};
   if(l.origin) return {block:[`자료실이나 무료 수업에서 가져온 수업은 다시 보낼 수 없습니다. (원작: ${l.origin.author || '알 수 없음'})`], warn:[]};
   const block = [], warn = [];
   if(!l.source || l.source.kind !== 'youtube') block.push('유튜브 영상으로 만든 수업만 보낼 수 있습니다. 내 컴퓨터 파일은 다른 선생님이 열 수 없습니다.');
-  if(!l.title || /^새 수업$/.test(l.title.trim())) block.push('맨 위 제목 칸에 수업 제목을 적어 주세요.');
+  if(!l.title || /^새 수업$/.test(l.title.trim())) block.push(TITLE_MSG);
   if(l.sentences.length < 2) block.push('문장이 2개 이상 있어야 합니다.');
   const empty = l.sentences.map((s, i) => !s.text.trim() ? i + 1 : 0).filter(Boolean);
   if(empty.length) block.push(`내용이 빈 문장이 있습니다: ${empty.slice(0, 6).join(', ')}번`);
@@ -2561,19 +2806,111 @@ function renderSubmitBox(){
   $('#submitH').textContent = r === 'admin' ? '자료실에 바로 올리기' : '공유 신청하기';
   $('#submitDesc').textContent = {
     admin:'이 수업을 쉐도잉 자료실에 바로 올립니다. 승인 절차 없이 공개되고, 작성자는 ‘관리자’로 표시됩니다.',
-    approved:'승인 교사이므로 관리자 확인 없이 바로 자료실에 올라갑니다. 관리자는 문제가 있는 수업을 내릴 수 있습니다. 원래 수업은 그대로 남습니다.',
-    member:'관리자가 확인하고 승인하면 자료실에 올라가고, 승인 교사가 되어 자료실 수업을 모두 가져갈 수 있습니다. 원래 수업은 그대로 남습니다.',
-    general:'공유는 회원만 할 수 있습니다. 회원 신청을 할 때 이 수업을 함께 보내면, 함께 승인될 때 바로 승인 교사가 됩니다.'
+    approved:'기여 교사이므로 관리자 확인 없이 바로 자료실에 올라갑니다. 관리자는 문제가 있는 수업을 내릴 수 있습니다. 원래 수업은 그대로 남습니다.',
+    member:'관리자가 확인하고 승인하면 자료실에 올라가고, 기여 교사가 되어 자료실 수업을 모두 가져갈 수 있습니다. 원래 수업은 그대로 남습니다.',
+    general:'공유는 회원만 할 수 있습니다. 회원 신청을 할 때 이 수업을 함께 보내면, 함께 승인될 때 바로 기여 교사가 됩니다.'
   }[r] || '';
   const sent = lesson.submittedAt ? `<p class="okmsg">${fmtDate(lesson.submittedAt)}에 ${lesson.sharedApproved ? '자료실에 올렸습니다' : '공유 신청했습니다'}. 고쳐서 다시 보내면 ${lesson.sharedApproved ? '자료실의 수업이 새 버전으로 바뀝니다' : '관리자 승인 후 새 버전으로 바뀝니다'}.</p>` : '';
   $('#submitCheck').innerHTML = sent + (block.length || warn.length
-    ? `<ul class="issues">${block.map(x => `<li>${esc(x)}</li>`).join('')}${warn.map(x => `<li style="color:#8A5A00">${esc(x)}</li>`).join('')}</ul>`
+    ? `<ul class="issues">${block.map(issueLI).join('')}${warn.map(x => `<li style="color:#8A5A00">${esc(x)}</li>`).join('')}</ul>`
     : (sent ? '' : '<p class="okmsg">보낼 준비가 되었습니다.</p>'));
   const btn = $('#btnSubmitOpen');
   btn.disabled = block.length > 0 || (r === 'general' && !!hub.pending);
   btn.textContent = r === 'general' ? (hub.pending ? '가입 대기 중' : '회원 되기 (이 수업 함께 신청)') : r === 'admin' ? '자료실에 바로 올리기' : lesson.submittedAt ? '고친 내용 다시 보내기' : r === 'approved' ? '자료실에 올리기' : '공유 신청하기';
   $('#submitBanner').hidden = !(block.length === 0 && warn.length === 0 && !lesson.submittedAt && !lesson.origin && !lesson.transient && ['member', 'approved', 'admin'].includes(r));
 }
+/* ---------- 학생용 링크 (기여 교사·관리자) ---------- */
+// 링크 1개 = 수업 1개. 링크를 아는 사람만 열 수 있고, 학생 정보는 받지 않습니다.
+const APP_HOME = 'https://bsjis.github.io/shadowing/';
+function appBase(){ return location.protocol.startsWith('http') && location.origin !== 'null' ? location.origin + location.pathname : APP_HOME; }
+const linkURL = id => appBase() + '?l=' + id;
+function linkHash(l){
+  const c = JSON.parse(JSON.stringify(l));
+  ['studentLink', 'updatedAt', 'submittedAt', 'libMeta', 'sharedApproved', 'titleEdited', 'titleAuto', 'final', 'transient'].forEach(k => delete c[k]);
+  const str = JSON.stringify(c); let h = 5381;
+  for(let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36) + '.' + str.length;
+}
+const linkDirty = () => !!(lesson && lesson.studentLink && lesson.studentLink.hash !== linkHash(lesson));
+function linkIssues(l){
+  const out = [];
+  if(l.transient) out.push('무료 수업은 그대로 링크를 만들 수 없어요. ‘내 수업’ 창에서 ‘내 수업으로 복사’한 뒤 만드세요.');
+  if(!l.source || l.source.kind !== 'youtube') out.push('유튜브 영상으로 만든 수업만 링크를 만들 수 있어요. 내 컴퓨터 파일은 학생 기기에서 열리지 않아요.');
+  if(!l.title || /^새 수업$/.test(l.title.trim())) out.push(TITLE_MSG);
+  if((l.sentences || []).length < 2) out.push('문장이 2개 이상 있어야 해요.');
+  return out;
+}
+function renderLinkBox(){
+  if(!lesson || !$('#linkBox')) return;
+  const r = getRole(), desc = $('#linkDesc'), body = $('#linkBody'), st = $('#linkState');
+  st.hidden = !(['approved', 'admin'].includes(r) && linkDirty());
+  if(r === 'general' || r === 'member'){
+    desc.textContent = '학생에게 링크를 보내면, 학생이 눌러서 바로 이 수업으로 연습합니다.';
+    body.innerHTML = `<p class="lockpill" style="display:inline-block">🔒 ${r === 'member' ? '수업 1개를 공유해 승인받아 기여 교사가 되면 만들 수 있어요.' : '회원이 되고, 수업 1개를 공유해 기여 교사가 되면 만들 수 있어요.'}</p>`;
+    return;
+  }
+  desc.textContent = '링크를 구글 클래스룸 등에 붙여 넣으면, 학생이 눌러서 바로 이 수업으로 연습합니다. 링크를 아는 사람만 열 수 있고 자료실에는 공개되지 않습니다. 학생 이름 등은 받지 않습니다.';
+  const L = lesson.studentLink, issues = linkIssues(lesson);
+  if(!L){
+    body.innerHTML = (issues.length ? `<ul class="issues">${issues.map(issueLI).join('')}</ul>` : '') +
+      `<button class="btn main" data-link="make"${issues.length ? ' disabled' : ''}>학생용 링크 만들기</button>`;
+    return;
+  }
+  const dirty = linkDirty();
+  body.innerHTML = `<div class="linkurl"><input class="inp" id="linkUrl" readonly value="${esc(linkURL(L.id))}" aria-label="학생용 링크"><button class="btn main sm" data-link="copy">복사</button></div>` +
+    (dirty ? `<p class="linkwarn">고친 내용이 아직 학생 링크에 반영되지 않았어요. <button class="btn sm" data-link="push"${issues.length ? ' disabled' : ''}>학생 링크에 반영하기</button></p>` + (issues.length ? `<ul class="issues">${issues.map(issueLI).join('')}</ul>` : '')
+      : `<p class="linkok">✓ 학생 링크가 지금 수업과 같습니다${L.at ? ' (' + fmtDate(L.at) + ' 반영)' : ''}.</p>`) +
+    `<div class="row" style="margin-top:6px"><button class="btn sm" data-link="renew">새 링크로 바꾸기</button><button class="btn sm" data-link="off">링크 끊기</button>
+     <span class="note">링크가 퍼졌다면 ‘새 링크로 바꾸기’를 누르세요. 예전 링크는 바로 열리지 않습니다.</span></div>`;
+}
+async function copyText(t){
+  try{ await navigator.clipboard.writeText(t); return true; }catch(e){}
+  const i = $('#linkUrl'); if(i){ i.select(); try{ return document.execCommand('copy'); }catch(e){} }
+  return false;
+}
+let linkBusy = false;
+async function linkAct(act){
+  if(linkBusy || !lesson) return;
+  const L = lesson.studentLink;
+  if(act === 'copy'){ toast(await copyText(linkURL(L.id)) ? '링크를 복사했어요. 클래스룸 글에 붙여 넣으세요.' : '링크 칸을 길게 눌러 복사해 주세요.', 3500); return; }
+  if(act === 'off' && !confirm('이 링크를 끊을까요?\n학생들이 이 링크로 더는 수업을 열 수 없어요. (수업은 내 수업에 그대로 있어요)')) return;
+  if(act === 'renew' && !confirm('새 링크로 바꿀까요?\n예전 링크는 바로 열리지 않으니, 학생들에게 새 링크를 다시 알려 주세요.')) return;
+  if((act === 'make' || act === 'push') && linkIssues(lesson).length){ renderLinkBox(); toast('링크를 만들기 전에 고칠 것이 있어요.'); return; }
+  linkBusy = true; $$('[data-link]').forEach(b => b.disabled = true); $('#linkState').disabled = true;
+  const target = lesson;
+  try{
+    saveNow();
+    if(act === 'make' || act === 'push'){
+      const j = await hubApi('link_save', Object.assign({lesson:lessonForSend(target), linkId:act === 'push' ? L.id : ''}, authData()));
+      target.studentLink = {id:j.linkId, hash:linkHash(target), at:Date.now()};
+      if(act === 'make'){ const ok = await copyText(linkURL(j.linkId)); toast('학생용 링크를 만들었어요.' + (ok ? ' 링크를 복사해 두었으니 클래스룸에 붙여 넣으세요.' : ''), 5000); }
+      else toast('고친 내용을 학생 링크에 반영했어요. 학생이 링크를 다시 열면 새 내용이 보여요.', 4500);
+    } else if(act === 'off'){
+      await hubApi('link_off', Object.assign({linkId:L.id}, authData()));
+      delete target.studentLink; toast('링크를 끊었어요.');
+    } else if(act === 'renew'){
+      const j = await hubApi('link_renew', Object.assign({linkId:L.id}, authData()));
+      const wasDirty = linkDirty();
+      target.studentLink = {id:j.linkId, hash:L.hash, at:L.at};
+      if(wasDirty){
+        await hubApi('link_save', Object.assign({lesson:lessonForSend(target), linkId:j.linkId}, authData()));
+        target.studentLink = {id:j.linkId, hash:linkHash(target), at:Date.now()};
+      }
+      toast('새 링크로 바꿨어요. 학생들에게 새 링크를 알려 주세요.' + (await copyText(linkURL(j.linkId)) ? ' (복사해 두었어요)' : ''), 5000);
+    }
+  }catch(err){
+    toast(err.message, 5000);
+    if(err.code === 'linkoff' && target.studentLink){ delete target.studentLink; }
+    if(err.code === 'wrongmember' || err.code === 'suspended') forceStudent(err.message + ' 선생님 입구에서 다시 들어와 주세요.');
+  }finally{
+    linkBusy = false; $('#linkState').disabled = false;
+    if(lesson === target){ saveNow(); renderLinkBox(); }
+    else { const lib = loadLib(); if(lib[target.id]){ lib[target.id] = target; writeLib(lib); } }
+  }
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-link]'); if(b && !b.disabled) linkAct(b.dataset.link); });
+$('#linkState').onclick = () => linkAct('push');
+
 function openSubmit(){
   const r = getRole();
   const {block, warn} = submitIssues(lesson);
@@ -2609,7 +2946,7 @@ async function sendSubmit(){
     if(free) openLessons = null;
     $('#submitDlg').close();
     toast(r === 'admin' ? '자료실에 올렸습니다.' + (free ? ' 무료 수업으로도 지정했습니다.' : '') + (j.warn ? ` (같은 영상 수업이 이미 있습니다: ${j.warn})` : '')
-      : j.status === '승인' ? '자료실에 바로 올렸습니다.' : '공유 신청했습니다. 관리자가 확인하고 승인하면 자료실에 올라가고 승인 교사가 됩니다.', 6000);
+      : j.status === '승인' ? '자료실에 바로 올렸습니다.' : '공유 신청했습니다. 관리자가 확인하고 승인하면 자료실에 올라가고 기여 교사가 됩니다.', 6000);
   }catch(e){
     if(e.code === 'wrongmember' || e.code === 'suspended'){ $('#submitDlg').close(); return forceStudent(e.message + ' 선생님 입구에서 다시 들어와 주세요.'); }
     say(e.message); $('#sbSend').disabled = false; $('#sbSend').textContent = r === 'member' ? '신청하기' : '올리기';
@@ -2690,7 +3027,7 @@ function openLesson(l, opts){
   lesson = l;
   lesson.blank = Object.assign({mode:'random', ratio:0.3, seed:1}, lesson.blank || {});
   E.target = 0; E.plays = 0; E.endedAt = -1; clearGap(); ui.revealed.clear(); ui.tap = false; tm.open = false; document.body.classList.remove('timing');
-  ui.ab = {a:null, b:null, on:false};
+  ui.ab = {a:null, b:null, on:false}; ui.cvEdit = false;
   const src = lesson.source;
   if(src && src.kind === 'youtube'){
     $('#ytUrl').value = src.url || src.videoId;
@@ -2709,9 +3046,32 @@ function openLesson(l, opts){
   }
   $('#rawScript').value = ''; $('#importStatus').textContent = ''; $('#aiStatus').textContent = ''; aiDefaultRange();
   welcome = !!(opts && opts.welcome);
-  renderAll(); if(!welcome) save(); renderWelcome();
+  renderAll(); if(!welcome) save(); renderWelcome(); maybeSwipeHint();
 }
-function renderWelcome(){ const w = $('#welcomeOverlay'); if(w) w.hidden = !(welcome && !N());
+/* ---------- 학생용 링크로 들어온 경우 ---------- */
+const LAST_LINK_KEY = 'shadowroom.lastLink';
+function lastLink(){ return loadJSON(LAST_LINK_KEY); }
+async function openFromLink(id){
+  const msg = $('#linkMsg');
+  if(msg){ msg.hidden = false; msg.textContent = '선생님이 보낸 수업을 여는 중이에요…'; }
+  try{
+    const j = await hubApi('link_open', {linkId:id});
+    const c = j.lesson; c.transient = true; c.fromLink = id;
+    try{ localStorage.setItem(LAST_LINK_KEY, JSON.stringify({id, title:c.title || j.title || '', at:Date.now()})); }catch(e){}
+    switchLesson(c); setTab('lesson');
+    toast(`“${c.title || '수업'}” 수업을 열었어요. 아래 ‘재생’을 눌러 시작하세요.`, 4000);
+  }catch(err){
+    if(err.code === 'linkoff'){ try{ const ll = lastLink(); if(ll.id === id) localStorage.removeItem(LAST_LINK_KEY); }catch(e){} }
+    if(msg){ msg.hidden = false; msg.textContent = err.message; }
+    toast(err.message, 5000); renderWelcome(true);
+  }
+}
+$('#btnLastLink').onclick = () => { const ll = lastLink(); if(ll.id) openFromLink(ll.id); };
+function renderWelcome(keepMsg){ const w = $('#welcomeOverlay'); if(w) w.hidden = !(welcome && !N());
+  document.body.classList.toggle('is-welcome', !!(welcome && !N()));
+  const ll = lastLink(), lb = $('#btnLastLink');
+  if(lb){ lb.hidden = !ll.id; lb.textContent = ll.id ? `지난번 수업 이어서 하기: ${ll.title || '선생님이 보낸 수업'}` : ''; }
+  if(!keepMsg && $('#linkMsg')) $('#linkMsg').hidden = true;
   const sb = document.querySelector('[data-free-start]'); if(sb) sb.hidden = false; const fp = $('#freePick'); if(fp) fp.hidden = true; }
 loadPrefs();
 Player.rate = ui.rate;
@@ -2724,9 +3084,11 @@ Player.rate = ui.rate;
     localStorage.removeItem(DRAFT_KEY);
   }catch(e){}
   try{ if(getRole() === 'student') localStorage.removeItem(ROLE_KEY); }catch(e){}   // 예전 버전의 역할 표시는 지움 (다시 들어와야 함)
-  applyRole();
-  if(getRole() === 'student') openLesson(newLesson(), {welcome:true});
+  applyRole(); applyMob();
+  const linkId = new URLSearchParams(location.search).get('l');
+  if(getRole() === 'student' || linkId) openLesson(newLesson(), {welcome:true});
   else openFromDrawer();
+  if(linkId) openFromLink(linkId.trim());
   refreshMe();
 })();
 </script>
