@@ -215,6 +215,25 @@ textarea.inp{resize:vertical;font-family:var(--en);font-size:14px}
 .erow{border:1px solid var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:7px;background:#fff}
 .erow.on{border-color:var(--teal);box-shadow:inset 3px 0 0 var(--teal)}
 .erow.bad{border-color:var(--warn)}
+.inlist{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--teal);border:1px solid #BFE3E5;border-radius:14px;padding:3px 9px;background:#F3FAFA;cursor:pointer;white-space:nowrap}
+.listbox{border:1.5px solid var(--teal);border-radius:10px;padding:10px 12px;margin:0 0 12px;background:#F6FBFB}
+.listbox h4{margin:0 0 4px;font-size:15px}
+.cls-item{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid var(--line);padding:10px 4px}
+.cls-item img{width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;background:#E6EAF0;flex:none}
+.cls-item .ci{display:flex;flex-direction:column;gap:2px;min-width:0}.cls-item .ci b{font-size:15px;line-height:1.35}
+.cls-item .ci span{font-size:12.5px;color:var(--muted)}
+.newpill{display:inline-block;background:#E8505B;color:#fff;font-size:11px;font-weight:700;border-radius:8px;padding:0 6px;margin-right:5px;vertical-align:1px}
+.fbkinds{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 8px}
+.fbkinds button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:6px 12px;font-size:14px}
+.fbkinds button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.fbitem{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;background:#fff;font-size:14px}
+.fbitem .fbm{font-size:12.5px;color:var(--muted)}
+.fbitem .fbr{margin-top:4px;background:var(--teal-weak);border-radius:6px;padding:5px 8px;font-size:13.5px}
+.whopill{display:inline-block;font-size:11.5px;border-radius:8px;padding:0 7px;margin-right:5px;background:#EEF1F5;color:#334}
+.whopill.s{background:#FFF1D6;color:#7A4B00}.whopill.n{background:#E3F6E8;color:#1E6B3A}.whopill.k{background:#E1F1F2;color:#0B5F65}
+.cls-sec{margin:12px 0 4px;font-size:14px;color:var(--muted)}
+.korow{display:flex;gap:6px;align-items:center}.korow .inp{flex:1;min-width:0}
+body:not([data-role="member"]):not([data-role="approved"]):not([data-role="admin"]) .ai-only{display:none!important}
 .ehead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .enum{font-family:var(--en);font-weight:700;min-width:1.6em}
 .badge{font-size:11.5px;border-radius:4px;padding:1px 6px;background:#FFF1D6;color:#8A5A00}
@@ -331,8 +350,24 @@ dialog table{border-collapse:collapse;width:100%;font-size:14px}
 dialog td{padding:6px 4px;border-bottom:1px solid var(--line)}
 kbd{font-family:var(--en);background:var(--paper);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 7px;font-size:13px}
 
+/* ---------- 녹음 ---------- */
+.recbar{border:1px solid var(--stage-line);border-radius:10px;background:var(--stage2);padding:10px 12px}
+.rbtns{display:flex;flex-wrap:wrap;gap:8px}
+.recbar .sbtn{min-height:40px;padding:7px 12px}
+.recbar .sbtn:disabled{opacity:.45;cursor:default}
+.recbar .sbtn.rec.on{background:#C62F3B;border-color:#C62F3B;color:#fff;animation:recPulse 1s ease-in-out infinite}
+@keyframes recPulse{50%{box-shadow:0 0 0 5px rgba(198,47,59,.35)}}
+.rnote{margin:7px 0 0;font-size:13px;color:var(--stage-muted)}
+.rpitch{margin-top:8px}
+#rPitch{width:100%;height:150px;display:block;background:#0E1730;border-radius:8px}
+.rlegend{margin:5px 0 0;font-size:12px;color:var(--stage-muted)}
+.lg-st{background:#FFE066;color:#1A2230;padding:0 3px;border-radius:3px}.lg-up{color:#86B3FF}.lg-dn{color:#FFAA80;margin-right:2px}.lg-ps{color:#C9A6FF;font-weight:700}
+body.present .recbar,body.timing .recbar,body.is-welcome .recbar{display:none}
+
 /* ---------- 휴대폰 화면 (좁은 화면에서만) ---------- */
 .mcard,.mchips,.mnote{display:none}
+#classDlg{max-width:620px}
+@media (max-width:700px){#classDlg{width:100%;max-width:100%;margin:auto auto 0;border-radius:16px 16px 0 0;max-height:86vh;padding:14px}}
 dialog.sheet{margin:auto auto 0;width:100%;max-width:640px;max-height:78vh;border-radius:16px 16px 0 0;padding:12px 14px 18px;border:0}
 .sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}.sheet-head form{margin-left:auto}
 .sheet-list{list-style:none;margin:0;padding:0;overflow:auto;max-height:64vh}
@@ -350,8 +385,10 @@ dialog.sheet{margin:auto auto 0;width:100%;max-width:640px;max-height:78vh;borde
   body.mob .stage{padding:10px;gap:10px;overflow:visible}
   body.mob .video-wrap{border-radius:8px}
   body.mob.is-welcome .video-wrap{aspect-ratio:auto;min-height:420px}
-  body.mob .mcard{display:block;background:var(--stage2);border:1px solid var(--stage-line);border-radius:14px;padding:12px 14px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+  body.mob .mcard.scrolly{overflow-y:auto}
+  body.mob .mcard{display:block;overflow:hidden;background:var(--stage2);border:1px solid var(--stage-line);border-radius:14px;padding:12px 14px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
   body.mob.is-welcome .mcard,body.mob.is-welcome .mchips{display:none}
+  .mpos-btns{display:flex;gap:6px}
   .mpos{display:flex;align-items:center;justify-content:space-between;color:var(--stage-muted);font-size:13.5px;font-variant-numeric:tabular-nums}
   .mlist-btn{background:transparent;border:1px solid var(--stage-line);color:var(--stage-text);border-radius:16px;padding:5px 12px;font-size:13.5px}
   .mtext{font-size:21px;line-height:1.55;margin:10px 0 8px;color:#fff;min-height:3em}
@@ -371,6 +408,19 @@ dialog.sheet{margin:auto auto 0;width:100%;max-width:640px;max-height:78vh;borde
   body.mob{background:var(--stage)}
   body.mob .copyright{margin-bottom:0;background:var(--stage);color:var(--stage-muted);border-top:0}
   body.mob #ccCover .cv-tag{display:none!important}
+  body.mob .recbar{padding:8px 10px}
+  body.mob .rbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  body.mob .recbar .sbtn{min-height:42px;font-size:14px;padding:6px}
+  body.mob .rnote{font-size:12.5px}
+  body.mob #rPitch{height:130px}
+  body.mob[data-role="student"] .title-box{order:0;flex-basis:auto;flex:1}
+  body.mob .top{min-height:0}
+}
+@media (max-width:700px) and (max-height:760px){
+  body.mob .mchips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  body.mob .mchips label{flex:none;padding:3px 4px 3px 10px;font-size:12.5px}
+  body.mob .mnote{display:none!important}
+  body.mob .rnote{display:none}
 }
 
 /* ---------- presentation mode ---------- */
@@ -422,6 +472,8 @@ body.hc .caption .ko{color:#fff}
   </div>
   <div class="top-actions">
     <button class="tbtn weak" id="btnNew">＋ 수업 만들기</button>
+    <button class="tbtn" id="btnClass" hidden>📋 수업 목록</button>
+    <button class="tbtn weak" id="btnFb">💬 의견</button>
     <button class="tbtn weak" id="btnHelp" aria-label="단축키 보기">⌨ 단축키</button>
     <button class="tbtn weak" id="btnExit" title="연습하기와 선생님이신가요?만 있는 첫 화면으로 돌아갑니다">첫 화면으로</button>
     <button class="tbtn weak" id="btnTeacher" data-teacher-code>선생님이신가요?</button>
@@ -444,6 +496,7 @@ body.hc .caption .ko{color:#fff}
       <div class="overlay welcome" id="welcomeOverlay" hidden>
         <p class="welcome-msg">원어민 영상을 따라 말하며 연습하는<br>쉐도잉 교실에 오신 것을 환영합니다.</p>
         <button class="btn main welcome-btn" data-free-start>연습하기</button>
+        <button class="btn welcome-btn last-link" id="btnLastList" hidden></button>
         <button class="btn welcome-btn last-link" id="btnLastLink" hidden></button>
         <p class="welcome-msg" id="linkMsg" hidden></p>
         <div class="free-pick" id="freePick" hidden></div>
@@ -461,7 +514,7 @@ body.hc .caption .ko{color:#fff}
 
     <!-- 휴대폰 화면 (학생 연습용) -->
     <div class="mcard" id="mCard" aria-live="polite">
-      <div class="mpos"><span id="mPos"></span><button class="mlist-btn" id="mListBtn">문장 목록</button></div>
+      <div class="mpos"><span id="mPos"></span><span class="mpos-btns"><button class="mlist-btn" id="mClassBtn" hidden>수업 목록</button><button class="mlist-btn" id="mListBtn">문장 목록</button></span></div>
       <p class="en mtext" id="mText"></p>
       <div class="mko-row"><button class="mko-btn" id="mKoBtn" aria-pressed="false">뜻 보기</button></div>
       <p class="mko" id="mKo" hidden></p>
@@ -510,6 +563,21 @@ body.hc .caption .ko{color:#fff}
       <button class="sbtn" id="bNext">다음 문장</button>
       <button class="sbtn" id="bRepeat">이 문장 다시</button>
       <div class="where"><strong id="posLbl">문장 없음</strong><br><span id="timeLbl">0:00.0</span></div>
+    </div>
+
+    <!-- 녹음: 내 목소리 / 원어민과 번갈아 듣기 / 억양 곡선 / 파일 저장 (녹음은 이 기기에만 남음) -->
+    <div class="recbar" id="recBar">
+      <div class="rbtns">
+        <button class="sbtn rec" id="rRec">🎙 녹음</button>
+        <button class="sbtn" id="rMine" disabled>▶ 내 목소리</button>
+        <button class="sbtn" id="rAB" disabled>⇄ 원어민 → 나</button>
+        <button class="sbtn" id="rSave" disabled>⬇ 저장</button>
+      </div>
+      <p class="rnote" id="rNote">지금 문장을 따라 말하며 녹음해 보세요. 녹음은 이 기기에만 남고, 어디로도 보내지 않아요.</p>
+      <div class="rpitch" id="rPitchWrap" hidden>
+        <canvas id="rPitch" aria-label="내 목소리 억양 곡선"></canvas>
+        <p class="rlegend">청록 선 = 내 목소리 높낮이 · <span class="lg-st">노란 단어</span> = 강세 · <span class="lg-up">↗</span><span class="lg-dn">↘</span> = 선생님이 표시한 억양 · <span class="lg-ps">|</span> = 쉬기 · 단어 위치는 대략적이에요</p>
+      </div>
     </div>
 
     <div class="present-ctrl">
@@ -673,6 +741,10 @@ body.hc .caption .ko{color:#fff}
             <button class="btn sm" id="btnShiftLater">늦추기</button><button class="btn sm" id="btnShiftEarlier">앞당기기</button>
             <span class="note">자막이 소리보다 일정하게 빠르거나 느릴 때</span>
           </div>
+          <div class="row ai-only" style="margin-bottom:8px;font-size:14px">
+            <button class="btn main sm" id="btnAiKoAll">AI로 빈 한글 뜻 채우기</button>
+            <span class="note" id="aiKoNote">뜻이 비어 있는 문장만 채웁니다. 영상은 보내지 않고 영어 글자만 보냅니다. 문장마다 있는 ‘AI 해석’은 그 문장만 다시 해석합니다.</span>
+          </div>
           <details style="margin-bottom:10px">
             <summary style="cursor:pointer;font-size:14px">해석 한꺼번에 넣기</summary>
             <textarea class="inp" id="koBulk" rows="5" style="margin-top:8px;font-family:var(--ui)" placeholder="한 줄에 한 문장씩, 위 문장 순서대로"></textarea>
@@ -740,6 +812,14 @@ body.hc .caption .ko{color:#fff}
   </table>
   <p class="note" style="margin-top:12px">유튜브 화면 안을 직접 클릭하면 키 입력이 유튜브로 넘어갑니다. 그럴 땐 영상 바깥을 한 번 클릭하세요. 발표 모드에서는 영상을 클릭해도 단축키가 유지됩니다.</p>
   <form method="dialog" style="text-align:right;margin-top:10px"><button class="btn main">닫기</button></form>
+</dialog>
+<dialog id="fbDlg" class="lib" aria-labelledby="fbTitle">
+  <div class="lib-head"><h3 id="fbTitle">의견 보내기</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="fbBody"></div>
+</dialog>
+<dialog id="classDlg" class="lib sheetish" aria-labelledby="classTitle">
+  <div class="lib-head"><h3 id="classTitle">선생님 수업</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="classBody"></div>
 </dialog>
 <dialog id="listDlg" class="sheet" aria-label="문장 목록">
   <div class="sheet-head"><b>문장 목록</b><span class="note">누르면 그 문장으로 갑니다</span><form method="dialog"><button class="btn">닫기</button></form></div>
@@ -1376,7 +1456,7 @@ function tick(){
   if(Math.abs(t - E.lastT) > 1.6){ follow(t); E.lastT = t; return; }
   E.lastT = t;
   if(E.endedAt === E.target){ E.endedAt = -1; if(E.target < N() - 1){ E.target++; E.plays = 0; onCurChange(); } return; }
-  if(ui.tap) return; // 시간 맞추기 중에는 자동 멈춤·반복 끔
+  if(ui.tap || ui.abPlay) return; // 시간 맞추기·번갈아 듣기 중에는 자동 멈춤·반복 끔
   const s = curS(); if(!s) return;
   // 유튜브는 정지 명령이 늦게 먹으므로 조금 일찍 멈춤
   const early = Player.kind === 'yt' ? 0.12 * (Player.actualRate() || 1) : 0.04;
@@ -1411,7 +1491,7 @@ function onCurChange(){
     const el = $(`#script .sent[data-i="${E.target}"]`);
     el && el.scrollIntoView({block:'center', behavior:reduceMotion ? 'auto' : 'smooth'});
   }
-  renderCaption(); updateTransport(); renderMobile();
+  renderCaption(); updateTransport(); renderMobile(); renderRec();
 }
 function updateTransport(){
   const playing = Player.isPlaying();
@@ -1448,7 +1528,7 @@ function syncToolbar(){
   $('#lessonTitle').classList.toggle('need', !lesson.title || /^새 수업$/.test(lesson.title.trim()));
 }
 function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
-function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); renderLinkBox(); renderMobile(); }
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); renderLinkBox(); renderMobile(); renderRec(); }
 function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); renderMobile(); }
 function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 
@@ -1478,7 +1558,7 @@ function renderEditor(){
         <button class="btn sm" data-act="setEnd">지금 시점</button>
         <button class="btn sm" data-act="playEnd">끝부분 듣기</button>
         ${bad ? '<span style="color:var(--warn)">끝이 시작보다 늦어야 합니다</span>' : ''}</div>
-      <input class="inp" data-f="ko" value="${esc(s.ko || '')}" placeholder="한글 해석 (선택)">
+      <div class="korow"><input class="inp" data-f="ko" value="${esc(s.ko || '')}" placeholder="한글 해석 (선택)"><button class="btn sm ai-only" data-act="aiko" title="이 문장만 AI가 다시 해석합니다">AI 해석</button></div>
     </div>`;
   }).join('');
 }
@@ -1521,6 +1601,7 @@ $('#edList').addEventListener('click', e => {
   const i = +btn.closest('.erow').dataset.i, ss = lesson.sentences, s = ss[i];
   switch(btn.dataset.act){
     case 'play': goTo(i); break;
+    case 'aiko': aiKo([i], btn); break;
     case 'nudge': {
       const f = btn.dataset.f2, d = +btn.dataset.d;
       s[f] = r2(Math.max(0, s[f] + d)); s.timing = 'measured'; refreshRowTimes(i); save();
@@ -1720,6 +1801,35 @@ function shiftAll(sign){
 }
 $('#btnShiftLater').onclick = () => shiftAll(1);
 $('#btnShiftEarlier').onclick = () => shiftAll(-1);
+/* ---------- AI로 한글 뜻 넣기 (영어 글자만 보냄) ---------- */
+let aiKoBusy = false;
+async function aiKo(idx, btn){
+  if(aiKoBusy || !lesson) return;
+  if(!['member', 'approved', 'admin'].includes(getRole())) return toast('회원만 쓸 수 있어요.');
+  idx = idx.filter(i => lesson.sentences[i] && /[A-Za-z]/.test(lesson.sentences[i].text));
+  if(!idx.length) return toast('해석할 문장이 없어요. (뜻이 빈 문장이 없거나 영어가 없어요)', 3500);
+  aiKoBusy = true; const target = lesson, ids = idx.map(i => target.sentences[i].id);
+  const old = btn ? btn.textContent : ''; if(btn){ btn.disabled = true; btn.textContent = '해석 중…'; }
+  let done = 0;
+  try{
+    for(let k = 0; k < idx.length; k += 60){
+      const part = idx.slice(k, k + 60);
+      // 앞뒤 문장도 함께 보내 문맥을 살림 (결과는 고른 문장만 씀)
+      const lo = Math.max(0, part[0] - 1), hi = Math.min(target.sentences.length - 1, part[part.length - 1] + 1);
+      const items = []; for(let i = lo; i <= hi; i++) items.push({i, text:target.sentences[i].text});
+      const j = await hubApi('ai_translate', Object.assign({items}, authData()));
+      const want = new Set(part.map(i => target.sentences[i].id));
+      (j.items || []).forEach(x => { const sn = target.sentences[x.i]; if(sn && want.has(sn.id) && x.ko){ sn.ko = x.ko; done++; } });
+    }
+    if(lesson === target){ renderEditor(); renderScript(); renderCaption(); renderMobile(); save(); }
+    toast(done ? `AI가 ${done}개 문장의 한글 뜻을 넣었어요. 읽어 보고 어색한 곳은 고쳐 주세요.` : 'AI가 해석을 돌려주지 않았어요. 잠시 뒤 다시 해 보세요.', 4500);
+  }catch(err){
+    toast(err.message, 5000);
+    if(err.code === 'wrongmember' || err.code === 'suspended') forceStudent(err.message + ' 선생님 입구에서 다시 들어와 주세요.');
+  }finally{ aiKoBusy = false; if(btn && btn.isConnected){ btn.disabled = false; btn.textContent = old; } }
+}
+$('#btnAiKoAll').onclick = e => aiKo(lesson.sentences.map((x, i) => !(x.ko || '').trim() ? i : -1).filter(i => i >= 0), e.currentTarget);
+
 $('#btnKoBulk').onclick = () => {
   const lines = $('#koBulk').value.split('\n').map(l => l.trim()).filter(Boolean);
   if(!lines.length) return;
@@ -1886,6 +1996,145 @@ $('#rngCap').onchange = e => { savePrefs(); e.target.blur(); };
 
 $('#btnHelp').onclick = () => $('#helpDlg').showModal();
 
+/* ---------------- 녹음 (학생 기기 안에서만) ---------------- */
+// 녹음은 메모리에만 두고 서버로 보내지 않습니다. 남기려면 '저장'으로 파일을 받아 클래스룸에 제출합니다.
+const REC = {media:null, rec:null, chunks:[], sid:null, timer:null, stopAt:0, store:{}, audio:null, abTimer:null};
+const recOf = () => { const s = curS(); return s ? REC.store[s.id] : null; };
+function renderRec(){
+  const bar = $('#recBar'); if(!bar || !lesson) return;
+  bar.hidden = !N() || welcome;
+  const r = recOf(), recording = !!REC.rec;
+  $('#rRec').textContent = recording ? '⏹ 녹음 끝내기' : r ? '🎙 다시 녹음' : '🎙 녹음';
+  $('#rRec').classList.toggle('on', recording);
+  ['#rMine', '#rAB', '#rSave'].forEach(sel => $(sel).disabled = !r || recording);
+  $('#rAB').disabled = !r || recording || !Player.ready;
+  if(!recording) $('#rNote').textContent = r ? `${E.target + 1}번 문장 녹음 (${r.dur.toFixed(1)}초). ‘원어민 → 나’로 번갈아 들어 보세요.` : '지금 문장을 따라 말하며 녹음해 보세요. 녹음은 이 기기에만 남고, 어디로도 보내지 않아요.';
+  $('#rPitchWrap').hidden = !(r && r.pitch);
+  if(r && r.pitch) drawPitch(r);
+}
+async function recStart(){
+  const s = curS(); if(!s) return;
+  if(!navigator.mediaDevices || !window.MediaRecorder) return toast('이 브라우저는 녹음을 지원하지 않아요. 크롬이나 사파리 최신 버전을 써 주세요.', 4500);
+  stopAB(); Player.pause(); clearGap();
+  try{ REC.media = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true}}); }
+  catch(e){ return toast('마이크를 쓸 수 없어요. 주소창 옆 자물쇠(또는 설정)에서 마이크를 허용해 주세요.', 5000); }
+  const type = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm', 'audio/ogg'].find(t => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
+  REC.chunks = []; REC.sid = s.id;
+  try{ REC.rec = new MediaRecorder(REC.media, type ? {mimeType:type} : undefined); }catch(e){ REC.rec = new MediaRecorder(REC.media); }
+  REC.rec.ondataavailable = e => { if(e.data && e.data.size) REC.chunks.push(e.data); };
+  REC.rec.onstop = recDone;
+  REC.rec.start();
+  const rate = Player.actualRate() || 1, max = clamp((s.end - s.start) / rate * 2.2 + 3, 5, 40);
+  REC.t0 = performance.now(); REC.stopAt = REC.t0 + max * 1000;
+  REC.timer = setInterval(() => {
+    const left = Math.ceil((REC.stopAt - performance.now()) / 1000);
+    $('#rNote').textContent = `녹음 중… 말이 끝나면 ‘녹음 끝내기’를 누르세요. (${Math.max(0, left)}초 뒤 자동으로 멈춤)`;
+    if(left <= 0) recStop();
+  }, 250);
+  renderRec();
+}
+function recStop(){
+  clearInterval(REC.timer);
+  if(REC.rec && REC.rec.state !== 'inactive') REC.rec.stop();
+}
+async function recDone(){
+  const mime = (REC.rec && REC.rec.mimeType) || 'audio/webm', blob = new Blob(REC.chunks, {type:mime});
+  if(REC.media) REC.media.getTracks().forEach(t => t.stop());
+  REC.rec = null; REC.media = null;
+  if(!blob.size){ renderRec(); return toast('녹음된 소리가 없어요. 다시 해 보세요.'); }
+  const old = REC.store[REC.sid]; if(old) URL.revokeObjectURL(old.url);
+  const r = {blob, url:URL.createObjectURL(blob), mime, dur:(performance.now() - REC.t0) / 1000, pitch:null};
+  REC.store[REC.sid] = r;
+  renderRec();
+  try{ r.pitch = await analyzePitch(blob); r.dur = r.pitch.dur || r.dur; }catch(e){}
+  if(recOf() === r) renderRec();
+}
+$('#rRec').onclick = () => REC.rec ? recStop() : recStart();
+function playMine(){ const r = recOf(); if(!r) return; stopAB(); if(REC.audio) REC.audio.pause(); REC.audio = new Audio(r.url); REC.audio.play().catch(() => toast('소리를 재생하지 못했어요.')); }
+$('#rMine').onclick = playMine;
+// 원어민(그 문장만) → 내 목소리
+function stopAB(){ if(ui.abPlay){ ui.abPlay = false; clearTimeout(REC.abTimer); Player.pause(); } }
+$('#rAB').onclick = () => {
+  const s = curS(), r = recOf(); if(!s || !r || !Player.ready) return;
+  if(REC.audio) REC.audio.pause();
+  clearGap(); ui.abPlay = true;
+  const st = segStart(s), en = segEnd(s), rate = Player.actualRate() || 1;
+  seekTo(st); Player.play();
+  $('#rNote').textContent = '원어민 → 내 목소리 순서로 들려줘요…';
+  clearTimeout(REC.abTimer);
+  REC.abTimer = setTimeout(function wait(){
+    if(!ui.abPlay) return;
+    if(Player.time() < en - 0.08 && Player.isPlaying()){ REC.abTimer = setTimeout(wait, 60); return; }
+    Player.pause(); ui.abPlay = false;
+    setTimeout(() => { REC.audio = new Audio(r.url); REC.audio.play().catch(() => {}); REC.audio.onended = renderRec; }, 350);
+  }, Math.max(300, (en - st) / rate * 1000 - 300));
+};
+$('#rSave').onclick = () => {
+  const r = recOf(); if(!r) return;
+  const ext = /mp4/.test(r.mime) ? 'm4a' : /ogg/.test(r.mime) ? 'ogg' : 'webm';
+  const name = `${String(lesson.title || '쉐도잉').replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 40)}_${E.target + 1}번문장_녹음.${ext}`;
+  const a = document.createElement('a'); a.href = r.url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  toast('녹음 파일을 저장했어요. 클래스룸 과제에 이 파일을 올려 제출하세요.', 4500);
+};
+// 억양(높낮이) 분석: 8kHz로 줄인 뒤 자기상관으로 10ms마다 음높이를 찾음 (기기 안에서만 계산)
+async function analyzePitch(blob){
+  const AC = window.AudioContext || window.webkitAudioContext; if(!AC) return null;
+  const ctx = new AC(), buf = await new Promise((res, rej) => { blob.arrayBuffer().then(ab => { const p = ctx.decodeAudioData(ab, res, rej); if(p && p.then) p.then(res, rej); }); });
+  try{ ctx.close(); }catch(e){}
+  const src = buf.getChannelData(0), sr = buf.sampleRate, step = Math.max(1, Math.round(sr / 8000)), fs = sr / step;
+  const x = new Float32Array(Math.floor(src.length / step));
+  for(let i = 0; i < x.length; i++){ let a = 0; for(let k = 0; k < step; k++) a += src[i * step + k] || 0; x[i] = a / step; }
+  const W = Math.round(fs * 0.032), H = Math.round(fs * 0.01), minL = Math.floor(fs / 420), maxL = Math.ceil(fs / 70);
+  let peak = 0; for(let i = 0; i < x.length; i++) peak = Math.max(peak, Math.abs(x[i]));
+  const out = [];
+  for(let p = 0; p + W + maxL < x.length; p += H){
+    let e = 0; for(let i = 0; i < W; i++) e += x[p + i] * x[p + i];
+    const rms = Math.sqrt(e / W);
+    if(rms < peak * 0.06){ out.push({t:p / fs, hz:null, rms}); continue; }
+    let best = 0, bl = 0;
+    for(let L = minL; L <= maxL; L++){
+      let c = 0, e2 = 0; for(let i = 0; i < W; i++){ c += x[p + i] * x[p + i + L]; e2 += x[p + i + L] * x[p + i + L]; }
+      const r = c / Math.sqrt(e * e2 + 1e-12); if(r > best){ best = r; bl = L; }
+    }
+    out.push({t:p / fs, hz:best > 0.55 ? fs / bl : null, rms});
+  }
+  // 튀는 값 정리 (앞뒤 5개 가운데값)
+  const hz = out.map(o => o.hz), sm = hz.map((v, i) => { if(v == null) return null; const w = hz.slice(Math.max(0, i - 2), i + 3).filter(y => y != null).sort((a, b) => a - b); return w[Math.floor(w.length / 2)]; });
+  out.forEach((o, i) => o.hz = sm[i]);
+  return {frames:out, dur:x.length / fs};
+}
+function drawPitch(r){
+  const cv = $('#rPitch'), dpr = window.devicePixelRatio || 1, Wd = cv.clientWidth || 600, Ht = cv.clientHeight || 150;
+  cv.width = Wd * dpr; cv.height = Ht * dpr;
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, Wd, Ht);
+  const fr = r.pitch.frames, voiced = fr.filter(f => f.hz);
+  if(voiced.length < 5){ g.fillStyle = '#9FB0CC'; g.font = '13px sans-serif'; g.fillText('목소리를 찾지 못했어요. 조금 더 크게 다시 녹음해 보세요.', 12, Ht / 2); return; }
+  const t0 = voiced[0].t, t1 = voiced[voiced.length - 1].t + 0.05, st = v => 12 * Math.log2(v / 100);
+  const vals = voiced.map(f => st(f.hz)).sort((a, b) => a - b), lo = vals[Math.floor(vals.length * 0.05)] - 2, hi = vals[Math.floor(vals.length * 0.95)] + 2;
+  const padL = 8, padR = 8, top = 22, bot = 34, X = t => padL + (t - t0) / (t1 - t0) * (Wd - padL - padR), Y = v => top + (1 - (st(v) - lo) / (hi - lo || 1)) * (Ht - top - bot);
+  // 단어 위치: 소리 나는 구간에 글자 수 비율로 나눔 (대략)
+  const s = curS(), toks = s ? tokens(s.text) : [], marks = (s && s.marks) || {}, total = toks.reduce((a, t) => a + t.raw.length + 1, 0) || 1;
+  let acc = 0; g.font = '12px "Atkinson Hyperlegible", sans-serif'; g.textBaseline = 'alphabetic';
+  toks.forEach((t, wi) => {
+    const a = t0 + (t1 - t0) * acc / total; acc += t.raw.length + 1; const b = t0 + (t1 - t0) * acc / total, cx = (X(a) + X(b)) / 2, m = marks[wi] || {};
+    const w = g.measureText(t.raw).width;
+    if(m.stress){ g.fillStyle = 'rgba(255,224,102,.95)'; g.fillRect(cx - w / 2 - 3, Ht - 23, w + 6, 17); g.strokeStyle = 'rgba(255,224,102,.35)'; g.setLineDash([2, 4]); g.beginPath(); g.moveTo(cx, top); g.lineTo(cx, Ht - bot + 2); g.stroke(); g.setLineDash([]); }
+    g.fillStyle = m.stress ? '#1A2230' : '#C9D3E6'; g.fillText(t.raw, cx - w / 2, Ht - 10);
+    if(m.tone){ g.fillStyle = m.tone === 'rise' ? '#86B3FF' : '#FFAA80'; g.font = 'bold 15px sans-serif'; g.fillText(m.tone === 'rise' ? '↗' : '↘', cx - 6, 16); g.font = '12px "Atkinson Hyperlegible", sans-serif'; }
+    if(m.pause){ g.strokeStyle = '#C9A6FF'; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(X(b), top); g.lineTo(X(b), Ht - bot + 4); g.stroke(); g.setLineDash([]); }
+  });
+  g.strokeStyle = '#5BD0D8'; g.lineWidth = 3; g.lineJoin = 'round'; g.lineCap = 'round'; g.beginPath();
+  let pen = false;
+  fr.forEach(f => {
+    if(f.t < t0 - 0.01 || f.t > t1) return;
+    if(!f.hz){ pen = false; return; }
+    const px = X(f.t), py = Y(f.hz);
+    if(pen) g.lineTo(px, py); else { g.moveTo(px, py); pen = true; }
+  });
+  g.stroke();
+}
+window.addEventListener('resize', () => { const r = recOf(); if(r && r.pitch && !$('#rPitchWrap').hidden) drawPitch(r); });
+
 /* ---------------- 휴대폰 화면 (학생 연습용) ---------------- */
 const mobMQ = matchMedia('(max-width:700px)');
 const isMob = () => mobMQ.matches;
@@ -1906,7 +2155,24 @@ function renderMobile(){
   $('#mRate').value = String([0.5, 0.75, 1, 1.25].reduce((a, v) => Math.abs(v - ui.rate) < Math.abs(a - ui.rate) ? v : a, 1));
   $('#mScope').value = ui.scope; $('#mRepeat').value = String(ui.repeat);
   if($('#listDlg').open) renderList();
+  fitMobile();
 }
+// 휴대폰: 영상 + 지금 문장 + 버튼이 한 화면에 들어가도록 문장 글자 크기를 맞춤
+function fitMobile(){
+  const card = $('#mCard'), tx = $('#mText');
+  if(!card) return;
+  if(!isMob() || welcome){ card.style.maxHeight = ''; tx.style.fontSize = ''; return; }
+  requestAnimationFrame(() => {
+    const tr = $('.transport'), trH = tr ? tr.getBoundingClientRect().height : 120;
+    const below = ['#mChips', '#recBar'].reduce((a, sel) => { const el = $(sel); return a + (el && el.offsetParent ? el.getBoundingClientRect().height + 10 : 0); }, 0);
+    const avail = Math.max(150, window.innerHeight - trH - below - Math.max(0, card.getBoundingClientRect().top) - 12);
+    card.style.maxHeight = avail + 'px';
+    let fs = 21; tx.style.fontSize = fs + 'px';
+    while(fs > 15 && card.scrollHeight > card.clientHeight + 1){ fs -= 1; tx.style.fontSize = fs + 'px'; }
+    card.classList.toggle('scrolly', card.scrollHeight > card.clientHeight + 1);
+  });
+}
+window.addEventListener('resize', () => { if(isMob()) fitMobile(); });
 $('#mKoBtn').onclick = () => { mKoOpen = !mKoOpen; renderMobile(); };
 $('#mRate').onchange = e => { ui.rate = +e.target.value; Player.setRate(ui.rate); syncToolbar(); savePrefs(); };
 $('#mScope').onchange = e => { ui.scope = e.target.value; if(ui.scope === 'off') clearGap(); syncToolbar(); savePrefs(); if(ui.scope === 'marked' && !lesson.sentences.some(x => x.shadow)) toast('선생님이 지정한 문장이 없어요. ‘모든 문장’을 고르면 문장마다 따라 말할 시간이 생겨요.', 4000); };
@@ -1999,6 +2265,7 @@ function libItemHTML(l){
   return `<div class="litem${cur ? ' cur' : ''}" data-id="${esc(l.id)}">
     <div class="lt"><strong>${badge}${esc(l.title || '제목 없음')}</strong><span>문장 ${n}개 · ${src} · ${fmtDate(l.updatedAt || l.createdAt || Date.now())} 저장${todo ? ' · <b class="todo">' + esc(todo) + '</b>' : ''}</span>${shared}</div>
     <div class="lbtns">
+      ${canList() && l.source && l.source.kind === 'youtube' ? `<label class="inlist" title="체크하면 ‘선생님 수업 목록’ 링크로 들어온 학생에게 이 수업이 보입니다"><input type="checkbox" data-inlist${l.inList ? ' checked' : ''}> 학생 목록</label>` : ''}
       ${cur ? '<span class="note">지금 열려 있음</span>' : '<button class="btn main sm" data-lib="open">열기</button>'}
       <button class="btn sm danger" data-lib="del">삭제</button>
     </div>
@@ -2028,12 +2295,14 @@ function renderLib(){
   if(canBackup()){ const b = backupInfo(); top = `<div class="bkbar${b.old ? ' old' : ''}"><span>${esc(b.text)}</span><span class="spacer"></span><button class="btn main sm" data-libx="export">파일로 내려받기</button></div>`; }
   else if(getRole() === 'general') top = memberBoxHTML();
   const sec = (title, arr, empty) => `<h4 class="libsec">${title}</h4>` + (arr.length ? arr.map(libItemHTML).join('') : `<p class="note">${empty}</p>`);
+  if(canList()) top += '<div id="myListBox" class="listbox"><p class="note">선생님 수업 목록 링크를 불러오는 중…</p></div>';
   $('#libList').innerHTML = top
     + sec('내가 만든 수업', mine, '아직 만든 수업이 없습니다. 위의 ‘＋ 수업 만들기’로 시작하세요.')
     + (got.length ? sec('자료실에서 가져온 수업', got, '') : '')
     + '<div id="libFree"></div>';
   $('#libImportWrap').hidden = !canSave();
   renderLibFree();
+  if(canList()) loadMyList();
 }
 async function renderLibFree(){
   const box = $('#libFree'); if(!box) return;
@@ -2230,7 +2499,10 @@ const HUB_ERR = {
   aifail:'AI 받아 적기에 실패했어요. 잠시 뒤 다시 해 보세요.',
   needcontrib:'학생용 링크는 기여 교사부터 만들 수 있어요. 수업 1개를 공유해 승인받으세요.',
   notyourlink:'내가 만든 링크가 아니라서 바꿀 수 없어요.',
-  linkoff:'이 링크는 끊겼거나 잘못된 링크예요. 선생님께 새 링크를 받아 주세요.'
+  linkoff:'이 링크는 끊겼거나 잘못된 링크예요. 선생님께 새 링크를 받아 주세요.',
+  listoff:'이 수업 목록 링크는 끊겼거나 잘못된 링크예요. 선생님께 새 링크를 받아 주세요.',
+  fbempty:'내용을 적어 주세요.', fbtoolong:'200자 이내로 적어 주세요.',
+  fblimit:'오늘은 더 보낼 수 없어요. 내일 다시 보내 주세요.'
 };
 function hubError(code, detail){
   const base = HUB_ERR[code];
@@ -2608,14 +2880,15 @@ function importLibLesson(l, meta, forCheck){
 
 /* ---------- 관리자 ---------- */
 let adminTab = 'join', adminData = {items:[], members:[]};
-const ADMIN_TABS = {join:'① 가입 신청', wait:'② 공유 승인 기다림', open:'③ 공개 중', other:'④ 반려·내림', members:'⑤ 회원 명단'};
+const ADMIN_TABS = {join:'① 가입 신청', wait:'② 공유 승인 기다림', open:'③ 공개 중', other:'④ 반려·내림', members:'⑤ 회원 명단', fb:'⑥ 건의함'};
+let fbFilter = 'all';
 async function loadAdmin(){
   $('#hubTitle').textContent = HUB_CONFIG.name + ' · 관리자';
   $('#hubOpen').hidden = true;
   hubBusy('관리자 목록을 불러오는 중입니다…');
   try{
-    const j = await hubApi('admin_list', {adminPassword:adminPw()});
-    adminData = {items:(j.items || []).reverse(), members:(j.members || []).reverse()};
+    const [j, f] = await Promise.all([hubApi('admin_list', {adminPassword:adminPw()}), hubApi('admin_fb', {adminPassword:adminPw()}).catch(() => ({items:[]}))]);
+    adminData = {items:(j.items || []).reverse(), members:(j.members || []).reverse(), fb:f.items || []};
     renderAdmin();
   }catch(e){
     if(e.code === 'wrongadmin') return forceStudent('관리자 비밀번호가 바뀌었습니다. 다시 들어와 주세요.');
@@ -2630,7 +2903,8 @@ function adminLists(){
     wait: items.filter(x => x.status === '대기' && !pendingIds.has(x.memberId)),   // 가입 신청과 함께 온 수업은 ①에서 처리
     open: items.filter(x => x.status === '승인'),
     other: items.filter(x => ['반려', '내림', '교체됨'].includes(x.status)),
-    members: members.filter(m => ['회원', '승인교사', '새싹교사', '기여교사', '정지'].includes(m.status))
+    members: members.filter(m => ['회원', '승인교사', '새싹교사', '기여교사', '정지'].includes(m.status)),
+    fb: (adminData.fb || []).filter(x => fbFilter === 'all' || x.who === fbFilter)
   };
 }
 const segLabel = x => `구간 ${fmtClock(x.start)}~${fmtClock(x.end)}`;
@@ -2683,7 +2957,8 @@ function renderAdmin(){
     wait:'새싹 교사가 공유한 수업입니다. 승인하면 자료실에 올라가고, 그 선생님은 기여 교사가 됩니다.',
     open:'자료실에 공개된 수업입니다. ★ 무료로 지정하면 학생을 포함해 누구나 열 수 있습니다.',
     other:'반려하거나 내린 수업입니다. ‘교체됨’은 같은 수업의 새 버전이 올라와 바뀐 것입니다.',
-    members:'회원 코드가 새어 나갔으면 ‘새 코드 발급’, 더 이상 쓰지 않을 선생님은 ‘정지’를 누르세요.'
+    members:'회원 코드가 새어 나갔으면 ‘새 코드 발급’, 더 이상 쓰지 않을 선생님은 ‘정지’를 누르세요.',
+    fb:'교사 건의와 학생 의견입니다. 상태를 바꾸고 답을 남기면, 교사는 ‘내 건의’에서 봅니다. 학생 의견은 익명이고, 링크를 준 선생님에게도 보입니다.'
   }[adminTab];
   hubBody().innerHTML = `
     <div class="hstatus"><strong>관리자</strong><span class="spacer"></span>
@@ -2691,8 +2966,16 @@ function renderAdmin(){
     <div class="atabs">${Object.keys(ADMIN_TABS).map(k => `<button class="chip" data-atab="${k}" aria-pressed="${k === adminTab}">${ADMIN_TABS[k]} ${L[k].length}</button>`).join('')}</div>
     <p class="note">${desc}</p>
     ${adminTab === 'open' && !hasJfk ? '<div class="mbox" style="margin-bottom:10px"><div>앱에 들어 있는 기본 무료 수업(JFK)이 아직 서버에 없습니다. 등록하면 관리자 화면에서 다른 무료 수업과 함께 관리할 수 있습니다.</div><div class="row" style="margin-top:6px"><button class="btn main sm" data-adm="seedjfk">기본 무료 수업(JFK) 서버에 등록</button></div></div>' : ''}
-    <div id="hubList">${list.length ? list.map(x => adminTab === 'join' ? adminJoinHTML(x) : adminTab === 'members' ? adminMemberHTML(x) : adminItemHTML(x, adminTab)).join('') : '<p class="empty">해당하는 항목이 없습니다.</p>'}</div>
+    ${adminTab === 'fb' ? `<div class="atabs">${[['all', '전체'], ['학생', '학생'], ['새싹 교사', '새싹 교사'], ['기여 교사', '기여 교사']].map(([k, t]) => `<button class="chip" data-fbf="${k}" aria-pressed="${fbFilter === k}">${t}</button>`).join('')}</div>` : ''}
+    <div id="hubList">${list.length ? list.map(x => adminTab === 'join' ? adminJoinHTML(x) : adminTab === 'members' ? adminMemberHTML(x) : adminTab === 'fb' ? adminFbHTML(x) : adminItemHTML(x, adminTab)).join('') : '<p class="empty">해당하는 항목이 없습니다.</p>'}</div>
     <p class="note" style="margin-top:10px">‘가져와서 확인’은 내 수업에 [검토] 복사본을 만듭니다. 확인 후 지워도 됩니다. 내가 만든 수업은 ‘자료 편집’ 탭 아래의 ‘자료실에 바로 올리기’로 올립니다.</p>`;
+}
+function adminFbHTML(x){
+  const cls = x.who === '학생' ? 's' : x.who === '새싹 교사' ? 'n' : 'k';
+  return `<div class="fbitem" data-fb="${esc(x.fbId)}"><div><span class="whopill ${cls}">${esc(x.who)}</span>${x.name ? '<b>' + esc(x.name) + '</b> · ' : ''}${FB_ICON[x.kind] || ''} ${esc(x.kind)}${x.toName ? ` <span class="fbm">→ ${esc(x.toName)} 선생님 반</span>` : ''}</div>
+    <div style="white-space:pre-wrap;margin:4px 0">${esc(x.text)}</div><div class="fbm">${esc(x.at)}${x.doneAt ? ' · 처리 ' + esc(x.doneAt) : ''}</div>
+    <div class="row" style="margin-top:6px"><select data-fbst>${['새 건의', '확인함', '반영 예정', '반영함', '어려움'].map(st => `<option${st === x.status ? ' selected' : ''}>${st}</option>`).join('')}</select>
+    ${x.who === '학생' ? '' : `<input class="inp" data-fbrep value="${esc(x.reply)}" placeholder="답 (교사의 ‘내 건의’에 보임)" style="flex:1;min-width:160px">`}<button class="btn sm main" data-fbsave>저장</button></div></div>`;
 }
 async function adminAction(act, subId, btn){
   const pw = adminPw();
@@ -2750,7 +3033,7 @@ async function adminBackup(){
 
 /* ---------- 자료실 대화창 클릭 ---------- */
 $('#hubOpen').addEventListener('click', e => { const b = e.target.closest('[data-openget]'); if(b) openFreeLesson(+b.dataset.openget); });
-$('#hubBody').addEventListener('click', e => {
+$('#hubBody').addEventListener('click', async e => {
   const go = e.target.closest('[data-hubgo]');
   if(go){
     const g = go.dataset.hubgo;
@@ -2768,6 +3051,20 @@ $('#hubBody').addEventListener('click', e => {
   }
   const at = e.target.closest('[data-atab]');
   if(at){ adminTab = at.dataset.atab; return renderAdmin(); }
+  const ff = e.target.closest('[data-fbf]');
+  if(ff){ fbFilter = ff.dataset.fbf; return renderAdmin(); }
+  const fs = e.target.closest('[data-fbsave]');
+  if(fs){
+    const row = fs.closest('[data-fb]'), st = $('[data-fbst]', row).value, rep = $('[data-fbrep]', row);
+    fs.disabled = true;
+    try{
+      await hubApi('admin_fb_set', {adminPassword:adminPw(), fbId:row.dataset.fb, status:st, reply:rep ? rep.value : ''});
+      const x = adminData.fb.find(y => y.fbId === row.dataset.fb); if(x){ x.status = st; x.reply = rep ? rep.value : ''; }
+      toast('저장했어요.');
+    }catch(err){ toast(err.message, 4000); }
+    finally{ fs.disabled = false; }
+    return;
+  }
   const mb = e.target.closest('[data-mact]');
   if(mb){ const row = mb.closest('[data-mem]'); if(row) memberAction(mb.dataset.mact, row.dataset.mem, row, mb); return; }
   const ad = e.target.closest('[data-adm]');
@@ -2853,13 +3150,15 @@ function renderLinkBox(){
   const L = lesson.studentLink, issues = linkIssues(lesson);
   if(!L){
     body.innerHTML = (issues.length ? `<ul class="issues">${issues.map(issueLI).join('')}</ul>` : '') +
-      `<button class="btn main" data-link="make"${issues.length ? ' disabled' : ''}>학생용 링크 만들기</button>`;
+      `<button class="btn main" data-link="make"${issues.length ? ' disabled' : ''}>학생용 링크 만들기</button>` +
+      (issues.length ? '' : ` <label class="inlist" style="margin-left:6px"><input type="checkbox" data-inlist-cur> 선생님 수업 목록에 넣기</label>`);
     return;
   }
   const dirty = linkDirty();
   body.innerHTML = `<div class="linkurl"><input class="inp" id="linkUrl" readonly value="${esc(linkURL(L.id))}" aria-label="학생용 링크"><button class="btn main sm" data-link="copy">복사</button></div>` +
     (dirty ? `<p class="linkwarn">고친 내용이 아직 학생 링크에 반영되지 않았어요. <button class="btn sm" data-link="push"${issues.length ? ' disabled' : ''}>학생 링크에 반영하기</button></p>` + (issues.length ? `<ul class="issues">${issues.map(issueLI).join('')}</ul>` : '')
       : `<p class="linkok">✓ 학생 링크가 지금 수업과 같습니다${L.at ? ' (' + fmtDate(L.at) + ' 반영)' : ''}.</p>`) +
+    `<label class="inlist" style="margin:2px 0 6px"><input type="checkbox" data-inlist-cur${lesson.inList ? ' checked' : ''}> 선생님 수업 목록에도 보이기</label>` +
     `<div class="row" style="margin-top:6px"><button class="btn sm" data-link="renew">새 링크로 바꾸기</button><button class="btn sm" data-link="off">링크 끊기</button>
      <span class="note">링크가 퍼졌다면 ‘새 링크로 바꾸기’를 누르세요. 예전 링크는 바로 열리지 않습니다.</span></div>`;
 }
@@ -2887,7 +3186,7 @@ async function linkAct(act){
       else toast('고친 내용을 학생 링크에 반영했어요. 학생이 링크를 다시 열면 새 내용이 보여요.', 4500);
     } else if(act === 'off'){
       await hubApi('link_off', Object.assign({linkId:L.id}, authData()));
-      delete target.studentLink; toast('링크를 끊었어요.');
+      delete target.studentLink; delete target.inList; toast('링크를 끊었어요. (선생님 수업 목록에서도 빠졌어요)');
     } else if(act === 'renew'){
       const j = await hubApi('link_renew', Object.assign({linkId:L.id}, authData()));
       const wasDirty = linkDirty();
@@ -2900,7 +3199,7 @@ async function linkAct(act){
     }
   }catch(err){
     toast(err.message, 5000);
-    if(err.code === 'linkoff' && target.studentLink){ delete target.studentLink; }
+    if(err.code === 'linkoff' && target.studentLink){ delete target.studentLink; delete target.inList; }
     if(err.code === 'wrongmember' || err.code === 'suspended') forceStudent(err.message + ' 선생님 입구에서 다시 들어와 주세요.');
   }finally{
     linkBusy = false; $('#linkState').disabled = false;
@@ -2910,6 +3209,184 @@ async function linkAct(act){
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-link]'); if(b && !b.disabled) linkAct(b.dataset.link); });
 $('#linkState').onclick = () => linkAct('push');
+
+/* ---------- 선생님 수업 목록 (학기 초에 링크 하나만) ---------- */
+// 선생님은 '학생 목록' 체크만 하고, 학생은 목록 링크 하나로 들어와서 스스로 골라 연습합니다.
+const canList = () => ['approved', 'admin'].includes(getRole());
+const listURL = id => appBase() + '?c=' + id;
+let myList = null;
+async function loadMyList(force){
+  const box = $('#myListBox'); if(!box) return;
+  try{
+    if(!myList || force) myList = await hubApi('list_mine', authData());
+    syncInListFlags(myList.items || []);
+    if(!$('#myListBox')) return;
+    $('#myListBox').innerHTML = `<h4>📋 선생님 수업 목록 링크 <span class="note" style="font-weight:400">학기 초에 이 링크 하나만 클래스룸에 올리세요</span></h4>
+      <div class="linkurl"><input class="inp" id="myListUrl" readonly value="${esc(listURL(myList.listId))}" aria-label="선생님 수업 목록 링크"><button class="btn main sm" data-mylist="copy">복사</button><button class="btn sm" data-mylist="renew">새 링크로 바꾸기</button></div>
+      <p class="note" style="margin:0">아래 수업에서 <b>‘학생 목록’</b>을 체크하면 학생 목록에 나타납니다 (지금 ${(myList.items || []).length}개). 자료실 무료 수업도 함께 보입니다.</p>`;
+  }catch(err){ if($('#myListBox')) $('#myListBox').innerHTML = `<p class="note">수업 목록 링크를 불러오지 못했어요: ${esc(err.message)}</p>`; }
+}
+function syncInListFlags(items){
+  const ids = new Set(items.map(x => x.linkId)), lib = loadLib(); let changed = false;
+  Object.values(lib).forEach(l => { const on = !!(l.studentLink && ids.has(l.studentLink.id)); if(!!l.inList !== on){ l.inList = on; changed = true; if(lesson && lesson.id === l.id) lesson.inList = on; } });
+  if(changed){ writeLib(lib); $$('#libList [data-inlist]').forEach(cb => { const it = cb.closest('.litem'), l = it && lib[it.dataset.id]; if(l) cb.checked = !!l.inList; }); renderLinkBox(); }
+}
+let listBusy = false;
+async function listToggle(id, on, cb){
+  if(listBusy){ if(cb) cb.checked = !on; return; }
+  const lib = loadLib(), l = (lesson && lesson.id === id) ? lesson : lib[id];
+  if(!l){ if(cb) cb.checked = !on; return; }
+  if(on){ const iss = linkIssues(l); if(iss.length){ if(cb) cb.checked = false; toast(iss[0], 4500); return; } }
+  listBusy = true; if(cb) cb.disabled = true;
+  try{
+    if(on){
+      const j = await hubApi('list_set', Object.assign({on:true, lesson:lessonForSend(l), linkId:(l.studentLink && l.studentLink.id) || ''}, authData()));
+      l.studentLink = {id:j.linkId, hash:linkHash(l), at:Date.now()}; l.inList = true;
+      toast(`“${l.title}”을(를) 학생 목록에 넣었어요. 학생 목록 맨 위에 NEW로 보여요.`, 4000);
+    } else {
+      if(l.studentLink) await hubApi('list_set', Object.assign({on:false, linkId:l.studentLink.id}, authData()));
+      l.inList = false; toast('학생 목록에서 뺐어요. (학생용 링크는 그대로예요)', 3500);
+    }
+    if(lesson && lesson.id === l.id){ lesson.studentLink = l.studentLink; lesson.inList = l.inList; saveNow(); }
+    else { const lb = loadLib(); lb[l.id] = l; writeLib(lb); }
+    myList = null; renderLinkBox(); if($('#myListBox')) loadMyList(true);
+  }catch(err){
+    if(cb) cb.checked = !on; toast(err.message, 5000);
+    if(err.code === 'wrongmember' || err.code === 'suspended') forceStudent(err.message + ' 선생님 입구에서 다시 들어와 주세요.');
+  }finally{ listBusy = false; if(cb) cb.disabled = false; }
+}
+document.addEventListener('change', e => {
+  const a = e.target.closest('[data-inlist]');
+  if(a){ const it = a.closest('.litem'); if(it) listToggle(it.dataset.id, a.checked, a); return; }
+  const b = e.target.closest('[data-inlist-cur]');
+  if(b && lesson){ if(!b.checked || lesson.studentLink) listToggle(lesson.id, b.checked, b); else listToggle(lesson.id, true, b); }
+});
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-mylist]'); if(!b || !myList) return;
+  if(b.dataset.mylist === 'copy'){ const ok = await copyTextFrom(listURL(myList.listId), '#myListUrl'); toast(ok ? '수업 목록 링크를 복사했어요. 클래스룸에 한 번만 올려 두세요.' : '링크 칸을 길게 눌러 복사해 주세요.', 4000); }
+  if(b.dataset.mylist === 'renew'){
+    if(!confirm('수업 목록 링크를 새로 바꿀까요?\n예전 목록 링크는 바로 열리지 않으니, 학생들에게 새 링크를 다시 알려 주세요.')) return;
+    try{ const j = await hubApi('list_renew', authData()); myList.listId = j.listId; loadMyList(); toast('새 목록 링크로 바꿨어요. 학생들에게 새 링크를 알려 주세요.', 4500); }catch(err){ toast(err.message, 4500); }
+  }
+});
+async function copyTextFrom(t, sel){
+  try{ await navigator.clipboard.writeText(t); return true; }catch(e){}
+  const i = $(sel); if(i){ i.select(); try{ return document.execCommand('copy'); }catch(e){} }
+  return false;
+}
+
+/* 학생: 목록 링크로 들어온 경우 */
+const LAST_LIST_KEY = 'shadowroom.lastList', SEEN_KEY = 'shadowroom.seenLinks';
+const lastList = () => loadJSON(LAST_LIST_KEY);
+const seenLinks = () => { try{ return new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || '[]')); }catch(e){ return new Set(); } };
+function markSeen(id){ try{ const s = seenLinks(); s.add(id); localStorage.setItem(SEEN_KEY, JSON.stringify([...s].slice(-300))); }catch(e){} }
+let classData = null;
+async function openClassList(listId, quiet){
+  const dlg = $('#classDlg'), body = $('#classBody');
+  body.innerHTML = '<p class="note">선생님 수업 목록을 불러오는 중이에요…</p>';
+  if(!dlg.open) dlg.showModal();
+  try{
+    const j = await hubApi('list_open', {listId});
+    classData = Object.assign({listId}, j);
+    try{ localStorage.setItem(LAST_LIST_KEY, JSON.stringify({id:listId, teacher:j.teacher || '', at:Date.now()})); }catch(e){}
+    renderClassList(); renderWelcome(); renderClassBtns();
+  }catch(err){
+    if(err.code === 'listoff'){ try{ if(lastList().id === listId) localStorage.removeItem(LAST_LIST_KEY); }catch(e){} renderWelcome(); renderClassBtns(); }
+    body.innerHTML = `<p class="issues" style="list-style:none;padding:0">${esc(err.message)}</p>`;
+  }
+}
+function renderClassList(){
+  const d = classData, seen = seenLinks(), week = 7 * 864e5;
+  const isNew = x => !seen.has(x.linkId) && (Date.now() - new Date(String(x.addedAt).replace(' ', 'T')).getTime() < week);
+  const thumb = v => v ? `<img src="https://i.ytimg.com/vi/${esc(v)}/mqdefault.jpg" alt="" loading="lazy">` : '';
+  $('#classTitle').textContent = d.teacher ? `${d.teacher} 선생님 수업` : '선생님 수업';
+  $('#classBody').innerHTML = `<p class="note" style="margin:0 0 6px">보고 싶은 수업을 누르면 바로 연습할 수 있어요.</p>` +
+    `<h4 class="cls-sec">선생님이 고른 수업 (${d.items.length})</h4>` +
+    (d.items.length ? d.items.map(x => `<button class="cls-item" data-cls-link="${esc(x.linkId)}">${thumb(x.videoId)}<span class="ci"><b>${isNew(x) ? '<span class="newpill">NEW</span>' : ''}${esc(x.title)}</b><span>문장 ${x.sentences || '?'}개</span></span></button>`).join('') : '<p class="note">아직 선생님이 넣은 수업이 없어요.</p>') +
+    (d.free && d.free.length ? `<h4 class="cls-sec">누구나 쓰는 무료 수업 (${d.free.length})</h4>` + d.free.map(x => `<button class="cls-item" data-cls-free="${esc(x.subId)}">${thumb(x.videoId)}<span class="ci"><b>${esc(x.title)}</b><span>문장 ${x.sentences || '?'}개</span></span></button>`).join('') : '');
+}
+$('#classBody').addEventListener('click', async e => {
+  const a = e.target.closest('[data-cls-link]'), f = e.target.closest('[data-cls-free]');
+  if(a){ markSeen(a.dataset.clsLink); $('#classDlg').close(); openFromLink(a.dataset.clsLink, classData && classData.listId); }
+  if(f){
+    $('#classDlg').close();
+    const list = await loadOpenLessons(), i = list.findIndex(l => l._sub === f.dataset.clsFree);
+    if(i >= 0) openFreeLesson(i); else toast('이 무료 수업을 열지 못했어요. 잠시 뒤 다시 해 보세요.');
+  }
+});
+function renderClassBtns(){
+  const ll = lastList(), show = !!ll.id;
+  ['#btnClass', '#mClassBtn'].forEach(sel => { const b = $(sel); if(b) b.hidden = !show; });
+}
+['#btnClass', '#mClassBtn', '#btnLastList'].forEach(sel => { const b = $(sel); if(b) b.onclick = () => { const ll = lastList(); if(ll.id) openClassList(ll.id); }; });
+
+/* ---------- 건의·제안 ---------- */
+// 교사: 회원 코드로 보냄(이름 남음). 학생: 익명 (이름·학번을 받지 않음, 한 기기에서 하루 3번)
+const FB_T = ['불편한 점', '새 기능 제안', '오류 신고'], FB_S = ['이런 영상 해 주세요', '이게 불편해요', '이런 기능 있으면 좋겠어요'];
+const FB_ICON = {'이런 영상 해 주세요':'🎬', '이게 불편해요':'😣', '이런 기능 있으면 좋겠어요':'💡', '불편한 점':'😣', '새 기능 제안':'💡', '오류 신고':'🐞'};
+function deviceId(){ try{ let d = localStorage.getItem('shadowroom.dev'); if(!d){ d = uid() + uid(); localStorage.setItem('shadowroom.dev', d); } return d; }catch(e){ return 'nodev'; } }
+let fbTab = 'send', fbKind = '';
+function openFb(){ fbTab = 'send'; fbKind = ''; renderFb(); $('#fbDlg').showModal(); }
+$('#btnFb').onclick = openFb;
+function fbFormHTML(kinds, max, note){
+  return `<div class="fbkinds">${kinds.map(k => `<button data-fbkind="${esc(k)}" aria-pressed="${fbKind === k}">${FB_ICON[k] || ''} ${esc(k)}</button>`).join('')}</div>
+    <textarea class="inp" id="fbText" rows="4" maxlength="${max}" placeholder="${esc(note)}"></textarea>
+    <div class="row" style="margin-top:6px"><span class="note" id="fbCount">0 / ${max}</span><span class="spacer"></span><button class="btn main" id="fbSend">보내기</button></div>
+    <p class="issues" id="fbMsg" style="list-style:none;padding:0;margin:6px 0 0"></p>`;
+}
+function renderFb(){
+  const r = getRole(), body = $('#fbBody');
+  if(r === 'student'){
+    $('#fbTitle').textContent = '💬 의견 보내기';
+    const to = (lesson && (lesson.fromLink || lesson.fromList)) || lastList().id || lastLink().id;
+    body.innerHTML = `<p class="note" style="margin:0 0 4px">원하는 영상이나 불편한 점을 알려 주세요. ${to ? '선생님께 전달돼요.' : '관리자에게 전달돼요.'}<br><b>이름·학번·전화번호는 쓰지 마세요.</b> 누가 보냈는지는 남지 않아요. (하루 3번까지)</p>` +
+      fbFormHTML(FB_S, 200, '예: 해리 포터 영화 장면으로 연습하고 싶어요');
+  } else if(r === 'general'){
+    $('#fbTitle').textContent = '💬 건의·제안';
+    body.innerHTML = '<p>건의·제안은 회원 선생님이 보낼 수 있어요. ‘내 수업’ 창의 ‘회원 되기’로 신청해 주세요.</p>';
+    return;
+  } else if(r === 'admin'){
+    $('#fbTitle').textContent = '💬 건의함';
+    body.innerHTML = '<p>관리자는 ‘공용 자료실’ → <b>⑥ 건의함</b>에서 교사 건의와 학생 의견을 모두 봅니다.</p><button class="btn main" data-fbgo="admin">건의함 열기</button>';
+    return;
+  } else {
+    $('#fbTitle').textContent = '💬 건의·제안';
+    const tabs = `<div class="atabs"><button class="chip" data-fbtab="send" aria-pressed="${fbTab === 'send'}">보내기</button><button class="chip" data-fbtab="mine" aria-pressed="${fbTab === 'mine'}">내 건의</button><button class="chip" data-fbtab="students" aria-pressed="${fbTab === 'students'}">학생 의견</button></div>`;
+    if(fbTab === 'send') body.innerHTML = tabs + '<p class="note" style="margin:6px 0 0">앱을 쓰면서 불편한 점, 있으면 좋겠는 기능, 오류를 알려 주세요. 관리자가 확인하고 처리 결과를 ‘내 건의’에 남깁니다.</p>' + fbFormHTML(FB_T, 500, '무엇이 어떻게 불편했는지, 어떤 기능이 있으면 좋을지 적어 주세요');
+    else { body.innerHTML = tabs + '<p class="note">불러오는 중…</p>'; loadFbMine(tabs); }
+    if(fbTab !== 'send') return;
+  }
+  const ta = $('#fbText'); ta.oninput = () => { $('#fbCount').textContent = `${ta.value.length} / ${ta.maxLength}`; };
+}
+async function loadFbMine(tabs){
+  try{
+    const j = await hubApi('fb_mine', authData());
+    const list = fbTab === 'mine' ? j.sent : j.students;
+    if(!$('#fbDlg').open) return;
+    $('#fbBody').innerHTML = tabs + (fbTab === 'students' ? '<p class="note">내 학생용 링크·수업 목록으로 들어온 학생들이 보낸 의견이에요. 이름은 남지 않아요.</p>' : '') +
+      (list.length ? list.map(x => `<div class="fbitem"><div>${FB_ICON[x.kind] || ''} <b>${esc(x.kind)}</b> <span class="st-pill">${esc(x.status)}</span></div><div style="white-space:pre-wrap;margin-top:3px">${esc(x.text)}</div><div class="fbm">${esc(x.at)}</div>${x.reply ? `<div class="fbr">관리자 답: ${esc(x.reply)}</div>` : ''}</div>`).join('') : `<p class="empty">${fbTab === 'mine' ? '아직 보낸 건의가 없어요.' : '아직 학생 의견이 없어요.'}</p>`);
+  }catch(err){ $('#fbBody').innerHTML = tabs + `<p class="issues" style="list-style:none;padding:0">${esc(err.message)}</p>`; }
+}
+$('#fbBody').addEventListener('click', async e => {
+  const k = e.target.closest('[data-fbkind]'); if(k){ fbKind = k.dataset.fbkind; $$('[data-fbkind]').forEach(b => b.setAttribute('aria-pressed', String(b === k))); return; }
+  const t = e.target.closest('[data-fbtab]'); if(t){ fbTab = t.dataset.fbtab; renderFb(); return; }
+  const g = e.target.closest('[data-fbgo]'); if(g){ $('#fbDlg').close(); adminTab = 'fb'; openHub(); return; }
+  if(e.target.closest('#fbSend')){
+    const text = $('#fbText').value.trim(), msg = $('#fbMsg'), btn = $('#fbSend');
+    if(!fbKind){ msg.textContent = '먼저 종류를 골라 주세요.'; return; }
+    if(text.length < 2){ msg.textContent = '내용을 적어 주세요.'; return; }
+    btn.disabled = true; btn.textContent = '보내는 중…';
+    try{
+      const r = getRole(), data = {kind:fbKind, text};
+      if(r === 'student') Object.assign(data, {device:deviceId(), linkId:(lesson && lesson.fromLink) || lastLink().id || '', listId:(lesson && lesson.fromList) || lastList().id || ''});
+      else Object.assign(data, authData());
+      await hubApi('fb_send', data);
+      $('#fbDlg').close();
+      toast(r === 'student' ? '의견을 보냈어요. 고마워요!' : '건의를 보냈어요. 처리 결과는 ‘내 건의’에서 볼 수 있어요.', 4000);
+    }catch(err){ msg.textContent = err.message; }
+    finally{ btn.disabled = false; btn.textContent = '보내기'; }
+  }
+});
 
 function openSubmit(){
   const r = getRole();
@@ -3027,7 +3504,8 @@ function openLesson(l, opts){
   lesson = l;
   lesson.blank = Object.assign({mode:'random', ratio:0.3, seed:1}, lesson.blank || {});
   E.target = 0; E.plays = 0; E.endedAt = -1; clearGap(); ui.revealed.clear(); ui.tap = false; tm.open = false; document.body.classList.remove('timing');
-  ui.ab = {a:null, b:null, on:false}; ui.cvEdit = false;
+  ui.ab = {a:null, b:null, on:false}; ui.cvEdit = false; ui.abPlay = false;
+  if(typeof REC !== 'undefined'){ if(REC.rec) recStop(); Object.values(REC.store).forEach(r => URL.revokeObjectURL(r.url)); REC.store = {}; }
   const src = lesson.source;
   if(src && src.kind === 'youtube'){
     $('#ytUrl').value = src.url || src.videoId;
@@ -3051,12 +3529,12 @@ function openLesson(l, opts){
 /* ---------- 학생용 링크로 들어온 경우 ---------- */
 const LAST_LINK_KEY = 'shadowroom.lastLink';
 function lastLink(){ return loadJSON(LAST_LINK_KEY); }
-async function openFromLink(id){
+async function openFromLink(id, listId){
   const msg = $('#linkMsg');
   if(msg){ msg.hidden = false; msg.textContent = '선생님이 보낸 수업을 여는 중이에요…'; }
   try{
     const j = await hubApi('link_open', {linkId:id});
-    const c = j.lesson; c.transient = true; c.fromLink = id;
+    const c = j.lesson; c.transient = true; c.fromLink = id; if(listId) c.fromList = listId;
     try{ localStorage.setItem(LAST_LINK_KEY, JSON.stringify({id, title:c.title || j.title || '', at:Date.now()})); }catch(e){}
     switchLesson(c); setTab('lesson');
     toast(`“${c.title || '수업'}” 수업을 열었어요. 아래 ‘재생’을 눌러 시작하세요.`, 4000);
@@ -3071,6 +3549,8 @@ function renderWelcome(keepMsg){ const w = $('#welcomeOverlay'); if(w) w.hidden 
   document.body.classList.toggle('is-welcome', !!(welcome && !N()));
   const ll = lastLink(), lb = $('#btnLastLink');
   if(lb){ lb.hidden = !ll.id; lb.textContent = ll.id ? `지난번 수업 이어서 하기: ${ll.title || '선생님이 보낸 수업'}` : ''; }
+  const cl = lastList(), cb = $('#btnLastList');
+  if(cb){ cb.hidden = !cl.id; cb.textContent = cl.id ? `📋 ${cl.teacher ? cl.teacher + ' 선생님' : '선생님'} 수업 목록 열기` : ''; }
   if(!keepMsg && $('#linkMsg')) $('#linkMsg').hidden = true;
   const sb = document.querySelector('[data-free-start]'); if(sb) sb.hidden = false; const fp = $('#freePick'); if(fp) fp.hidden = true; }
 loadPrefs();
@@ -3085,10 +3565,12 @@ Player.rate = ui.rate;
   }catch(e){}
   try{ if(getRole() === 'student') localStorage.removeItem(ROLE_KEY); }catch(e){}   // 예전 버전의 역할 표시는 지움 (다시 들어와야 함)
   applyRole(); applyMob();
-  const linkId = new URLSearchParams(location.search).get('l');
-  if(getRole() === 'student' || linkId) openLesson(newLesson(), {welcome:true});
+  const qs = new URLSearchParams(location.search), linkId = qs.get('l'), listId = qs.get('c');
+  if(getRole() === 'student' || linkId || listId) openLesson(newLesson(), {welcome:true});
   else openFromDrawer();
   if(linkId) openFromLink(linkId.trim());
+  else if(listId) openClassList(listId.trim());
+  renderClassBtns();
   refreshMe();
 })();
 </script>
