@@ -261,6 +261,66 @@ textarea.inp{resize:vertical;font-family:var(--en);font-size:14px}
 .qscore div{background:var(--teal-weak);border-radius:10px;padding:8px 14px;font-size:14px}
 .qscore b{font-size:20px;font-family:var(--en);margin-left:4px}
 body.quiz #segView,body.quiz #btnPresent,body.quiz #toolRow,body.quiz #blankRow,body.quiz [data-view]{display:none!important}
+body.stg #segView,body.stg #btnPresent,body.stg #toolRow,body.stg #blankRow,body.stg [data-view]{display:none!important}
+/* 학생 단계 (① 듣기 ② 대의 ③ 세부 ④ 받아쓰기 ⑤ 따라 말하기) */
+.stagebar{border:1px solid var(--stage-line);border-radius:10px;background:var(--stage2);padding:8px 10px;color:var(--stage-text)}
+.stg-btns{display:flex;gap:6px;flex-wrap:wrap}
+.stg-b{border:1px solid var(--stage-line);background:transparent;color:var(--stage-text);border-radius:16px;padding:6px 12px;font-size:14px;cursor:pointer;white-space:nowrap;font-family:var(--ui)}
+.stg-b.done{border-color:#6FD3C0;color:#8FE3D0}
+.stg-b.on{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
+.stg-b.res{background:#FFE066;color:#15203A;border-color:#FFE066;font-weight:700}
+.stg-note{margin:8px 0 0;font-size:13.5px;color:var(--stage-muted);line-height:1.55}
+.stg-note b{color:#FFE066}
+body.stg:not(.stg-speak) #recBar{display:none!important}
+body.stg-gist #mCard,body.stg-detail #mCard{display:none!important}
+body.stg:not(.stg-speak) .mchips label:not(:first-child){display:none!important}
+.qabox{border:1.5px solid #6FD3C0;border-radius:10px;background:var(--stage2);padding:10px 12px;color:var(--stage-text)}
+.qa-item{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--stage-line)}
+.qa-q{margin:0 0 8px;font-size:16px;line-height:1.5}
+.qa-opts{display:flex;flex-direction:column;gap:6px}
+.qa-opts button{text-align:left;background:transparent;border:1px solid var(--stage-line);color:var(--stage-text);border-radius:10px;padding:9px 12px;font-size:15px;line-height:1.4;cursor:pointer;font-family:var(--ui)}
+.qa-opts button:hover:not(:disabled){border-color:#6FD3C0}
+.qa-opts button:disabled{cursor:default}
+.qa-opts button.right{border:2px solid #3FBF74}
+.qa-opts button.ok{background:rgba(30,142,78,.28);border-color:#3FBF74}
+.qa-opts button.no{background:rgba(198,47,59,.25);border-color:#E0606B}
+.qa-fb{margin:8px 0 0;font-size:14px;line-height:1.5}
+.qa-fb .good{color:#8FE3A8;font-weight:700}.qa-fb .bad{color:#FF9C8A;font-weight:700}
+.qa-ev{display:block;color:var(--stage-muted);margin-top:4px}
+.qa-ev .en{font-family:var(--en)}
+.qa-evb{background:transparent;border:1px solid var(--stage-line);color:#8FD3D8;border-radius:14px;padding:3px 10px;font-size:13px;margin-left:6px;cursor:pointer}
+.sheet-list .lb{display:inline-block;min-width:3.5em;border-bottom:2px solid currentColor;margin:0 2px}
+.sheet-list .lt{color:var(--muted);font-family:var(--en)}
+/* 학생 화면 설정 (교사) */
+.svs{display:flex;flex-direction:column;gap:6px;margin:10px 0 4px}
+.svs-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.svs-row .toggle{min-width:9.5em;font-weight:600}
+.svs-row .note{flex:1}
+.wz-step{font-size:13px;color:var(--muted);margin:0 0 6px}
+.wz h4{margin:4px 0 6px;font-size:18px}
+.wz .ask{font-size:15.5px;margin:14px 0 8px}
+.wz .row{gap:8px;flex-wrap:wrap}
+.wz .btn[aria-pressed="true"]{outline:2px solid var(--teal)}
+.wz-foot{display:flex;gap:8px;margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+.qp{border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0;font-size:14.5px}
+.qp p{margin:0 0 4px}
+.qp ol{margin:0;padding:0;list-style:none}
+.qp li{margin:2px 0}
+.qp li.ans{font-weight:700;color:#0E7A82}
+.qe{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.qe .inp{width:100%;box-sizing:border-box}
+.qe label{display:flex;align-items:center;gap:6px}
+.qe label .inp{flex:1}
+.wz-sum{margin:8px 0;padding:0;list-style:none}
+.wz-sum li{padding:6px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.wz-sum .off{color:var(--muted)}
+/* 학습지: 객관식 */
+.ws-sec{margin:0 0 10pt}
+.ws-sec h3{font-size:12pt;margin:0 0 6pt}
+.ws-mc{margin:0;padding:0;list-style:none}
+.ws-mc li{margin:0 0 8pt;font-size:11.5pt;line-height:1.6;break-inside:avoid}
+.ws-mc .ws-opts{display:grid;grid-template-columns:1fr 1fr;gap:0 6mm;padding-left:6mm}
+.ws-mc .ws-opts span{display:block}
 #printArea{display:none}
 .ws{font-family:var(--ui);color:#000;background:#fff}
 .ws-page{width:186mm;margin:0 auto;padding:0;page-break-after:always;break-after:page}
@@ -436,8 +496,9 @@ dialog.sheet{margin:auto auto 0;width:100%;max-width:640px;max-height:78vh;borde
 .sheet-list button b{flex:none;min-width:2em;color:var(--teal);font-family:var(--en)}
 .sheet-list button.on{background:var(--teal-weak);font-weight:600}
 @media (max-width:700px){
-  body.mob{padding-bottom:calc(128px + env(safe-area-inset-bottom))}
-  body.mob .layout{display:block}
+  body.mob{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+  body.mob .layout{display:block;flex:none}
+  html:has(body.mob),body.mob{height:auto;min-height:100%}
   body.mob .panel,body.mob .ctrls,body.mob .present-ctrl,body.mob .caption,body.mob .where,body.mob #btnNew,body.mob #btnHub,body.mob .hub-sep,body.mob #btnHelp,body.mob .title-label{display:none!important}
   body.mob .top{padding:8px 10px;gap:8px;flex-wrap:wrap}
   body.mob .top-actions{gap:6px}
@@ -476,6 +537,17 @@ dialog.sheet{margin:auto auto 0;width:100%;max-width:640px;max-height:78vh;borde
   body.mob #rPitch{height:130px}
   body.mob[data-role="student"] .title-box{order:0;flex-basis:auto;flex:1}
   body.mob .top{min-height:0}
+}
+@media (max-width:700px){
+  body.mob .stg-btns{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  body.mob .stagebar{padding:6px 8px}
+  body.mob .stg-note{font-size:12.5px;margin-top:6px}
+  body.mob.typing .video-wrap{aspect-ratio:auto!important;height:96px!important}
+  body.mob.typing .top,body.mob.typing #stageBar,body.mob.typing .mchips,body.mob.typing .mnote,body.mob.typing #mHint,body.mob.typing .copyright,body.mob.typing .mko-row,body.mob.typing .quizbar .qnote{display:none!important}
+  body.mob.typing{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+  body.mob.typing .transport{gap:6px;padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+  body.mob.typing .transport .sbtn,body.mob.typing .transport .sbtn.play{min-height:40px;font-size:14.5px}
+  body.mob.typing #bRepeat{min-height:32px}
 }
 @media (max-width:700px) and (max-height:760px){
   body.mob .mchips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
@@ -573,6 +645,9 @@ body.hc .caption .ko{color:#fff}
       </div>
     </div>
 
+    <!-- 학생 단계 버튼 (학생 링크·수업 목록으로 들어온 학생) -->
+    <div class="stagebar" id="stageBar" hidden><div class="stg-btns" id="stgBtns"></div><p class="stg-note" id="stgNote"></p></div>
+
     <!-- 휴대폰 화면 (학생 연습용) -->
     <div class="mcard" id="mCard" aria-live="polite">
       <div class="mpos"><span id="mPos"></span><span class="mpos-btns"><button class="mlist-btn" id="mClassBtn" hidden>수업 목록</button><button class="mlist-btn" id="mListBtn">문장 목록</button></span></div>
@@ -631,6 +706,12 @@ body.hc .caption .ko{color:#fff}
       <div class="qtop"><b>✏️ 빈칸 받아쓰기</b><span class="qprog" id="qProg"></span><span class="spacer"></span>
         <button class="sbtn play" id="qCheck">채점하기</button><button class="sbtn" id="qResult" hidden>결과 보기</button><button class="sbtn" id="qReset" hidden>처음부터 다시</button></div>
       <p class="qnote" id="qNote">영상을 들으며 빈칸에 들리는 단어를 써 보세요. 다 쓰면 ‘채점하기’를 누르세요.</p>
+    </div>
+
+    <!-- ② 대의 파악 · ③ 세부 내용 (객관식, 고르면 바로 채점, 기회 한 번) -->
+    <div class="qabox" id="qaBox" hidden>
+      <div class="qtop"><b id="qaTitle"></b><span class="qprog" id="qaProg"></span></div>
+      <div id="qaList"></div>
     </div>
 
     <!-- 녹음: 내 목소리 / 원어민과 번갈아 듣기 / 억양 곡선 / 파일 저장 (녹음은 이 기기에만 남음) -->
@@ -825,16 +906,17 @@ body.hc .caption .ko{color:#fff}
 
         <section class="box" id="svBox">
           <h3>학생 화면 설정</h3>
-          <p class="desc">학생 링크·선생님 수업 목록으로 들어온 학생에게 처음부터 이렇게 보입니다. 바꾼 뒤 맨 위 ‘↻ 학생 링크에 반영’을 누르세요.</p>
-          <div class="form">
-            <label>보기 <select class="inp" id="svView"><option value="script">영상 + 스크립트</option><option value="blank">영상 + 빈칸 (받아쓰기)</option><option value="video">영상만</option></select></label>
-            <label>정답 보여 주기 <select class="inp" id="svReveal"><option value="two">두 번 기회 (1차는 맞음/틀림만, 2차 뒤 정답)</option><option value="now">바로 보여 주기 (채점하면 바로 정답)</option><option value="never">안 보여 주기 (맞음/틀림만)</option></select></label>
+          <p class="desc">학생 링크·선생님 수업 목록으로 들어온 학생에게 보이는 단계예요. 학생은 첫 단계부터 시작하고, 단계 버튼으로 자유롭게 오갈 수 있어요. 바꾼 뒤 맨 위 ‘↻ 학생 링크에 반영’을 누르세요.</p>
+          <div class="row"><button class="btn main" id="btnSvWizard">차례로 설정하기</button><span class="note">한 단계씩 물어보면서 정해요. AI 문제도 여기서 만들어요.</span></div>
+          <div class="svs" id="svStages"></div>
+          <div id="svDictOpts">
+            <div class="form"><label>④ 받아쓰기 정답 보여 주기 <select class="inp" id="svReveal"><option value="two">두 번 기회 (1차는 맞음/틀림만, 2차 뒤 정답)</option><option value="now">바로 보여 주기 (채점하면 바로 정답)</option><option value="never">안 보여 주기 (맞음/틀림만)</option></select></label></div>
+            <div class="row" id="svBlankRow" style="margin-top:8px;font-size:14px">④ 빈칸
+              <span class="seg" id="svRatio"><button data-svr="0.1">10%</button><button data-svr="0.3">30%</button><button data-svr="0.5">50%</button></span>
+              <span class="note" id="svBlankNote"></span>
+            </div>
           </div>
-          <div class="row" id="svBlankRow" style="margin-top:8px;font-size:14px">빈칸
-            <span class="seg" id="svRatio"><button data-svr="0.1">10%</button><button data-svr="0.3">30%</button><button data-svr="0.5">50%</button></span>
-            <span class="note" id="svBlankNote"></span>
-          </div>
-          <div class="row" style="margin-top:8px"><button class="btn" id="btnPrint">🖨 학습지 인쇄</button><span class="note">같은 빈칸으로 A4 학습지를 만들어 인쇄하거나 PDF로 저장합니다.</span></div>
+          <div class="row" style="margin-top:8px"><button class="btn" id="btnPrint">🖨 학습지 인쇄</button><span class="note">켜진 ②·③ 객관식 문제와 같은 빈칸으로 A4 학습지를 만들어 인쇄하거나 PDF로 저장합니다.</span></div>
         </section>
 
         <section class="box" id="linkBox">
@@ -896,13 +978,17 @@ body.hc .caption .ko{color:#fff}
   <form method="dialog" style="text-align:right;margin-top:10px"><button class="btn main">닫기</button></form>
 </dialog>
 <dialog id="printDlg" class="lib" aria-labelledby="printTitle">
-  <div class="lib-head"><h3 id="printTitle">🖨 빈칸 학습지 인쇄</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div class="lib-head"><h3 id="printTitle">🖨 학습지 인쇄</h3><form method="dialog"><button class="btn">닫기</button></form></div>
   <div id="printBody"></div>
 </dialog>
 <div id="printArea" aria-hidden="true"></div>
 <dialog id="quizDlg" class="lib" aria-labelledby="quizTitle">
-  <div class="lib-head"><h3 id="quizTitle">빈칸 받아쓰기 결과</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div class="lib-head"><h3 id="quizTitle">듣기 결과</h3><form method="dialog"><button class="btn">닫기</button></form></div>
   <div id="quizBody"></div>
+</dialog>
+<dialog id="svDlg" class="lib" aria-labelledby="svDlgTitle">
+  <div class="lib-head"><h3 id="svDlgTitle">학생 화면 설정</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="svDlgBody" class="wz"></div>
 </dialog>
 <dialog id="fbDlg" class="lib" aria-labelledby="fbTitle">
   <div class="lib-head"><h3 id="fbTitle">의견 보내기</h3><form method="dialog"><button class="btn">닫기</button></form></div>
@@ -1501,7 +1587,7 @@ function clearGap(){ E.gap = null; $('#gapOverlay').hidden = true; }
 function finishGap(){ if(!E.gap) return; const cb = E.gap.cb; clearGap(); cb(); }
 function stopAfterGap(){ clearGap(); E.endedAt = E.target; }
 function replayCurrent(){ seekTo(segStart(curS())); Player.play(); }
-function shadowOn(s){ return ui.scope === 'all' || (ui.scope === 'marked' && !!s.shadow); }
+function shadowOn(s){ if(ui.stage && ui.stage !== 'speak' && lesson && stageMode()) return false; return ui.scope === 'all' || (ui.scope === 'marked' && !!s.shadow); }
 function repeatsFor(s){ return shadowOn(s) ? ui.repeat : 1; }
 function sentenceEnded(){
   const s = curS(); E.plays++;
@@ -1584,6 +1670,7 @@ function renderScriptInner(box){
   document.body.classList.toggle('view-video', ui.view === 'video');
   box.className = 'script tool-' + ui.tool;
   if(!N()){ box.innerHTML = welcome ? '<div class="empty">무료 수업을 열면 여기에 문장이 나옵니다.</div>' : '<div class="empty">문장이 없습니다. ‘자료 편집’에서 스크립트를 넣어 주세요.<br><br><button class="btn main" data-open-tab="edit">스크립트 넣기</button></div>'; return; }
+  if(ui.view === 'video' && ui.stage && stageMode()){ box.innerHTML = `<div class="empty">🎧 지금은 ‘${STG_NAME[ui.stage]}’ 단계예요. 자막 없이 들어요.${ui.stage === 'listen' ? '' : '<br>문제는 영상 아래에 있어요.'}</div>`; return; }
   if(ui.view === 'video'){ box.innerHTML = '<div class="empty">영상만 보는 중입니다. 학생들이 소리에만 집중하게 할 때 쓰세요.<br>위의 ‘영상 + 스크립트’를 누르면 다시 보입니다.</div>'; return; }
   box.innerHTML = lesson.sentences.map((s, i) => `
     <div class="sent${i === E.target ? ' on' : ''}${s.shadow ? ' sh' : ''}" data-i="${i}">
@@ -1643,8 +1730,8 @@ function syncToolbar(){
   $('#lessonTitle').classList.toggle('need', !lesson.title || /^새 수업$/.test(lesson.title.trim()));
 }
 function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
-function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); renderLinkBox(); renderMobile(); renderRec(); renderSvBox(); renderQuiz(); }
-function setView(v){ if(document.body.classList.contains('quiz') && v !== 'blank') return;   // 받아쓰기 중에는 보기를 바꾸지 않음
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); renderLinkBox(); renderMobile(); renderRec(); renderSvBox(); renderQuiz(); renderQa(); renderStage(); }
+function setView(v){ if(document.body.classList.contains('stg') || (document.body.classList.contains('quiz') && v !== 'blank')) return;   // 받아쓰기 중에는 보기를 바꾸지 않음
   ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); renderMobile(); }
 function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 
@@ -2119,11 +2206,32 @@ $('#btnHelp').onclick = () => $('#helpDlg').showModal();
 const SV_DEF = {view:'script', reveal:'two'};
 const svOf = l => Object.assign({}, SV_DEF, (l && l.studentView) || {});
 const asStudent = () => !!lesson && (getRole() === 'student' || !!lesson.fromLink || !!lesson.fromList);
-const quizOn = () => asStudent() && !!lesson.studentView && svOf(lesson).view === 'blank' && ui.view === 'blank';
-const QZ = {st:{answers:{}, round:0, r1:{}, r2:{}, done:false}, first:null};
+// 학생 단계: ① 듣기 ② 대의 파악 ③ 세부 내용 ④ 받아쓰기 ⑤ 따라 말하기 (선생님이 단계마다 켜고 끔)
+const STG = [['listen', '① 듣기'], ['gist', '② 대의 파악'], ['detail', '③ 세부 내용'], ['dict', '④ 받아쓰기'], ['speak', '⑤ 따라 말하기']];
+const STG_NAME = Object.fromEntries(STG);
+const STG_DESC = {listen:'자막 없이 영상 전체를 죽 들어요. 몇 번이든 다시 들을 수 있어요.', gist:'영상의 중심 내용을 묻는 객관식(4지선다) 문제를 풀어요. 고르면 바로 채점되고, 기회는 한 번이에요.',
+  detail:'영상의 세부 내용을 묻는 객관식(4지선다) 문제를 풀어요. 고르면 바로 채점되고, 기회는 한 번이에요.', dict:'한 문장씩 들으며 빈칸에 들리는 단어를 직접 써 넣어요.', speak:'원하는 학생만 문장을 따라 말하며 녹음해요.'};
+const Q_LANG = {en:'영어', ko:'한국어', mix:'문제 한국어 · 보기 영어'};
+const CIRC = ['①', '②', '③', '④'];
+function stagesOf(l){
+  const sv = svOf(l);
+  if(sv.stages) return Object.assign({listen:false, gist:false, detail:false, dict:false, speak:false}, sv.stages);
+  // 예전에 정한 보기는 단계로 바꿔 읽음 (언제나 ① 듣기부터)
+  return {listen:true, gist:false, detail:false, dict:sv.view === 'blank', speak:sv.view !== 'video'};
+}
+const qsOf = l => Object.assign({lang:'en', nGist:1, nDetail:3, gist:[], detail:[]}, (l && l.questions) || {});
+function activeStages(l){ const st = stagesOf(l), q = qsOf(l); return STG.map(x => x[0]).filter(k => st[k] && (k === 'gist' || k === 'detail' ? q[k].length > 0 : true)); }
+const stageMode = () => asStudent() && !!lesson.studentView && activeStages(lesson).length > 0;
+const quizOn = () => !!lesson && stageMode() && ui.stage === 'dict';
+const QZ = {st:{answers:{}, round:0, r1:{}, r2:{}, done:false}, first:null, mc:{gist:{}, detail:{}}};
+const mcSig = () => { const q = qsOf(lesson), str = JSON.stringify([q.gist, q.detail]); let h = 5381; for(let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
 const qKey = () => 'shadowroom.quiz.' + (lesson.fromLink || lesson.id);
-function quizLoad(){ const j = loadJSON(qKey()); QZ.st = Object.assign({answers:{}, round:0, r1:{}, r2:{}, done:false}, j.st || {}); QZ.first = j.first || null; }
-function quizSave(){ try{ localStorage.setItem(qKey(), JSON.stringify({st:QZ.st, first:QZ.first})); }catch(e){} }
+function quizLoad(){
+  const j = loadJSON(qKey()); QZ.st = Object.assign({answers:{}, round:0, r1:{}, r2:{}, done:false}, j.st || {}); QZ.first = j.first || null;
+  // 선생님이 문제를 바꿔 다시 반영했으면 객관식 답은 새로 시작
+  QZ.mc = j.mc && j.mc.sig === mcSig() ? Object.assign({gist:{}, detail:{}}, j.mc) : {gist:{}, detail:{}, sig:mcSig()};
+}
+function quizSave(){ try{ localStorage.setItem(qKey(), JSON.stringify({st:QZ.st, first:QZ.first, mc:QZ.mc})); }catch(e){} }
 const qNorm = x => String(x || '').toLowerCase().replace(/[’‘`´]/g, "'").replace(/[^a-z0-9']/g, '');
 function quizKeys(){
   const out = [];
@@ -2140,11 +2248,80 @@ function quizState(key){
 }
 function applyStudentView(){
   if(!lesson) return;
-  document.body.classList.remove('quiz');
+  const b = document.body.classList; b.remove('quiz', 'stg', 'typing'); STG.forEach(x => b.remove('stg-' + x[0])); ui.stage = null;
   if(!asStudent() || !lesson.studentView) return;
-  ui.view = svOf(lesson).view;
-  if(quizOn()){ document.body.classList.add('quiz'); quizLoad(); }
+  if(!stageMode()){ ui.view = svOf(lesson).view; return; }
+  quizLoad();
+  setStage(activeStages(lesson)[0], true);   // 처음에는 언제나 첫 단계부터 (보통 ① 듣기)
 }
+function setStage(k, silent){
+  ui.stage = k;
+  const b = document.body.classList; STG.forEach(x => b.remove('stg-' + x[0])); b.add('stg', 'stg-' + k); b.toggle('quiz', k === 'dict'); b.remove('typing');
+  ui.view = k === 'dict' ? 'blank' : k === 'speak' ? 'script' : 'video';
+  if(k !== 'speak') clearGap();
+  if(silent) return;
+  if($('#listDlg').open) $('#listDlg').close();
+  renderScript(); renderCaption(); syncToolbar(); renderMobile(); renderRec(); renderQuiz(); renderQa(); renderStage();
+}
+function stageDone(k){
+  if(k === 'gist' || k === 'detail'){ const qs = qsOf(lesson)[k]; return qs.length > 0 && qs.every((q, i) => QZ.mc[k][i] !== undefined); }
+  if(k === 'dict') return !!QZ.first;
+  return false;
+}
+const scoredStages = () => activeStages(lesson).filter(k => k === 'gist' || k === 'detail' || k === 'dict');
+const allDone = () => { const sc = scoredStages(); return sc.length > 0 && sc.every(stageDone); };
+function stageNoteHTML(k){
+  const act = activeStages(lesson), next = act[act.indexOf(k) + 1];
+  const nextTxt = next ? ` 다 했으면 ‘${STG_NAME[next]}’로 넘어가세요.` : '';
+  if(k === 'listen') return `<b>먼저 듣고 ${act.includes('dict') ? '받아쓰기 하세요' : act.includes('gist') || act.includes('detail') ? '문제를 풀어 보세요' : '연습하세요'}.</b> ‘재생’을 누르면 자막 없이 처음부터 끝까지 이어서 나와요. 몇 번이든 다시 들어도 돼요.` + (next ? ` 다 들었으면 ‘${STG_NAME[next]}’로 넘어가세요.` : '');
+  if(k === 'gist') return '영상의 <b>중심 내용</b>을 묻는 문제예요. 답을 고르면 바로 채점돼요. <b>기회는 한 번</b>이니 잘 듣고 고르세요. 다시 들으려면 ‘재생’을 누르세요.' + (stageDone(k) ? nextTxt : '');
+  if(k === 'detail') return '영상의 <b>세부 내용</b>을 묻는 문제예요. 답을 고르면 바로 채점돼요. <b>기회는 한 번</b>이니 잘 듣고 고르세요. 다시 들으려면 ‘재생’을 누르세요.' + (stageDone(k) ? nextTxt : '');
+  if(k === 'dict') return '<b>이제 한 문장씩 들으며 빈칸을 채워 보세요.</b> ‘이 문장 다시’로 여러 번 들어도 돼요. 키보드 위에 뜨는 추천 단어는 쓰지 마세요.';
+  return '원하면 문장을 따라 말하며 녹음해 보세요. 이 단계는 하고 싶은 학생만 해요.';
+}
+function renderStage(){
+  const bar = $('#stageBar'); if(!bar) return;
+  const on = !!lesson && !welcome && N() > 0 && stageMode() && !!ui.stage;
+  bar.hidden = !on; if(!on) return;
+  const act = activeStages(lesson);
+  $('#stgBtns').innerHTML = act.map(k => `<button class="stg-b${k === ui.stage ? ' on' : ''}${stageDone(k) ? ' done' : ''}" data-stg-go="${k}" aria-pressed="${k === ui.stage}">${STG_NAME[k]}${stageDone(k) ? ' ✓' : ''}</button>`).join('')
+    + (allDone() ? '<button class="stg-b res" data-stg-res>📄 결과 보기</button>' : '');
+  $('#stgNote').innerHTML = stageNoteHTML(ui.stage);
+}
+$('#stageBar').addEventListener('click', e => {
+  const g = e.target.closest('[data-stg-go]'); if(g){ if(g.dataset.stgGo !== ui.stage) setStage(g.dataset.stgGo); return; }
+  if(e.target.closest('[data-stg-res]')) openQuizResult();
+});
+// 한 단계를 끝냈을 때: 모두 끝났으면 결과 창, 아니면 남은 단계 알림
+function stageAfterDone(){
+  renderStage(); renderQuiz();
+  if(allDone()) return openQuizResult();
+  const left = scoredStages().filter(k => !stageDone(k)).map(k => `‘${STG_NAME[k]}’`);
+  if(left.length) toast(`잘했어요! 남은 단계: ${left.join(', ')}. 다 끝내면 결과 이미지를 저장할 수 있어요.`, 4500);
+}
+// ② ③ 객관식
+function renderQa(){
+  const box = $('#qaBox'); if(!box) return;
+  const k = ui.stage, on = !!lesson && !welcome && stageMode() && (k === 'gist' || k === 'detail');
+  box.hidden = !on; if(!on) return;
+  const qs = qsOf(lesson)[k], ans = QZ.mc[k] || {}, n = qs.length;
+  const done = qs.filter((q, i) => ans[i] !== undefined).length, sc = qs.filter((q, i) => ans[i] === q.answer).length;
+  $('#qaTitle').textContent = STG_NAME[k];
+  $('#qaProg').textContent = done === n ? `${n}문제 중 ${sc}개 맞음` : `${n}문제 중 ${done}개 풂`;
+  $('#qaList').innerHTML = qs.map((q, i) => {
+    const a = ans[i], got = a !== undefined, ev = lesson.sentences[q.evidence];
+    const opts = q.options.map((o, j) => `<button data-qa="${k}:${i}:${j}"${got ? ' disabled' : ''} class="${got && j === q.answer ? 'right' : ''}${got && j === a ? (a === q.answer ? ' ok' : ' no') : ''}">${CIRC[j]} ${esc(o)}</button>`).join('');
+    const fb = !got ? '' : `<p class="qa-fb">${a === q.answer ? '<span class="good">⭕ 맞았어요!</span>' : `<span class="bad">❌ 틀렸어요.</span> 정답은 ${CIRC[q.answer]}이에요.`}${ev ? `<span class="qa-ev">근거: ${q.evidence + 1}번 문장 “<span class="en">${esc(ev.text)}</span>”<button class="qa-evb" data-qa-ev="${q.evidence}">▶ 그 부분 듣기</button></span>` : ''}</p>`;
+    return `<div class="qa-item"><p class="qa-q"><b>${i + 1}.</b> ${esc(q.q)}</p><div class="qa-opts">${opts}</div>${fb}</div>`;
+  }).join('');
+}
+$('#qaBox').addEventListener('click', e => {
+  const ev = e.target.closest('[data-qa-ev]'); if(ev){ goTo(+ev.dataset.qaEv, true, true); return; }
+  const b = e.target.closest('[data-qa]'); if(!b || b.disabled) return;
+  const [k, i, j] = b.dataset.qa.split(':'); if(QZ.mc[k][+i] !== undefined) return;
+  QZ.mc[k][+i] = +j; QZ.mc.at = Date.now(); QZ.mc.sig = mcSig(); quizSave(); renderQa(); renderStage();
+  if(stageDone(k)) setTimeout(stageAfterDone, 500);
+});
 function renderQuiz(){
   const bar = $('#quizBar'); if(!bar) return;
   const on = !!lesson && quizOn() && N() > 0 && !welcome;
@@ -2155,9 +2332,10 @@ function renderQuiz(){
   $('#qProg').textContent = st.done ? `${st.round >= 2 ? `1차 ${sc(st.r1)}/${total} → 2차 ${sc(st.r2)}/${total}` : `${sc(st.r1)}/${total}`} 맞음`
     : st.round === 1 ? `1차 ${sc(st.r1)}/${total} 맞음 · 빨간 칸을 고쳐 쓰세요` : `빈칸 ${total}개 중 ${filled}개 씀`;
   $('#qCheck').hidden = st.done; $('#qCheck').textContent = st.round === 1 ? '다시 채점하기 (2차)' : '채점하기';
-  $('#qResult').hidden = !st.done; $('#qReset').hidden = !st.done;
-  $('#qNote').textContent = st.done ? (rv === 'never' ? '채점이 끝났어요. ‘결과 보기’에서 이미지를 저장해 구글 클래스룸 과제에 올리세요.' : '채점이 끝났어요. 빨간 글씨가 정답이에요. ‘결과 보기’에서 이미지를 저장해 구글 클래스룸 과제에 올리세요.')
-    : st.round === 1 ? '초록 칸은 맞았어요. 빨간 칸만 영상을 다시 듣고 고쳐 쓴 뒤 ‘다시 채점하기’를 누르세요.' : '영상을 들으며 빈칸에 들리는 단어를 써 보세요. 다 쓰면 ‘채점하기’를 누르세요.';
+  $('#qResult').hidden = !(st.done && allDone()); $('#qReset').hidden = !st.done;
+  const leftTxt = scoredStages().filter(k => !stageDone(k)).map(k => `‘${STG_NAME[k]}’`).join(', ');
+  $('#qNote').textContent = st.done ? (rv === 'never' ? '채점이 끝났어요. ' : '채점이 끝났어요. 빨간 글씨가 정답이에요. ') + (leftTxt ? `남은 단계(${leftTxt})를 끝내면 결과 이미지를 저장할 수 있어요.` : '‘결과 보기’에서 이미지를 저장해 구글 클래스룸 과제에 올리세요.')
+    : st.round === 1 ? '초록 칸은 맞았어요. 빨간 칸만 영상을 다시 듣고 고쳐 쓴 뒤 ‘다시 채점하기’를 누르세요.' : '영상을 들으며 빈칸에 들리는 단어를 써 보세요. 다 쓰면 ‘채점하기’를 누르세요. (키보드 추천 단어는 쓰지 마세요)';
 }
 function quizCheck(){
   const keys = quizKeys(), st = QZ.st, rv = svOf(lesson).reveal;
@@ -2170,7 +2348,7 @@ function quizCheck(){
   } else { st.r2 = grade(); keys.forEach(k => { if(st.r1[k.key]) st.r2[k.key] = true; }); st.round = 2; st.done = true; }
   if(st.done && !QZ.first) QZ.first = quizSummary();
   quizSave(); renderScript(); renderMobile(); renderQuiz();
-  if(st.done) setTimeout(openQuizResult, 300);
+  if(st.done) setTimeout(stageAfterDone, 300);
 }
 // 결과 모양 (나중에 서버 제출을 더할 때도 이대로 씀)
 function quizSummary(){
@@ -2179,21 +2357,39 @@ function quizSummary(){
     score1:keys.filter(k => st.r1[k.key]).length, score2:st.round >= 2 ? keys.filter(k => st.r2[k.key]).length : null,
     items:keys.map(k => ({n:k.si + 1, answer:k.answer, a1:(st.a1 || {})[k.key] || '', a2:st.answers[k.key] || '', ok1:!!st.r1[k.key], ok2:st.round >= 2 ? !!st.r2[k.key] : null}))};
 }
+// 결과 한 장: ② 대의 · ③ 세부 · ④ 받아쓰기 (켜진 단계만)
+function mcPart(k){
+  const qs = qsOf(lesson)[k], ans = QZ.mc[k] || {};
+  const items = qs.map((q, i) => ({n:i + 1, q:q.q, chosen:ans[i], answer:q.answer, ok:ans[i] === q.answer}));
+  return {total:items.length, score:items.filter(x => x.ok).length, items};
+}
+function resultSummary(){
+  const act = activeStages(lesson), parts = {};
+  ['gist', 'detail'].forEach(k => { if(act.includes(k)) parts[k] = mcPart(k); });
+  if(act.includes('dict')) parts.dict = QZ.first || null;
+  const at = Math.max(QZ.mc.at || 0, QZ.first ? QZ.first.at : 0) || Date.now();
+  return {lessonTitle:lesson.title || '', linkId:lesson.fromLink || '', at, parts};
+}
+const dictWrong = d => d.items.filter(x => !x.ok1);
 function openQuizResult(){
-  const f = QZ.first || quizSummary(), rv = f.reveal, pr = !!QZ.first;
-  const wrong = f.items.filter(x => !(x.ok2 === null ? x.ok1 : x.ok2) || !x.ok1);
+  const f = resultSummary(), P = f.parts, d = P.dict;
+  const chips = ['gist', 'detail'].filter(k => P[k]).map(k => `<div>${STG_NAME[k]}<b>${P[k].score}/${P[k].total}</b></div>`).join('')
+    + (d ? `<div>④ 받아쓰기<b>${d.score1}/${d.total}${d.score2 !== null ? ` → ${d.score2}/${d.total}` : ''}</b></div>` : '');
+  const mcRows = ['gist', 'detail'].filter(k => P[k]).flatMap(k => P[k].items.filter(x => !x.ok).map(x => `<tr><td>${STG_NAME[k].slice(0, 1)}-${x.n}</td><td class="noc">${x.chosen === undefined ? '(안 풂)' : CIRC[x.chosen]}</td><td><b>${CIRC[x.answer]}</b></td></tr>`)).join('');
+  const rv = d ? d.reveal : 'two', wrong = d ? dictWrong(d) : [];
+  const dRows = wrong.map(x => `<tr><td>④ ${x.n}번</td><td class="${x.ok2 ? 'okc' : 'noc'}">${esc(x.a2 || '(빈칸)')}</td><td>${rv === 'never' ? (x.ok2 ? '2차에 맞음' : '틀림') : '<b>' + esc(x.answer) + '</b>' + (x.ok2 ? ' (2차에 맞음)' : '')}</td></tr>`).join('');
   $('#quizBody').innerHTML = `<div class="qres">
-    <p style="margin:0"><b>${esc(f.lessonTitle)}</b><br><span class="note">${fmtDate(f.at)} · 빈칸 ${f.total}개</span></p>
-    <div class="qscore"><div>1차<b>${f.score1}/${f.total}</b></div>${f.score2 !== null ? `<div>2차<b>${f.score2}/${f.total}</b></div>` : ''}</div>
-    ${wrong.length ? `<table><tr><th>문장</th><th>내가 쓴 답</th><th>${rv === 'never' ? '결과' : '정답'}</th></tr>${wrong.map(x => `<tr><td>${x.n}번</td><td class="${(x.ok2 === null ? x.ok1 : x.ok2) ? 'okc' : 'noc'}">${esc(x.a2 || '(빈칸)')}</td><td>${rv === 'never' ? ((x.ok2 === null ? x.ok1 : x.ok2) ? '2차에 맞음' : '틀림') : (x.ok1 ? '' : '<b>' + esc(x.answer) + '</b>' + ((x.ok2) ? ' (2차에 맞음)' : ''))}</td></tr>`).join('')}</table>` : '<p class="okmsg">모두 맞았어요! 👏</p>'}
-    <p class="note" style="margin-top:10px">이 결과는 처음 한 번 푼 결과예요. ${pr ? '그 뒤에 다시 연습한 점수는 들어가지 않아요. ' : ''}<b>‘결과 이미지 저장’</b>을 눌러 받은 사진을 <b>구글 클래스룸 과제</b>에 올리세요. 화면을 캡처해서 올려도 돼요.</p>
+    <p style="margin:0"><b>${esc(f.lessonTitle)}</b><br><span class="note">${fmtDate(f.at)}</span></p>
+    <div class="qscore">${chips}</div>
+    ${mcRows || dRows ? `<table><tr><th>문제</th><th>내 답</th><th>${rv === 'never' && !mcRows ? '결과' : '정답'}</th></tr>${mcRows}${dRows}</table>` : '<p class="okmsg">모두 맞았어요! 👏</p>'}
+    <p class="note" style="margin-top:10px">이 결과는 처음 한 번 푼 결과예요. 그 뒤에 다시 연습한 점수는 들어가지 않아요. <b>‘결과 이미지 저장’</b>을 눌러 받은 사진을 <b>구글 클래스룸 과제</b>에 올리세요. 화면을 캡처해서 올려도 돼요.</p>
     <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn main" id="qSaveImg">결과 이미지 저장</button><button class="btn" id="qShareImg" hidden>공유하기 (클래스룸으로 보내기)</button></div>
-    <div id="qImgBox" hidden style="margin-top:10px"><p class="note" style="margin:0 0 6px">저장이 안 되면: 아래 사진을 <b>길게 누르거나(휴대폰)</b> <b>오른쪽 클릭 → 이미지 저장</b>(컴퓨터)을 하세요. 화면 캡처도 괜찮아요.</p><img id="qImg" alt="빈칸 받아쓰기 결과 이미지" style="width:100%;border:1px solid var(--line);border-radius:8px"></div></div>`;
+    <div id="qImgBox" hidden style="margin-top:10px"><p class="note" style="margin:0 0 6px">저장이 안 되면: 아래 사진을 <b>길게 누르거나(휴대폰)</b> <b>오른쪽 클릭 → 이미지 저장</b>(컴퓨터)을 하세요. 화면 캡처도 괜찮아요.</p><img id="qImg" alt="듣기 결과 이미지" style="width:100%;border:1px solid var(--line);border-radius:8px"></div></div>`;
   $('#qSaveImg').onclick = () => saveQuizImage(f);
   quizImage(f).then(({blob, url}) => {
     $('#qImg').src = url; $('#qImgBox').hidden = false;
     const file = new File([blob], quizFileName(f), {type:'image/png'});
-    if(navigator.canShare && navigator.canShare({files:[file]})){ $('#qShareImg').hidden = false; $('#qShareImg').onclick = () => navigator.share({files:[file], title:'빈칸 받아쓰기 결과'}).catch(() => {}); }
+    if(navigator.canShare && navigator.canShare({files:[file]})){ $('#qShareImg').hidden = false; $('#qShareImg').onclick = () => navigator.share({files:[file], title:'듣기 결과'}).catch(() => {}); }
   });
   if(!$('#quizDlg').open) $('#quizDlg').showModal();
 }
@@ -2208,21 +2404,29 @@ function saveQuizImage(f){
   });
 }
 function drawQuizCanvas(f){
-  const rv = f.reveal, wrong = f.items.filter(x => !x.ok1), W = 900, rowH = 34, H = 230 + Math.max(1, wrong.length) * rowH + 60;
+  const P = f.parts, d = P.dict, rv = d ? d.reveal : 'two', rowH = 32, W = 900;
+  const rows = [];
+  ['gist', 'detail'].filter(k => P[k]).forEach(k => P[k].items.filter(x => !x.ok).forEach(x => rows.push({a:`${STG_NAME[k].slice(0, 1)}-${x.n}`, b:x.chosen === undefined ? '(안 풂)' : CIRC[x.chosen], c:CIRC[x.answer], bad:true})));
+  if(d) dictWrong(d).forEach(x => rows.push({a:`④ ${x.n}번`, b:String(x.a2 || '(빈칸)').slice(0, 28), c:rv === 'never' ? (x.ok2 ? '2차에 맞음' : '틀림') : x.answer + (x.ok2 ? ' (2차에 맞음)' : ''), bad:!x.ok2}));
+  const scores = ['gist', 'detail'].filter(k => P[k]).map(k => `${STG_NAME[k]} ${P[k].score}/${P[k].total}`);
+  if(d) scores.push(`④ 받아쓰기 ${d.score1}/${d.total}` + (d.score2 !== null ? ` → ${d.score2}/${d.total}` : ''));
+  const sTop = 176, H = sTop + scores.length * 38 + 50 + Math.max(1, rows.length) * rowH + 60;
   const c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
   g.fillStyle = '#fff'; g.fillRect(0, 0, W, H); g.fillStyle = '#15203A'; g.fillRect(0, 0, W, 64);
-  g.fillStyle = '#fff'; g.font = 'bold 26px sans-serif'; g.fillText('쉐도잉 교실 · 빈칸 받아쓰기 결과', 28, 42);
+  g.fillStyle = '#fff'; g.font = 'bold 26px sans-serif'; g.fillText('쉐도잉 교실 · 듣기 결과', 28, 42);
   g.fillStyle = '#1A2230'; g.font = 'bold 22px sans-serif'; g.fillText(String(f.lessonTitle).slice(0, 52), 28, 104);
-  g.font = '17px sans-serif'; g.fillStyle = '#5F6B7D'; g.fillText(`${fmtDate(f.at)} · 빈칸 ${f.total}개 · 처음 한 번 푼 결과`, 28, 134);
-  g.fillStyle = '#0E7A82'; g.font = 'bold 30px sans-serif'; g.fillText(`1차 ${f.score1}/${f.total}` + (f.score2 !== null ? `   →   2차 ${f.score2}/${f.total}` : ''), 28, 182);
-  g.font = 'bold 17px sans-serif'; g.fillStyle = '#5F6B7D'; g.fillText('문장', 28, 220); g.fillText('내가 쓴 답', 120, 220); g.fillText(rv === 'never' ? '결과' : '정답', 520, 220);
-  g.font = '18px sans-serif';
-  if(!wrong.length){ g.fillStyle = '#1E8E4E'; g.fillText('모두 맞았어요!', 28, 256); }
-  wrong.forEach((x, i) => {
-    const y = 254 + i * rowH, ok2 = x.ok2;
-    g.fillStyle = '#1A2230'; g.fillText(x.n + '번', 28, y);
-    g.fillStyle = ok2 ? '#1E8E4E' : '#C62F3B'; g.fillText(String(x.a2 || '(빈칸)').slice(0, 28), 120, y);
-    g.fillStyle = '#1A2230'; g.fillText(rv === 'never' ? (ok2 ? '2차에 맞음' : '틀림') : x.answer + (ok2 ? ' (2차에 맞음)' : ''), 520, y);
+  g.font = '17px sans-serif'; g.fillStyle = '#5F6B7D'; g.fillText(`${fmtDate(f.at)} · 처음 한 번 푼 결과`, 28, 134);
+  g.fillStyle = '#0E7A82'; g.font = 'bold 26px sans-serif';
+  scores.forEach((t, i) => g.fillText(t, 28, sTop + i * 38));
+  let y = sTop + scores.length * 38 + 14;
+  g.font = 'bold 17px sans-serif'; g.fillStyle = '#5F6B7D'; g.fillText('문제', 28, y); g.fillText('내 답', 160, y); g.fillText('정답', 520, y);
+  g.font = '18px sans-serif'; y += 34;
+  if(!rows.length){ g.fillStyle = '#1E8E4E'; g.fillText('모두 맞았어요!', 28, y); }
+  rows.forEach((r, i) => {
+    const yy = y + i * rowH;
+    g.fillStyle = '#1A2230'; g.fillText(r.a, 28, yy);
+    g.fillStyle = r.bad ? '#C62F3B' : '#1E8E4E'; g.fillText(r.b, 160, yy);
+    g.fillStyle = '#1A2230'; g.fillText(r.c, 520, yy);
   });
   g.fillStyle = '#9AA3B2'; g.font = '14px sans-serif'; g.fillText('ⓒ 2026 B.S.J. 쉐도잉 교실', 28, H - 20);
   return c;
@@ -2245,19 +2449,151 @@ $('#qReset').onclick = () => {
   if(!confirm('처음부터 다시 연습할까요?\n제출용 결과는 처음 한 번 푼 결과로 그대로 남아요.')) return;
   QZ.st = {answers:{}, round:0, r1:{}, r2:{}, done:false}; quizSave(); renderScript(); renderMobile(); renderQuiz();
 };
-// 선생님: 학생 화면 설정
+// 선생님: 학생 화면 설정 (단계 켜고 끄기 + 한 단계씩 묻는 설정 창)
+function ensureSv(){ if(!lesson.studentView || !lesson.studentView.stages) lesson.studentView = Object.assign(svOf(lesson), {stages:stagesOf(lesson)}); return lesson.studentView; }
+function setStg(k, on){ const sv = ensureSv(); sv.stages = Object.assign({}, sv.stages, {[k]:on}); sv.view = sv.stages.dict ? 'blank' : sv.stages.speak ? 'script' : 'video'; save(); renderSvBox(); }
+function setQs(patch){ lesson.questions = Object.assign(qsOf(lesson), patch); save(); renderSvBox(); }
+function stgStatus(k){
+  const st = stagesOf(lesson), q = qsOf(lesson);
+  if(!lesson.studentView || !st[k]) return '안 씀';
+  if(k === 'gist' || k === 'detail') return q[k].length ? `문제 ${q[k].length}개 · ${Q_LANG[q.lang]}` : '⚠ 문제가 없어 학생에게 안 보여요';
+  if(k === 'dict') return `빈칸 ${lesson.blank.mode === 'custom' ? '직접 지정' : Math.round(lesson.blank.ratio * 100) + '%'} · ${({two:'두 번 기회', now:'바로 정답', never:'정답 안 보여 줌'})[svOf(lesson).reveal]}`;
+  return '씀';
+}
 function renderSvBox(){
   if(!lesson || !$('#svBox')) return;
-  const sv = svOf(lesson);
-  $('#svView').value = sv.view; $('#svReveal').value = sv.reveal;
-  $('#svReveal').closest('label').hidden = sv.view !== 'blank'; $('#svBlankRow').hidden = sv.view !== 'blank';
+  const sv = svOf(lesson), st = stagesOf(lesson), set = !!lesson.studentView;
+  $('#svStages').innerHTML = (set ? '' : '<p class="note" style="margin:0">아직 정하지 않았어요. 지금은 학생에게 영상과 스크립트가 그대로 보여요. ‘차례로 설정하기’를 눌러 시작하세요.</p>')
+    + STG.map(([k, name]) => `<div class="svs-row"><label class="toggle"><input type="checkbox" data-stg="${k}"${set && st[k] ? ' checked' : ''}> ${name}</label><span class="note">${stgStatus(k)}</span>${k === 'gist' || k === 'detail' ? `<button class="btn sm" data-stgedit="${k}">문제 보기·고치기</button>` : ''}</div>`).join('');
+  $('#svDictOpts').hidden = !(set && st.dict);
+  $('#svReveal').value = sv.reveal;
   $$('#svRatio [data-svr]').forEach(b => b.setAttribute('aria-pressed', String(lesson.blank.mode === 'random' && +b.dataset.svr === lesson.blank.ratio)));
   $('#svBlankNote').textContent = lesson.blank.mode === 'custom' ? `선생님이 지정한 빈칸 ${lesson.sentences.reduce((a, x) => a + (x.blanks || []).length, 0)}개를 씁니다 (수업 탭 ‘빈칸 지정’)` : '내용어부터 무작위로 비웁니다. 학생과 학습지에 같은 빈칸이 나옵니다.';
 }
-function setSv(patch){ lesson.studentView = Object.assign(svOf(lesson), patch); renderSvBox(); save(); }
-$('#svView').onchange = e => setSv({view:e.target.value});
+function setSv(patch){ Object.assign(ensureSv(), patch); renderSvBox(); save(); }
 $('#svReveal').onchange = e => setSv({reveal:e.target.value});
 $('#svRatio').onclick = e => { const b = e.target.closest('[data-svr]'); if(!b) return; lesson.blank = Object.assign({}, lesson.blank, {mode:'random', ratio:+b.dataset.svr}); renderSvBox(); syncToolbar(); renderScript(); save(); };
+$('#svStages').addEventListener('change', e => {
+  const cb = e.target.closest('[data-stg]'); if(!cb) return; const k = cb.dataset.stg;
+  setStg(k, cb.checked);
+  if(cb.checked && (k === 'gist' || k === 'detail') && !qsOf(lesson)[k].length) openSvWizard(k);
+});
+$('#svStages').addEventListener('click', e => { const b = e.target.closest('[data-stgedit]'); if(b) openSvWizard(b.dataset.stgedit); });
+$('#btnSvWizard').onclick = () => openSvWizard();
+
+const W = {steps:[], i:0, sub:'ask', edit:false, busy:false, only:false};
+function openSvWizard(only){
+  if(!lesson) return;
+  if(!N()) return toast('먼저 스크립트(문장)를 넣어 주세요.');
+  ensureSv(); save();
+  W.steps = only ? [only] : ['listen', 'gist', 'detail', 'dict', 'speak', 'done']; W.i = 0; W.only = !!only; W.edit = false;
+  W.sub = only ? 'make' : 'ask';
+  if(only && (only === 'gist' || only === 'detail') && !stagesOf(lesson)[only]) setStg(only, true);
+  renderWiz();
+  if(!$('#svDlg').open) $('#svDlg').showModal();
+}
+const blankQ = () => ({q:'', options:['', '', '', ''], answer:0, evidence:-1});
+function qPreviewHTML(k){
+  return qsOf(lesson)[k].map((q, i) => { const ev = lesson.sentences[q.evidence];
+    return `<div class="qp"><p><b>${i + 1}.</b> ${esc(q.q)}</p><ol>${q.options.map((o, j) => `<li class="${j === q.answer ? 'ans' : ''}">${CIRC[j]} ${esc(o)}${j === q.answer ? ' ✓' : ''}</li>`).join('')}</ol>${ev ? `<p class="note" style="margin:4px 0 0">근거: ${q.evidence + 1}번 문장 “${esc(ev.text)}”</p>` : ''}</div>`; }).join('');
+}
+function qEditHTML(k){
+  const sOpts = i => `<option value="-1">없음</option>` + lesson.sentences.map((s, n) => `<option value="${n}"${n === i ? ' selected' : ''}>${n + 1}번: ${esc(s.text.slice(0, 40))}</option>`).join('');
+  return qsOf(lesson)[k].map((q, i) => `<div class="qe"><label><b>${i + 1}.</b><input class="inp" data-qe="${k}:${i}:q" value="${esc(q.q)}" placeholder="문제"><button class="btn sm" data-w="delq" data-qi="${i}">지우기</button></label>
+    ${q.options.map((o, j) => `<label><input type="radio" name="qa-${k}-${i}" data-qe="${k}:${i}:a" value="${j}"${j === q.answer ? ' checked' : ''} title="정답"> ${CIRC[j]} <input class="inp" data-qe="${k}:${i}:o:${j}" value="${esc(o)}" placeholder="보기 ${j + 1}"></label>`).join('')}
+    <label>근거 문장 <select class="inp" data-qe="${k}:${i}:e">${sOpts(q.evidence)}</select></label></div>`).join('')
+    + `<div class="row"><button class="btn sm" data-w="addq">＋ 문제 추가</button><span class="note">동그라미(○)를 누른 보기가 정답이에요.</span></div>`;
+}
+function qValid(k){ return qsOf(lesson)[k].every(q => q.q.trim() && q.options.every(o => o.trim())); }
+function renderWiz(){
+  const k = W.steps[W.i], q = qsOf(lesson), st = stagesOf(lesson), body = $('#svDlgBody');
+  const total = W.steps.length - (W.only ? 0 : 1);
+  const head = W.only ? '' : `<p class="wz-step">${k === 'done' ? '마지막 확인' : `${W.i + 1} / ${total} 단계`}</p>`;
+  const yesNo = `<p class="ask"><b>${STG_NAME[k]} 단계를 쓸까요?</b></p><div class="row"><button class="btn main" data-w="on" aria-pressed="${!!st[k]}">쓰기</button><button class="btn" data-w="off" aria-pressed="${!st[k]}">안 쓰기</button></div>`;
+  let html = '';
+  if(k === 'done'){
+    const act = activeStages(lesson), L = lesson.studentLink;
+    html = `<h4>이렇게 정했어요</h4><ul class="wz-sum">${STG.map(([x, name]) => `<li class="${act.includes(x) ? '' : 'off'}">${act.includes(x) ? '✅' : '—'} ${name} · ${stgStatus(x)}</li>`).join('')}</ul>`
+      + (act.length ? `<p class="note">학생은 ‘${STG_NAME[act[0]]}’부터 시작하고, 단계 버튼으로 자유롭게 오갈 수 있어요. 켜진 ②·③·④를 다 끝내면 결과 이미지를 저장할 수 있어요.</p>` : '<p class="note">켜진 단계가 없어요. 학생에게는 영상과 스크립트가 그대로 보여요.</p>')
+      + (L ? (linkDirty() ? `<p class="ask"><b>학생 링크에 반영할까요?</b></p><div class="row"><button class="btn main" data-w="push">↻ 학생 링크에 반영</button></div>`
+                          : `<p class="ask">✅ 학생 링크에 반영되어 있어요.</p><div class="row"><button class="btn" data-w="open">학생 화면 열어 보기 (새 창)</button></div>`)
+           : `<p class="ask">아직 학생용 링크가 없어요.</p>${['approved', 'admin'].includes(getRole()) ? '<div class="row"><button class="btn main" data-w="make">학생용 링크 만들기</button></div>' : '<p class="note">학생용 링크는 기여 교사부터 만들 수 있어요.</p>'}`);
+  } else if(W.sub === 'ask'){
+    html = `<h4>${STG_NAME[k]}</h4><p>${STG_DESC[k]}</p>${yesNo}`;
+  } else if(k === 'gist' || k === 'detail'){
+    const qs = q[k], nKey = k === 'gist' ? 'nGist' : 'nDetail', ns = k === 'gist' ? [1, 2] : [3, 4, 5];
+    html = `<h4>${STG_NAME[k]} 문제</h4>
+      <div class="row" style="align-items:center">개수 <span class="seg">${ns.map(n => `<button data-w="n" data-n="${n}" aria-pressed="${q[nKey] === n}">${n}개</button>`).join('')}</span>
+        언어 <select class="inp" data-wl style="width:auto">${Object.entries(Q_LANG).map(([v, t]) => `<option value="${v}"${q.lang === v ? ' selected' : ''}>${t}</option>`).join('')}</select></div>
+      <p class="note">언어는 ②·③ 문제에 같이 쓰여요. 개수나 언어를 바꿨으면 ‘다시 만들기’를 누르세요.</p>`
+      + (!qs.length ? `<div class="row" style="margin-top:10px"><button class="btn main ai-only" data-w="ai"${W.busy ? ' disabled' : ''}>${W.busy ? '만드는 중… (20초쯤)' : '🤖 AI로 문제 만들기'}</button><button class="btn" data-w="manual">직접 쓰기</button></div>
+           <p class="note ai-only">영상은 보내지 않고 영어 문장만 보내요. 여기서 한 번 만든 문제가 수업에 저장되어, 모든 학생에게 똑같이 나가요. (학생은 AI를 쓰지 않아요)</p>`
+         : (W.edit ? qEditHTML(k) : qPreviewHTML(k))
+           + `<div class="row" style="margin-top:10px"><button class="btn main" data-w="next">${W.edit ? '고치기 끝, ' : ''}이대로 확정${W.only ? '' : ' → 다음'}</button><button class="btn ai-only" data-w="ai"${W.busy ? ' disabled' : ''}>${W.busy ? '만드는 중…' : '다시 만들기'}</button>${W.edit ? '' : '<button class="btn" data-w="edit">직접 고치기</button>'}${W.only ? '<button class="btn" data-w="off">이 단계 안 쓰기</button>' : ''}</div>`);
+  } else if(k === 'dict'){
+    const sv = svOf(lesson);
+    html = `<h4>${STG_NAME[k]}</h4><p>빈칸 비율 <span class="seg">${[0.1, 0.3, 0.5].map(r => `<button data-w="ratio" data-r="${r}" aria-pressed="${lesson.blank.mode === 'random' && lesson.blank.ratio === r}">${r * 100}%</button>`).join('')}</span></p>
+      ${lesson.blank.mode === 'custom' ? '<p class="note">지금은 선생님이 수업 탭에서 직접 지정한 빈칸을 써요. 비율을 누르면 무작위 빈칸으로 바뀌어요.</p>' : ''}
+      <p>정답 보여 주기 <select class="inp" data-wr style="width:auto">${[['two', '두 번 기회 (1차는 맞음/틀림만, 2차 뒤 정답)'], ['now', '바로 보여 주기'], ['never', '안 보여 주기 (맞음/틀림만)']].map(([v, t]) => `<option value="${v}"${sv.reveal === v ? ' selected' : ''}>${t}</option>`).join('')}</select></p>
+      <div class="row"><button class="btn main" data-w="next">이대로 확정${W.only ? '' : ' → 다음'}</button></div>`;
+  } else html = `<h4>${STG_NAME[k]}</h4><p>${STG_DESC[k]}</p>${yesNo}`;
+  const foot = `<div class="wz-foot">${!W.only && W.i > 0 ? '<button class="btn" data-w="back">← 이전</button>' : ''}<span class="spacer" style="flex:1"></span>${k === 'done' || W.only ? '<button class="btn" data-w="close">닫기</button>' : ''}</div>`;
+  body.innerHTML = head + html + foot;
+}
+function wizNext(){ if(W.only){ $('#svDlg').close(); return; } W.i = Math.min(W.steps.length - 1, W.i + 1); W.sub = 'ask'; W.edit = false; renderWiz(); }
+async function aiMakeQuestions(k){
+  if(W.busy || !lesson) return;
+  if(!['member', 'approved', 'admin'].includes(getRole())) return toast('AI 문제 만들기는 회원 선생님만 쓸 수 있어요.');
+  const q = qsOf(lesson);
+  if(q[k].length && !confirm('지금 문제를 지우고 AI로 새로 만들까요?')) return;
+  const target = lesson, items = target.sentences.map((x, i) => ({i, text:x.text})).filter(x => /[A-Za-z]/.test(x.text));
+  if(items.length < 2) return toast('영어 문장이 2개 이상 있어야 문제를 만들 수 있어요.');
+  W.busy = true; renderWiz();
+  try{
+    const j = await hubApi('ai_questions', Object.assign({items, kind:k, n:k === 'gist' ? q.nGist : q.nDetail, lang:q.lang, avoid:q[k === 'gist' ? 'detail' : 'gist'].map(x => x.q)}, authData()));
+    const out = (j.questions || []).map(x => ({q:String(x.q), options:x.options.slice(0, 4).map(String), answer:+x.answer, evidence:+x.evidence}));
+    if(!out.length) throw new Error('AI가 문제를 돌려주지 않았어요. 잠시 뒤 다시 해 보세요.');
+    if(lesson === target){ setQs({[k]:out}); W.edit = false; }
+    toast(`AI가 문제 ${out.length}개를 만들었어요. 읽어 보고 이상한 곳은 ‘직접 고치기’로 고치세요.` + (j.left != null ? ` (오늘 ${j.left}번 더 만들 수 있어요)` : ''), 5000);
+  }catch(err){
+    toast(err.code === 'ailimit' ? '오늘 AI 문제 만들기를 모두 쓰셨어요. 내일 다시 하거나 ‘직접 쓰기’로 만드세요.' : err.message, 5000);
+    if(err.code === 'wrongmember' || err.code === 'suspended') forceStudent(err.message + ' 선생님 입구에서 다시 들어와 주세요.');
+  }finally{ W.busy = false; if($('#svDlg').open) renderWiz(); }
+}
+$('#svDlgBody').addEventListener('click', async e => {
+  const b = e.target.closest('[data-w]'); if(!b || b.disabled) return;
+  const k = W.steps[W.i], a = b.dataset.w;
+  if(a === 'on'){ setStg(k, true); if(k === 'gist' || k === 'detail' || k === 'dict'){ W.sub = 'make'; renderWiz(); } else wizNext(); }
+  else if(a === 'off'){ setStg(k, false); wizNext(); }
+  else if(a === 'next'){
+    if((k === 'gist' || k === 'detail') && !qValid(k)) return toast('비어 있는 문제나 보기가 있어요. 채우거나 그 문제를 지워 주세요.', 4000);
+    wizNext();
+  }
+  else if(a === 'back'){ W.i = Math.max(0, W.i - 1); W.sub = 'ask'; W.edit = false; renderWiz(); }
+  else if(a === 'close') $('#svDlg').close();
+  else if(a === 'ai') aiMakeQuestions(k);
+  else if(a === 'manual'){ setQs({[k]:[blankQ()]}); W.edit = true; renderWiz(); }
+  else if(a === 'edit'){ W.edit = true; renderWiz(); }
+  else if(a === 'addq'){ setQs({[k]:qsOf(lesson)[k].concat([blankQ()])}); renderWiz(); }
+  else if(a === 'delq'){ const qs = qsOf(lesson)[k].slice(); qs.splice(+b.dataset.qi, 1); setQs({[k]:qs}); if(!qs.length) W.edit = false; renderWiz(); }
+  else if(a === 'n'){ setQs({[k === 'gist' ? 'nGist' : 'nDetail']:+b.dataset.n}); renderWiz(); }
+  else if(a === 'ratio'){ lesson.blank = Object.assign({}, lesson.blank, {mode:'random', ratio:+b.dataset.r}); save(); renderSvBox(); syncToolbar(); renderScript(); renderWiz(); }
+  else if(a === 'push'){ await linkAct('push'); renderWiz(); }
+  else if(a === 'make'){ await linkAct('make'); renderWiz(); }
+  else if(a === 'open' && lesson.studentLink) window.open(linkURL(lesson.studentLink.id), '_blank');
+});
+function wizField(e){
+  const t = e.target;
+  if(t.matches('[data-wl]')) return setQs({lang:t.value});
+  if(t.matches('[data-wr]')) return setSv({reveal:t.value});
+  if(!t.matches('[data-qe]')) return;
+  const [k, i, f, j] = t.dataset.qe.split(':'), qs = qsOf(lesson)[k].map(x => Object.assign({}, x, {options:x.options.slice()})), q = qs[+i];
+  if(!q) return;
+  if(f === 'q') q.q = t.value; else if(f === 'o') q.options[+j] = t.value; else if(f === 'a') q.answer = +t.value; else if(f === 'e') q.evidence = +t.value;
+  lesson.questions = Object.assign(qsOf(lesson), {[k]:qs}); save();
+}
+$('#svDlgBody').addEventListener('input', wizField);
+$('#svDlgBody').addEventListener('change', e => { if(e.target.matches('[data-wl], [data-wr], select[data-qe], input[type=radio][data-qe]')) wizField(e); renderSvBox(); });
 
 /* ---------- QR 코드 (바이트 모드 · 오류 정정 M · 1~20 버전, 인터넷 없이 앱 안에서 만듦) ---------- */
 const QR = (() => {
@@ -2359,8 +2695,13 @@ function worksheetHTML(o){
   const box = o.box && words.length ? `<div class="ws-box"><b>단어 상자</b>${shuffled([...new Set(words.map(w => w.toLowerCase()))], prng(l.blank.seed * 31 + 7)).map(esc).join('  ')}</div>` : '';
   const head = `<div class="ws-head"><div style="flex:1"><h1>${esc(l.title || '쉐도잉 학습지')}</h1>${src ? `<div class="src">출처: ${esc(src)}</div>` : ''}
       <div class="ws-id">반 <span></span> 번호 <span></span> 이름 <span style="min-width:40mm"></span></div></div>${qr}</div>`;
-  const page1 = `<div class="ws-page">${head}<p class="ws-howto">영상을 들으며 빈칸에 들리는 단어를 쓰세요. (빈칸 ${keys.length}개)</p>${box}<ol class="ws-list">${items}</ol><div class="ws-foot">쉐도잉 교실 · ⓒ 2026 B.S.J.</div></div>`;
-  const page2 = o.key ? `<div class="ws-page ws-key"><h2>정답지 — ${esc(l.title || '')}</h2><ol class="ws-list" style="font-size:11pt">${
+  // 켜진 ②·③ 객관식 → 빈칸 받아쓰기 순서
+  const act = l.studentView ? activeStages(l) : [], q = qsOf(l), mcK = ['gist', 'detail'].filter(k => act.includes(k)), ROM = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
+  const mcHTML = mcK.map((k, si) => `<div class="ws-sec"><h3>${ROM[si]}. ${STG_NAME[k].slice(2)}</h3><ol class="ws-mc">${q[k].map((x, i) => `<li><b>${i + 1}.</b> ${esc(x.q)}<span class="ws-opts">${x.options.map((o, j) => `<span>${CIRC[j]} ${esc(o)}</span>`).join('')}</span></li>`).join('')}</ol></div>`).join('');
+  const dictHead = mcK.length ? `<h3 style="font-size:12pt;margin:0 0 6pt">${ROM[mcK.length]}. 빈칸 받아쓰기</h3>` : '';
+  const page1 = `<div class="ws-page">${head}${mcK.length ? '<p class="ws-howto">영상을 먼저 끝까지 들은 뒤 문제를 푸세요.</p>' : ''}${mcHTML}${dictHead}<p class="ws-howto">영상을 들으며 빈칸에 들리는 단어를 쓰세요. (빈칸 ${keys.length}개)</p>${box}<ol class="ws-list">${items}</ol><div class="ws-foot">쉐도잉 교실 · ⓒ 2026 B.S.J.</div></div>`;
+  const mcKey = mcK.map((k, si) => `<p style="font-size:11pt;margin:0 0 6pt"><b>${ROM[si]}. ${STG_NAME[k].slice(2)}</b> ${q[k].map((x, i) => `${i + 1}. ${CIRC[x.answer]}${l.sentences[x.evidence] ? ` (근거 ${x.evidence + 1}번)` : ''}`).join(' &nbsp; ')}</p>`).join('');
+  const page2 = o.key ? `<div class="ws-page ws-key"><h2>정답지 — ${esc(l.title || '')}</h2>${mcKey}${mcK.length ? `<p style="font-size:11pt;margin:0 0 4pt"><b>${ROM[mcK.length]}. 빈칸 받아쓰기</b></p>` : ''}<ol class="ws-list" style="font-size:11pt">${
     l.sentences.map((s, si) => { const k = keys.filter(x => x.n === si + 1).map(x => x.w); return k.length ? `<li><span class="no">${si + 1}</span><span class="en">${k.map(esc).join(', ')}</span></li>` : ''; }).join('')}</ol><div class="ws-foot">선생님용</div></div>` : '';
   return `<div class="ws">${page1}${page2}</div>`;
 }
@@ -2539,11 +2880,17 @@ mobMQ.addEventListener ? mobMQ.addEventListener('change', applyMob) : mobMQ.addL
 let mKoOpen = false, mLastTarget = -1;
 function renderMobile(){
   if(!lesson || !$('#mCard')) return;
+  const ae = document.activeElement, keepQ = ae && ae.classList && ae.classList.contains('qin') && $('#mText').contains(ae) ? {k:ae.dataset.q, a:ae.selectionStart, b:ae.selectionEnd} : null;
+  renderMobileInner();
+  if(keepQ){ const el = $('#mText').querySelector(`.qin[data-q="${CSS.escape(keepQ.k)}"]`); if(el && !el.readOnly){ el.focus({preventScroll:true}); try{ el.setSelectionRange(keepQ.a, keepQ.b); }catch(e){} } }
+}
+function renderMobileInner(){
   if(E.target !== mLastTarget){ mKoOpen = false; mLastTarget = E.target; }
   const s = curS();
   $('#mPos').textContent = N() ? `${E.target + 1} / ${N()} 문장` : '문장 없음';
-  $('#mText').innerHTML = s ? sentenceHTML(s, E.target) : (welcome ? '' : '아직 문장이 없어요.');
-  const hasKo = !!(s && s.ko);
+  const noText = !!ui.stage && ui.view === 'video' && stageMode();
+  $('#mText').innerHTML = noText ? '<span style="color:var(--stage-muted);font-size:16px">🎧 자막 없이 들어요. ‘재생’을 누르세요.</span>' : s ? sentenceHTML(s, E.target) : (welcome ? '' : '아직 문장이 없어요.');
+  const hasKo = !!(s && s.ko) && !noText;
   $('#mKoBtn').hidden = !hasKo;
   $('#mKoBtn').textContent = mKoOpen ? '뜻 숨기기' : '뜻 보기';
   $('#mKoBtn').setAttribute('aria-pressed', String(mKoOpen));
@@ -2566,16 +2913,39 @@ function fitMobile(){
     let fs = 21; tx.style.fontSize = fs + 'px';
     while(fs > 15 && card.scrollHeight > card.clientHeight + 1){ fs -= 1; tx.style.fontSize = fs + 'px'; }
     card.classList.toggle('scrolly', card.scrollHeight > card.clientHeight + 1);
+    if(document.body.classList.contains('typing')) keepQinVisible();
   });
 }
 window.addEventListener('resize', () => { if(isMob()) fitMobile(); });
+// 휴대폰에서 빈칸에 쓰는 동안: 영상을 작게, 문장과 빈칸을 키보드 바로 위에
+const isQin = el => !!(el && el.classList && el.classList.contains('qin'));
+function keepQinVisible(){ const a = document.activeElement; if(isQin(a)) a.scrollIntoView({block:'center'}); }
+document.addEventListener('focusin', e => {
+  if(!isQin(e.target) || !isMob()) return;
+  if(!document.body.classList.contains('typing')){ document.body.classList.add('typing'); fitMobile(); }
+  setTimeout(keepQinVisible, 350);
+});
+document.addEventListener('focusout', e => {
+  if(!isQin(e.target)) return;
+  setTimeout(() => { if(!isQin(document.activeElement) && document.body.classList.contains('typing')){ document.body.classList.remove('typing'); fitMobile(); } }, 150);
+});
+if(window.visualViewport) window.visualViewport.addEventListener('resize', () => { if(isMob() && document.body.classList.contains('typing')){ fitMobile(); setTimeout(keepQinVisible, 50); } });
+// 쓰는 중에 '재생'·'이 문장 다시'를 눌러도 키보드가 닫히지 않게
+$$('.transport .sbtn').forEach(b => ['pointerdown', 'mousedown'].forEach(ev => b.addEventListener(ev, e => { if(document.body.classList.contains('typing')) e.preventDefault(); })));
 $('#mKoBtn').onclick = () => { mKoOpen = !mKoOpen; renderMobile(); };
 $('#mRate').onchange = e => { ui.rate = +e.target.value; Player.setRate(ui.rate); syncToolbar(); savePrefs(); };
 $('#mScope').onchange = e => { ui.scope = e.target.value; if(ui.scope === 'off') clearGap(); syncToolbar(); savePrefs(); if(ui.scope === 'marked' && !lesson.sentences.some(x => x.shadow)) toast('선생님이 지정한 문장이 없어요. ‘모든 문장’을 고르면 문장마다 따라 말할 시간이 생겨요.', 4000); };
 $('#mRepeat').onchange = e => { ui.repeat = +e.target.value; syncToolbar(); savePrefs(); };
 // 문장 목록 (아래에서 올라오는 창)
 function renderList(){
-  $('#listOl').innerHTML = lesson.sentences.map((x, i) => `<li><button data-mgo="${i}" class="${i === E.target ? 'on' : ''}"><b>${i + 1}</b><span class="en">${esc(x.text)}</span></button></li>`).join('');
+  // 학생 단계: ④ 받아쓰기 중에는 빈칸 뚫린 문장, ①②③에는 번호·시간만 (답을 베끼지 않게)
+  const mode = ui.stage && stageMode() ? (ui.stage === 'dict' ? 'blank' : ui.stage === 'speak' ? 'full' : 'time') : 'full';
+  const txt = (x, i) => {
+    if(mode === 'time') return `<span class="lt">${fmt(x.start).replace(/\.\d$/, '')}</span>`;
+    if(mode === 'blank'){ const bl = blankSet(x, i); return tokens(x.text).map((t, wi) => bl.has(wi) && t.core ? esc(t.lead) + '<span class="lb"></span>' + esc(t.trail) : esc(t.raw)).join(' '); }
+    return esc(x.text);
+  };
+  $('#listOl').innerHTML = lesson.sentences.map((x, i) => `<li><button data-mgo="${i}" class="${i === E.target ? 'on' : ''}"><b>${i + 1}</b><span class="en">${txt(x, i)}</span></button></li>`).join('');
 }
 $('#mListBtn').onclick = () => {
   if(!N()) return;
@@ -2987,7 +3357,7 @@ function marksHTML(text, marks){
   }).join(' ');
 }
 function fmtLen(sec){ sec = Math.round(sec || 0); const m = Math.floor(sec / 60), s = sec % 60; return m ? `${m}분${s ? ' ' + s + '초' : ''}` : `${s}초`; }
-function closeAllDialogs(){ ['#libDlg', '#hubDlg', '#submitDlg', '#teacherDlg', '#applyDlg', '#helpDlg', '#printDlg', '#quizDlg', '#fbDlg', '#classDlg', '#listDlg'].forEach(s => { const d = $(s); if(d && d.open) d.close(); }); }
+function closeAllDialogs(){ ['#libDlg', '#hubDlg', '#submitDlg', '#teacherDlg', '#applyDlg', '#helpDlg', '#printDlg', '#quizDlg', '#svDlg', '#fbDlg', '#classDlg', '#listDlg'].forEach(s => { const d = $(s); if(d && d.open) d.close(); }); }
 function openFromDrawer(){
   const lib = loadLib(); let curId = null; try{ curId = localStorage.getItem(curKey()); }catch(e){}
   const all = Object.values(lib).filter(l => !isEmptyLesson(l)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
