@@ -55,7 +55,7 @@ button{cursor:pointer}
 .linkurl{display:flex;gap:6px;align-items:center;margin:6px 0}
 .linkurl input{flex:1;min-width:0;font-family:var(--en);font-size:13px}
 .linkok{color:#1E6B3A;font-size:13.5px}.linkwarn{color:#8A5A00;background:#FFF4D6;border-radius:6px;padding:6px 9px;font-size:13.5px}
-body[data-role="student"] #linkBox,body[data-role="student"] #linkState{display:none!important}
+body[data-role="student"] #svBox,body[data-role="student"] #linkBox,body[data-role="student"] #linkState{display:none!important}
 .linky.goto{color:var(--warn);text-decoration:underline;font:inherit;text-align:left;padding:0}
 .title-box .save-state,.title-box .save-state.ok{color:#8FD9B0;font-size:11px}
 .title-box .save-state.err{color:#FF9C8A}
@@ -231,6 +231,67 @@ textarea.inp{resize:vertical;font-family:var(--en);font-size:14px}
 .fbitem .fbr{margin-top:4px;background:var(--teal-weak);border-radius:6px;padding:5px 8px;font-size:13.5px}
 .whopill{display:inline-block;font-size:11.5px;border-radius:8px;padding:0 7px;margin-right:5px;background:#EEF1F5;color:#334}
 .whopill.s{background:#FFF1D6;color:#7A4B00}.whopill.n{background:#E3F6E8;color:#1E6B3A}.whopill.k{background:#E1F1F2;color:#0B5F65}
+.litem{position:relative}
+.litem .lsel{flex:none;width:18px;height:18px;margin:2px 4px 0 0;accent-color:var(--teal)}
+.litem.arch{opacity:.8}.litem.trash{background:#FAFAFA}
+.dupno{font-size:12.5px;font-weight:500;color:#8A5A00;background:#FFF4D6;border-radius:6px;padding:0 6px;margin-left:6px}
+.ltags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+.ltag{font-size:11.5px;border-radius:8px;padding:0 7px;background:#EEF1F5;color:#334}
+.ltag.lk{background:#E1F1F2;color:#0B5F65}.ltag.ls{background:#E3F6E8;color:#1E6B3A}.ltag.lr{background:#EDE7FB;color:#4B2C9A}
+.libtools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;padding:2px 0 4px}
+.libtools select{font-size:13.5px;padding:3px 6px;border:1px solid var(--line);border-radius:6px}
+.libfold{border:1px solid var(--line);border-radius:8px;padding:6px 10px;margin-top:8px}
+.libfold summary{cursor:pointer;font-weight:600;font-size:14px}
+.libfold .litem{margin-top:6px}
+.quizbar{border:1.5px solid #6FD3C0;border-radius:10px;background:var(--stage2);padding:10px 12px}
+.qtop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--stage-text)}
+.qprog{font-size:13.5px;color:var(--stage-muted);font-variant-numeric:tabular-nums}
+.qnote{margin:6px 0 0;font-size:13px;color:var(--stage-muted)}
+.qin{font-family:var(--en);font-size:inherit;line-height:1.2;border:0;border-bottom:2px solid currentColor;background:rgba(14,122,130,.08);border-radius:4px 4px 0 0;padding:0 3px;margin:0 1px;color:inherit;text-align:center;min-width:3ch;max-width:16ch}
+.qin:focus{outline:2px solid #5BB8C0;background:rgba(14,122,130,.16)}
+.qin.ok{border-bottom-color:#1E8E4E;background:rgba(30,142,78,.14);color:#1E6B3A}
+.qin.no{border-bottom-color:#C62F3B;background:rgba(198,47,59,.12)}
+.mtext .qin.ok{color:#8FE3A8}
+.qans{font-family:var(--en);font-size:.8em;color:#C62F3B;font-weight:700;margin-left:2px}
+.mtext .qans{color:#FF9C8A}
+.qres table{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}
+.qres td,.qres th{border-bottom:1px solid var(--line);padding:5px 4px;text-align:left}
+.qres .okc{color:#1E6B3A}.qres .noc{color:#C62F3B}
+.qscore{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0}
+.qscore div{background:var(--teal-weak);border-radius:10px;padding:8px 14px;font-size:14px}
+.qscore b{font-size:20px;font-family:var(--en);margin-left:4px}
+body.quiz #segView,body.quiz #btnPresent,body.quiz #toolRow,body.quiz #blankRow,body.quiz [data-view]{display:none!important}
+#printArea{display:none}
+.ws{font-family:var(--ui);color:#000;background:#fff}
+.ws-page{width:186mm;margin:0 auto;padding:0;page-break-after:always;break-after:page}
+.ws-page:last-child{page-break-after:auto;break-after:auto}
+.ws-head{display:flex;gap:14px;align-items:flex-start;border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:10px}
+.ws-head h1{font-size:17pt;margin:0 0 4px;font-family:var(--en)}
+.ws-head .src{font-size:9pt;color:#333}
+.ws-id{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px;font-size:11pt;white-space:nowrap;align-items:flex-end}
+.ws-id span{border-bottom:1px solid #000;min-width:28mm;display:inline-block}
+.ws-qr{text-align:center;font-size:8pt;color:#333;flex:none}
+.ws-howto{font-size:9.5pt;color:#333;margin:0 0 8px}
+.ws-list{margin:0;padding:0;list-style:none}
+.ws-list li{display:flex;gap:8px;margin:0 0 9pt;font-size:12.5pt;line-height:1.9;break-inside:avoid}
+.ws-list .no{flex:none;width:7mm;font-weight:700;font-family:var(--en)}
+.ws-list .en{font-family:var(--en)}
+.ws-list .ko{display:block;font-size:9.5pt;color:#444;line-height:1.5}
+.ws-bl{display:inline-block;border-bottom:1.2px solid #000;margin:0 2px}
+.ws-box{border:1.5px solid #000;border-radius:6px;padding:6px 10px;margin:4px 0 12px;font-family:var(--en);font-size:11.5pt;line-height:1.8;word-spacing:10px}
+.ws-box b{font-family:var(--ui);font-size:10pt;word-spacing:normal;margin-right:8px}
+.ws-key h2{font-size:14pt;margin:0 0 8px}
+.ws-key li{font-size:11pt;margin:0 0 4px}
+.ws-foot{margin-top:10px;font-size:8pt;color:#666;text-align:right}
+.pv-wrap{max-height:50vh;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:14px;background:#f3f3f3}
+.pv-wrap .ws-page{background:#fff;padding:12mm;box-shadow:0 1px 4px rgba(0,0,0,.15);margin-bottom:10px;width:auto}
+@media print{
+  @page{size:A4;margin:12mm}
+  body.printing{display:block!important;background:#fff!important}
+  body.printing > *:not(#printArea){display:none!important}
+  body.printing #printArea{display:block!important}
+}
+.metaedit{margin-top:8px;background:#F6FBFB}
 .cls-sec{margin:12px 0 4px;font-size:14px;color:var(--muted)}
 .korow{display:flex;gap:6px;align-items:center}.korow .inp{flex:1;min-width:0}
 body:not([data-role="member"]):not([data-role="approved"]):not([data-role="admin"]) .ai-only{display:none!important}
@@ -565,6 +626,13 @@ body.hc .caption .ko{color:#fff}
       <div class="where"><strong id="posLbl">문장 없음</strong><br><span id="timeLbl">0:00.0</span></div>
     </div>
 
+    <!-- 빈칸 받아쓰기 (학생 화면 설정이 '영상 + 빈칸'일 때 학생에게) -->
+    <div class="quizbar" id="quizBar" hidden>
+      <div class="qtop"><b>✏️ 빈칸 받아쓰기</b><span class="qprog" id="qProg"></span><span class="spacer"></span>
+        <button class="sbtn play" id="qCheck">채점하기</button><button class="sbtn" id="qResult" hidden>결과 보기</button><button class="sbtn" id="qReset" hidden>처음부터 다시</button></div>
+      <p class="qnote" id="qNote">영상을 들으며 빈칸에 들리는 단어를 써 보세요. 다 쓰면 ‘채점하기’를 누르세요.</p>
+    </div>
+
     <!-- 녹음: 내 목소리 / 원어민과 번갈아 듣기 / 억양 곡선 / 파일 저장 (녹음은 이 기기에만 남음) -->
     <div class="recbar" id="recBar">
       <div class="rbtns">
@@ -755,6 +823,20 @@ body.hc .caption .ko{color:#fff}
             <span class="note">추가한 문장은 수업 탭에도 바로 나타납니다.</span></div>
         </section>
 
+        <section class="box" id="svBox">
+          <h3>학생 화면 설정</h3>
+          <p class="desc">학생 링크·선생님 수업 목록으로 들어온 학생에게 처음부터 이렇게 보입니다. 바꾼 뒤 맨 위 ‘↻ 학생 링크에 반영’을 누르세요.</p>
+          <div class="form">
+            <label>보기 <select class="inp" id="svView"><option value="script">영상 + 스크립트</option><option value="blank">영상 + 빈칸 (받아쓰기)</option><option value="video">영상만</option></select></label>
+            <label>정답 보여 주기 <select class="inp" id="svReveal"><option value="two">두 번 기회 (1차는 맞음/틀림만, 2차 뒤 정답)</option><option value="now">바로 보여 주기 (채점하면 바로 정답)</option><option value="never">안 보여 주기 (맞음/틀림만)</option></select></label>
+          </div>
+          <div class="row" id="svBlankRow" style="margin-top:8px;font-size:14px">빈칸
+            <span class="seg" id="svRatio"><button data-svr="0.1">10%</button><button data-svr="0.3">30%</button><button data-svr="0.5">50%</button></span>
+            <span class="note" id="svBlankNote"></span>
+          </div>
+          <div class="row" style="margin-top:8px"><button class="btn" id="btnPrint">🖨 학습지 인쇄</button><span class="note">같은 빈칸으로 A4 학습지를 만들어 인쇄하거나 PDF로 저장합니다.</span></div>
+        </section>
+
         <section class="box" id="linkBox">
           <h3>학생용 링크</h3>
           <p class="desc" id="linkDesc"></p>
@@ -813,6 +895,15 @@ body.hc .caption .ko{color:#fff}
   <p class="note" style="margin-top:12px">유튜브 화면 안을 직접 클릭하면 키 입력이 유튜브로 넘어갑니다. 그럴 땐 영상 바깥을 한 번 클릭하세요. 발표 모드에서는 영상을 클릭해도 단축키가 유지됩니다.</p>
   <form method="dialog" style="text-align:right;margin-top:10px"><button class="btn main">닫기</button></form>
 </dialog>
+<dialog id="printDlg" class="lib" aria-labelledby="printTitle">
+  <div class="lib-head"><h3 id="printTitle">🖨 빈칸 학습지 인쇄</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="printBody"></div>
+</dialog>
+<div id="printArea" aria-hidden="true"></div>
+<dialog id="quizDlg" class="lib" aria-labelledby="quizTitle">
+  <div class="lib-head"><h3 id="quizTitle">빈칸 받아쓰기 결과</h3><form method="dialog"><button class="btn">닫기</button></form></div>
+  <div id="quizBody"></div>
+</dialog>
 <dialog id="fbDlg" class="lib" aria-labelledby="fbTitle">
   <div class="lib-head"><h3 id="fbTitle">의견 보내기</h3><form method="dialog"><button class="btn">닫기</button></form></div>
   <div id="fbBody"></div>
@@ -864,7 +955,7 @@ let toastTimer;
 function toast(msg, ms = 2600){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), ms); }
 
 function newLesson(){
-  return {schema:1, id:uid(), title:'새 수업', createdAt:Date.now(), updatedAt:Date.now(), source:null, final:false, blank:{mode:'random', ratio:0.3, seed:1}, sentences:[]};
+  return {schema:1, id:uid(), title:'새 수업', createdAt:Date.now(), updatedAt:Date.now(), source:null, final:false, blank:{mode:'random', ratio:0.3, seed:1}, sentences:[], autoTitleOk:true};
 }
 function mkSent(text, start, end, timing){ return {id:uid(), text:text.trim(), start:r2(start), end:r2(end), ko:'', timing, marks:{}, blanks:[]}; }
 
@@ -944,7 +1035,10 @@ function saveNow(){
   if(lesson.transient){ setSaveState(lesson.fromLink ? 'link' : 'free'); return; }
   const lib = loadLib();
   if(isEmptyLesson(lesson)){ if(lib[lesson.id]){ delete lib[lesson.id]; writeLib(lib); } setSaveState('none'); return; }   // 빈 수업은 남기지 않음
-  lesson.updatedAt = Date.now();
+  // 열기만 해서는 저장 시간이 바뀌지 않게: 내용이 실제로 바뀌었을 때만 고친 시간을 새로 씀
+  const prev = lib[lesson.id], strip = l => { const c = Object.assign({}, l); delete c.updatedAt; return JSON.stringify(c); };
+  if(!prev || strip(prev) !== strip(lesson)) lesson.updatedAt = Date.now();
+  else lesson.updatedAt = prev.updatedAt || lesson.updatedAt || Date.now();
   lib[lesson.id] = lesson;
   if(writeLib(lib)){ try{ localStorage.setItem(curKey(), lesson.id); }catch(e){} setSaveState('ok'); }
 }
@@ -1278,6 +1372,12 @@ function sentenceHTML(s, si){
   return toks.map((t, wi) => {
     const m = marks[wi] || {};
     const isB = bl && bl.has(wi) && t.core, revealed = isB && ui.revealed.has(s.id + ':' + wi);
+    if(isB && quizOn()){
+      const key = s.id + ':' + wi, st = quizState(key), val = (QZ.st.answers[key] || '');
+      const w = Math.max(3, Math.min(16, t.core.length + 1));
+      const inp = `<input class="qin${st.cls}" data-q="${esc(key)}" value="${esc(val)}" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="${si + 1}번 문장 빈칸"${st.lock ? ' readonly' : ''}>`;
+      return esc(t.lead) + inp + (st.ans ? `<span class="qans">${esc(t.core)}</span>` : '') + esc(t.trail);
+    }
     let cls = 'w';
     if(m.stress) cls += ' st';
     if(isB && !revealed) cls += ' bk';
@@ -1362,8 +1462,17 @@ function indexAt(t){
   return ss.length - 1;
 }
 // 자막 시간이 초 단위로 거칠어도 첫소리·끝소리가 잘리지 않도록 앞뒤에 여유를 둠
-const segStart = s => Math.max(0, s.start - Math.min(0.2, ui.pad / 2));
-const segEnd = s => s.end + ui.pad;
+// '똑똑한 여유': 여유는 문장 사이 빈 구간에만 쓰고, 옆 문장 안으로는 넘어가지 않음
+const segStart = s => {
+  const ss = lesson.sentences, i = ss.indexOf(s), prev = i > 0 ? ss[i - 1] : null;
+  const want = Math.max(0, s.start - Math.min(0.2, ui.pad / 2));
+  return prev ? Math.max(want, Math.min(prev.end, s.start)) : want;
+};
+const segEnd = s => {
+  const ss = lesson.sentences, i = ss.indexOf(s), next = i >= 0 && i < ss.length - 1 ? ss[i + 1] : null;
+  const want = s.end + ui.pad;
+  return next ? Math.min(want, Math.max(next.start, s.end)) : want;
+};
 // single=true: 그 문장만 재생하고 멈춤 (문장 클릭·이전/다음·다시 듣기)
 function seekTo(t){
   Player.seek(t);
@@ -1528,8 +1637,9 @@ function syncToolbar(){
   $('#lessonTitle').classList.toggle('need', !lesson.title || /^새 수업$/.test(lesson.title.trim()));
 }
 function afterTextChange(){ renderScript(); renderCaption(); syncToolbar(); save(); }
-function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); renderLinkBox(); renderMobile(); renderRec(); }
-function setView(v){ ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); renderMobile(); }
+function renderAll(){ renderScript(); renderEditor(); renderCaption(); syncToolbar(); renderSubmitBox(); renderAiBox(); renderLinkBox(); renderMobile(); renderRec(); renderSvBox(); renderQuiz(); }
+function setView(v){ if(document.body.classList.contains('quiz') && v !== 'blank') return;   // 받아쓰기 중에는 보기를 바꾸지 않음
+  ui.view = v; renderScript(); renderCaption(); syncToolbar(); savePrefs(); renderMobile(); }
 function setKo(on){ ui.ko = on; renderScript(); renderCaption(); syncToolbar(); savePrefs(); }
 
 /* ---------------- 편집 화면 ---------------- */
@@ -1996,6 +2106,269 @@ $('#rngCap').onchange = e => { savePrefs(); e.target.blur(); };
 
 $('#btnHelp').onclick = () => $('#helpDlg').showModal();
 
+/* ---------------- 학생 화면 설정 · 빈칸 받아쓰기 ---------------- */
+// 학생 링크·수업 목록으로 들어온 학생은 선생님이 정한 보기로 봄. '영상 + 빈칸'이면 빈칸에 직접 써 넣고 채점함.
+// 결과는 서버로 보내지 않고 이미지로 저장해 구글 클래스룸에 제출 (나중에 서버 제출을 더하기 쉽게 결과 모양을 정해 둠)
+const SV_DEF = {view:'script', reveal:'two'};
+const svOf = l => Object.assign({}, SV_DEF, (l && l.studentView) || {});
+const asStudent = () => !!lesson && (getRole() === 'student' || !!lesson.fromLink || !!lesson.fromList);
+const quizOn = () => asStudent() && !!lesson.studentView && svOf(lesson).view === 'blank' && ui.view === 'blank';
+const QZ = {st:{answers:{}, round:0, r1:{}, r2:{}, done:false}, first:null};
+const qKey = () => 'shadowroom.quiz.' + (lesson.fromLink || lesson.id);
+function quizLoad(){ const j = loadJSON(qKey()); QZ.st = Object.assign({answers:{}, round:0, r1:{}, r2:{}, done:false}, j.st || {}); QZ.first = j.first || null; }
+function quizSave(){ try{ localStorage.setItem(qKey(), JSON.stringify({st:QZ.st, first:QZ.first})); }catch(e){} }
+const qNorm = x => String(x || '').toLowerCase().replace(/[’‘`´]/g, "'").replace(/[^a-z0-9']/g, '');
+function quizKeys(){
+  const out = [];
+  lesson.sentences.forEach((s, si) => { const bl = blankSet(s, si), toks = tokens(s.text); [...bl].sort((a, b) => a - b).forEach(wi => { if(toks[wi] && toks[wi].core) out.push({key:s.id + ':' + wi, si, wi, answer:toks[wi].core}); }); });
+  return out;
+}
+// 칸 하나의 상태: 색, 잠김, 정답 표시
+function quizState(key){
+  const st = QZ.st, rv = svOf(lesson).reveal;
+  const r = st.round >= 2 ? st.r2[key] : st.round >= 1 ? st.r1[key] : undefined;
+  if(r === undefined) return {cls:'', lock:false, ans:false};
+  const showAns = !r && st.done && rv !== 'never';
+  return {cls:r ? ' ok' : ' no', lock:r || st.done, ans:showAns};
+}
+function applyStudentView(){
+  if(!lesson) return;
+  document.body.classList.remove('quiz');
+  if(!asStudent() || !lesson.studentView) return;
+  ui.view = svOf(lesson).view;
+  if(quizOn()){ document.body.classList.add('quiz'); quizLoad(); }
+}
+function renderQuiz(){
+  const bar = $('#quizBar'); if(!bar) return;
+  const on = !!lesson && quizOn() && N() > 0 && !welcome;
+  bar.hidden = !on; if(!on) return;
+  const keys = quizKeys(), st = QZ.st, rv = svOf(lesson).reveal, total = keys.length;
+  const filled = keys.filter(k => (st.answers[k.key] || '').trim()).length;
+  const sc = r => keys.filter(k => r[k.key]).length;
+  $('#qProg').textContent = st.done ? `${st.round >= 2 ? `1차 ${sc(st.r1)}/${total} → 2차 ${sc(st.r2)}/${total}` : `${sc(st.r1)}/${total}`} 맞음`
+    : st.round === 1 ? `1차 ${sc(st.r1)}/${total} 맞음 · 빨간 칸을 고쳐 쓰세요` : `빈칸 ${total}개 중 ${filled}개 씀`;
+  $('#qCheck').hidden = st.done; $('#qCheck').textContent = st.round === 1 ? '다시 채점하기 (2차)' : '채점하기';
+  $('#qResult').hidden = !st.done; $('#qReset').hidden = !st.done;
+  $('#qNote').textContent = st.done ? (rv === 'never' ? '채점이 끝났어요. ‘결과 보기’에서 이미지를 저장해 구글 클래스룸 과제에 올리세요.' : '채점이 끝났어요. 빨간 글씨가 정답이에요. ‘결과 보기’에서 이미지를 저장해 구글 클래스룸 과제에 올리세요.')
+    : st.round === 1 ? '초록 칸은 맞았어요. 빨간 칸만 영상을 다시 듣고 고쳐 쓴 뒤 ‘다시 채점하기’를 누르세요.' : '영상을 들으며 빈칸에 들리는 단어를 써 보세요. 다 쓰면 ‘채점하기’를 누르세요.';
+}
+function quizCheck(){
+  const keys = quizKeys(), st = QZ.st, rv = svOf(lesson).reveal;
+  const blank = keys.filter(k => !(st.answers[k.key] || '').trim()).length;
+  if(blank && !confirm(`아직 비어 있는 칸이 ${blank}개 있어요. 그래도 채점할까요?`)) return;
+  const grade = () => { const r = {}; keys.forEach(k => { r[k.key] = qNorm(st.answers[k.key]) === qNorm(k.answer); }); return r; };
+  if(st.round === 0){
+    st.r1 = grade(); st.round = 1;
+    if(rv === 'now' || keys.every(k => st.r1[k.key])) st.done = true;
+  } else { st.r2 = grade(); keys.forEach(k => { if(st.r1[k.key]) st.r2[k.key] = true; }); st.round = 2; st.done = true; }
+  if(st.done && !QZ.first) QZ.first = quizSummary();
+  quizSave(); renderScript(); renderMobile(); renderQuiz();
+  if(st.done) setTimeout(openQuizResult, 300);
+}
+// 결과 모양 (나중에 서버 제출을 더할 때도 이대로 씀)
+function quizSummary(){
+  const keys = quizKeys(), st = QZ.st, rv = svOf(lesson).reveal;
+  return {lessonTitle:lesson.title || '', linkId:lesson.fromLink || '', at:Date.now(), reveal:rv, total:keys.length,
+    score1:keys.filter(k => st.r1[k.key]).length, score2:st.round >= 2 ? keys.filter(k => st.r2[k.key]).length : null,
+    items:keys.map(k => ({n:k.si + 1, answer:k.answer, a1:(st.a1 || {})[k.key] || '', a2:st.answers[k.key] || '', ok1:!!st.r1[k.key], ok2:st.round >= 2 ? !!st.r2[k.key] : null}))};
+}
+function openQuizResult(){
+  const f = QZ.first || quizSummary(), rv = f.reveal, pr = !!QZ.first;
+  const wrong = f.items.filter(x => !(x.ok2 === null ? x.ok1 : x.ok2) || !x.ok1);
+  $('#quizBody').innerHTML = `<div class="qres">
+    <p style="margin:0"><b>${esc(f.lessonTitle)}</b><br><span class="note">${fmtDate(f.at)} · 빈칸 ${f.total}개</span></p>
+    <div class="qscore"><div>1차<b>${f.score1}/${f.total}</b></div>${f.score2 !== null ? `<div>2차<b>${f.score2}/${f.total}</b></div>` : ''}</div>
+    ${wrong.length ? `<table><tr><th>문장</th><th>내가 쓴 답</th><th>${rv === 'never' ? '결과' : '정답'}</th></tr>${wrong.map(x => `<tr><td>${x.n}번</td><td class="${(x.ok2 === null ? x.ok1 : x.ok2) ? 'okc' : 'noc'}">${esc(x.a2 || '(빈칸)')}</td><td>${rv === 'never' ? ((x.ok2 === null ? x.ok1 : x.ok2) ? '2차에 맞음' : '틀림') : (x.ok1 ? '' : '<b>' + esc(x.answer) + '</b>' + ((x.ok2) ? ' (2차에 맞음)' : ''))}</td></tr>`).join('')}</table>` : '<p class="okmsg">모두 맞았어요! 👏</p>'}
+    <p class="note" style="margin-top:10px">이 결과는 처음 한 번 푼 결과예요. ${pr ? '그 뒤에 다시 연습한 점수는 들어가지 않아요. ' : ''}<b>‘결과 이미지 저장’</b>을 눌러 받은 사진을 <b>구글 클래스룸 과제</b>에 올리세요. 화면을 캡처해서 올려도 돼요.</p>
+    <div class="row"><button class="btn main" id="qSaveImg">결과 이미지 저장</button></div></div>`;
+  $('#qSaveImg').onclick = () => saveQuizImage(f);
+  if(!$('#quizDlg').open) $('#quizDlg').showModal();
+}
+function saveQuizImage(f){
+  const rv = f.reveal, wrong = f.items.filter(x => !x.ok1), W = 900, rowH = 34, H = 230 + Math.max(1, wrong.length) * rowH + 60;
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H); g.fillStyle = '#15203A'; g.fillRect(0, 0, W, 64);
+  g.fillStyle = '#fff'; g.font = 'bold 26px sans-serif'; g.fillText('쉐도잉 교실 · 빈칸 받아쓰기 결과', 28, 42);
+  g.fillStyle = '#1A2230'; g.font = 'bold 22px sans-serif'; g.fillText(String(f.lessonTitle).slice(0, 52), 28, 104);
+  g.font = '17px sans-serif'; g.fillStyle = '#5F6B7D'; g.fillText(`${fmtDate(f.at)} · 빈칸 ${f.total}개 · 처음 한 번 푼 결과`, 28, 134);
+  g.fillStyle = '#0E7A82'; g.font = 'bold 30px sans-serif'; g.fillText(`1차 ${f.score1}/${f.total}` + (f.score2 !== null ? `   →   2차 ${f.score2}/${f.total}` : ''), 28, 182);
+  g.font = 'bold 17px sans-serif'; g.fillStyle = '#5F6B7D'; g.fillText('문장', 28, 220); g.fillText('내가 쓴 답', 120, 220); g.fillText(rv === 'never' ? '결과' : '정답', 520, 220);
+  g.font = '18px sans-serif';
+  if(!wrong.length){ g.fillStyle = '#1E8E4E'; g.fillText('모두 맞았어요!', 28, 256); }
+  wrong.forEach((x, i) => {
+    const y = 254 + i * rowH, ok2 = x.ok2;
+    g.fillStyle = '#1A2230'; g.fillText(x.n + '번', 28, y);
+    g.fillStyle = ok2 ? '#1E8E4E' : '#C62F3B'; g.fillText(String(x.a2 || '(빈칸)').slice(0, 28), 120, y);
+    g.fillStyle = '#1A2230'; g.fillText(rv === 'never' ? (ok2 ? '2차에 맞음' : '틀림') : x.answer + (ok2 ? ' (2차에 맞음)' : ''), 520, y);
+  });
+  g.fillStyle = '#9AA3B2'; g.font = '14px sans-serif'; g.fillText('ⓒ 2026 B.S.J. 쉐도잉 교실', 28, H - 20);
+  c.toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `${String(f.lessonTitle).replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 40)}_빈칸결과.png`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); toast('결과 이미지를 저장했어요. 구글 클래스룸 과제에 올리세요.', 4500); }, 'image/png');
+}
+document.addEventListener('input', e => {
+  const q = e.target.closest && e.target.closest('.qin'); if(!q || q.readOnly) return;
+  QZ.st.answers[q.dataset.q] = q.value; quizSave();
+  $$(`.qin[data-q="${CSS.escape(q.dataset.q)}"]`).forEach(o => { if(o !== q) o.value = q.value; });
+  renderQuiz();
+});
+document.addEventListener('keydown', e => {
+  const q = e.target.closest && e.target.closest('.qin'); if(!q || e.key !== 'Enter') return;
+  e.preventDefault(); const all = $$('.qin:not([readonly])', q.closest('#script, #mText, .caption') || document), i = all.indexOf(q);
+  if(all[i + 1]) all[i + 1].focus(); else q.blur();
+});
+// 1차 때 쓴 답을 기억 (결과 표에 쓰려고)
+$('#qCheck').onclick = () => { if(QZ.st.round === 0) QZ.st.a1 = Object.assign({}, QZ.st.answers); quizCheck(); };
+$('#qResult').onclick = openQuizResult;
+$('#qReset').onclick = () => {
+  if(!confirm('처음부터 다시 연습할까요?\n제출용 결과는 처음 한 번 푼 결과로 그대로 남아요.')) return;
+  QZ.st = {answers:{}, round:0, r1:{}, r2:{}, done:false}; quizSave(); renderScript(); renderMobile(); renderQuiz();
+};
+// 선생님: 학생 화면 설정
+function renderSvBox(){
+  if(!lesson || !$('#svBox')) return;
+  const sv = svOf(lesson);
+  $('#svView').value = sv.view; $('#svReveal').value = sv.reveal;
+  $('#svReveal').closest('label').hidden = sv.view !== 'blank'; $('#svBlankRow').hidden = sv.view !== 'blank';
+  $$('#svRatio [data-svr]').forEach(b => b.setAttribute('aria-pressed', String(lesson.blank.mode === 'random' && +b.dataset.svr === lesson.blank.ratio)));
+  $('#svBlankNote').textContent = lesson.blank.mode === 'custom' ? `선생님이 지정한 빈칸 ${lesson.sentences.reduce((a, x) => a + (x.blanks || []).length, 0)}개를 씁니다 (수업 탭 ‘빈칸 지정’)` : '내용어부터 무작위로 비웁니다. 학생과 학습지에 같은 빈칸이 나옵니다.';
+}
+function setSv(patch){ lesson.studentView = Object.assign(svOf(lesson), patch); renderSvBox(); save(); }
+$('#svView').onchange = e => setSv({view:e.target.value});
+$('#svReveal').onchange = e => setSv({reveal:e.target.value});
+$('#svRatio').onclick = e => { const b = e.target.closest('[data-svr]'); if(!b) return; lesson.blank = Object.assign({}, lesson.blank, {mode:'random', ratio:+b.dataset.svr}); renderSvBox(); syncToolbar(); renderScript(); save(); };
+
+/* ---------- QR 코드 (바이트 모드 · 오류 정정 M · 1~20 버전, 인터넷 없이 앱 안에서 만듦) ---------- */
+const QR = (() => {
+  const ECC = [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26];
+  const BLK = [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16];
+  const bit = (x, i) => ((x >>> i) & 1) !== 0;
+  const rawMods = v => { let r = (16 * v + 128) * v + 64; if(v >= 2){ const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if(v >= 7) r -= 36; } return r; };
+  const dataCw = v => Math.floor(rawMods(v) / 8) - ECC[v] * BLK[v];
+  const mul = (x, y) => { let z = 0; for(let i = 7; i >= 0; i--){ z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z; };
+  const rsDiv = d => { const r = []; for(let i = 0; i < d - 1; i++) r.push(0); r.push(1); let root = 1; for(let i = 0; i < d; i++){ for(let j = 0; j < r.length; j++){ r[j] = mul(r[j], root); if(j + 1 < r.length) r[j] ^= r[j + 1]; } root = mul(root, 2); } return r; };
+  const rsRem = (data, div) => { const r = div.map(() => 0); for(const b of data){ const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => { r[i] ^= mul(c, f); }); } return r; };
+  const alignPos = (v, size) => { if(v === 1) return []; const n = Math.floor(v / 7) + 2, step = Math.ceil((v * 4 + 4) / (n * 2 - 2)) * 2, r = [6]; for(let p = size - 7; r.length < n; p -= step) r.splice(1, 0, p); return r; };
+  function encode(text){
+    const bytes = Array.from(new TextEncoder().encode(text));
+    let v = 1; for(; v <= 20; v++){ const cc = v < 10 ? 8 : 16; if(4 + cc + bytes.length * 8 <= dataCw(v) * 8) break; }
+    if(v > 20) throw new Error('too long');
+    const bb = [], push = (val, len) => { for(let i = len - 1; i >= 0; i--) bb.push((val >>> i) & 1); };
+    push(4, 4); push(bytes.length, v < 10 ? 8 : 16); bytes.forEach(b => push(b, 8));
+    const cap = dataCw(v) * 8; push(0, Math.min(4, cap - bb.length)); push(0, (8 - bb.length % 8) % 8);
+    for(let p = 0xEC; bb.length < cap; p ^= 0xEC ^ 0x11) push(p, 8);
+    const data = []; for(let i = 0; i < bb.length; i += 8){ let x = 0; for(let j = 0; j < 8; j++) x = (x << 1) | bb[i + j]; data.push(x); }
+    // 블록 나누기 + 오류 정정 + 섞기
+    const nb = BLK[v], ecl = ECC[v], raw = Math.floor(rawMods(v) / 8), nShort = nb - raw % nb, shortLen = Math.floor(raw / nb), div = rsDiv(ecl), blocks = [];
+    for(let i = 0, k = 0; i < nb; i++){ const dat = data.slice(k, k + shortLen - ecl + (i < nShort ? 0 : 1)); k += dat.length; const e = rsRem(dat, div); if(i < nShort) dat.push(0); blocks.push(dat.concat(e)); }
+    const cw = []; for(let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if(i !== shortLen - ecl || j >= nShort) cw.push(b[i]); });
+    const size = v * 4 + 17, M = [], F = [];
+    for(let y = 0; y < size; y++){ M.push(new Array(size).fill(false)); F.push(new Array(size).fill(false)); }
+    const set = (x, y, d) => { M[y][x] = d; F[y][x] = true; };
+    for(let i = 0; i < size; i++){ set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    const finder = (cx, cy) => { for(let dy = -4; dy <= 4; dy++) for(let dx = -4; dx <= 4; dx++){ const d = Math.max(Math.abs(dx), Math.abs(dy)), x = cx + dx, y = cy + dy; if(x >= 0 && x < size && y >= 0 && y < size) set(x, y, d !== 2 && d !== 4); } };
+    finder(3, 3); finder(size - 4, 3); finder(3, size - 4);
+    const ap = alignPos(v, size), na = ap.length;
+    for(let i = 0; i < na; i++) for(let j = 0; j < na; j++){ if((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) continue; for(let dy = -2; dy <= 2; dy++) for(let dx = -2; dx <= 2; dx++) set(ap[i] + dx, ap[j] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }
+    const format = mask => {
+      const d = (0 << 3) | mask; let r = d; for(let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+      const b = ((d << 10) | r) ^ 0x5412;
+      for(let i = 0; i <= 5; i++) set(8, i, bit(b, i));
+      set(8, 7, bit(b, 6)); set(8, 8, bit(b, 7)); set(7, 8, bit(b, 8));
+      for(let i = 9; i < 15; i++) set(14 - i, 8, bit(b, i));
+      for(let i = 0; i < 8; i++) set(size - 1 - i, 8, bit(b, i));
+      for(let i = 8; i < 15; i++) set(8, size - 15 + i, bit(b, i));
+      set(8, size - 8, true);
+    };
+    format(0);
+    if(v >= 7){ let r = v; for(let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const b = (v << 12) | r; for(let i = 0; i < 18; i++){ const c = bit(b, i), a = size - 11 + i % 3, q = Math.floor(i / 3); set(a, q, c); set(q, a, c); } }
+    let i = 0;
+    for(let right = size - 1; right >= 1; right -= 2){
+      if(right === 6) right = 5;
+      for(let vert = 0; vert < size; vert++) for(let j = 0; j < 2; j++){
+        const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert;
+        if(!F[y][x] && i < cw.length * 8){ M[y][x] = bit(cw[i >>> 3], 7 - (i & 7)); i++; }
+      }
+    }
+    const maskFn = [(x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, (x, y) => x % 3 === 0, (x, y) => (x + y) % 3 === 0,
+      (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => x * y % 2 + x * y % 3 === 0,
+      (x, y) => (x * y % 2 + x * y % 3) % 2 === 0, (x, y) => ((x + y) % 2 + x * y % 3) % 2 === 0];
+    const applyMask = m => { for(let y = 0; y < size; y++) for(let x = 0; x < size; x++) if(!F[y][x] && maskFn[m](x, y)) M[y][x] = !M[y][x]; };
+    const penalty = () => {
+      let p = 0;
+      for(let y = 0; y < size; y++){ let run = 1; for(let x = 1; x <= size; x++){ if(x < size && M[y][x] === M[y][x - 1]) run++; else { if(run >= 5) p += run - 2; run = 1; } } }
+      for(let x = 0; x < size; x++){ let run = 1; for(let y = 1; y <= size; y++){ if(y < size && M[y][x] === M[y - 1][x]) run++; else { if(run >= 5) p += run - 2; run = 1; } } }
+      for(let y = 0; y < size - 1; y++) for(let x = 0; x < size - 1; x++){ const c = M[y][x]; if(c === M[y][x + 1] && c === M[y + 1][x] && c === M[y + 1][x + 1]) p += 3; }
+      let dark = 0; M.forEach(r => r.forEach(c => { if(c) dark++; }));
+      p += Math.floor(Math.abs(dark * 20 - size * size * 10) / (size * size)) * 10;
+      return p;
+    };
+    let best = 0, bestP = Infinity;
+    for(let m = 0; m < 8; m++){ applyMask(m); format(m); const p = penalty(); if(p < bestP){ bestP = p; best = m; } applyMask(m); }
+    applyMask(best); format(best);
+    return M;
+  }
+  // SVG로 그림 (흰 여백 4칸)
+  function svg(text, px){
+    const M = encode(text), n = M.length, q = 4, s = n + q * 2; let d = '';
+    M.forEach((r, y) => r.forEach((c, x) => { if(c) d += `M${x + q},${y + q}h1v1h-1z`; }));
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${s} ${s}" width="${px}" height="${px}" shape-rendering="crispEdges"><rect width="${s}" height="${s}" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+  }
+  return {encode, svg};
+})();
+
+/* ---------------- 빈칸 학습지 인쇄 ---------------- */
+// 화면·학생 링크와 같은 빈칸으로 A4 학습지를 만듦. 반·번호·이름은 종이에만 씀.
+const PRINT_KEY = 'shadowroom.printOpts';
+function printOpts(){ return Object.assign({ko:false, box:false, key:true, qr:true}, loadJSON(PRINT_KEY)); }
+function worksheetHTML(o){
+  const l = lesson, keys = [], words = [];
+  const items = l.sentences.map((s, si) => {
+    const bl = blankSet(s, si), toks = tokens(s.text);
+    const html = toks.map((t, wi) => {
+      if(bl.has(wi) && t.core){ keys.push({n:si + 1, w:t.core}); words.push(t.core); return esc(t.lead) + `<span class="ws-bl" style="width:${Math.max(4, Math.min(14, t.core.length + 2))}ch"></span>` + esc(t.trail); }
+      return esc(t.raw);
+    }).join(' ');
+    return `<li><span class="no">${si + 1}</span><span><span class="en">${html}</span>${o.ko && s.ko ? `<span class="ko">${esc(s.ko)}</span>` : ''}</span></li>`;
+  }).join('');
+  const link = l.studentLink ? linkURL(l.studentLink.id) : '';
+  let qr = '';
+  if(o.qr && link){ try{ qr = `<div class="ws-qr">${QR.svg(link, 96)}<br>휴대폰으로 찍으면<br>영상이 열려요</div>`; }catch(e){} }
+  const src = l.sourceCredit || (l.source && l.source.url) || '';
+  const box = o.box && words.length ? `<div class="ws-box"><b>단어 상자</b>${shuffled([...new Set(words.map(w => w.toLowerCase()))], prng(l.blank.seed * 31 + 7)).map(esc).join('  ')}</div>` : '';
+  const head = `<div class="ws-head"><div style="flex:1"><h1>${esc(l.title || '쉐도잉 학습지')}</h1>${src ? `<div class="src">출처: ${esc(src)}</div>` : ''}
+      <div class="ws-id">반 <span></span> 번호 <span></span> 이름 <span style="min-width:40mm"></span></div></div>${qr}</div>`;
+  const page1 = `<div class="ws-page">${head}<p class="ws-howto">영상을 들으며 빈칸에 들리는 단어를 쓰세요. (빈칸 ${keys.length}개)</p>${box}<ol class="ws-list">${items}</ol><div class="ws-foot">쉐도잉 교실 · ⓒ 2026 B.S.J.</div></div>`;
+  const page2 = o.key ? `<div class="ws-page ws-key"><h2>정답지 — ${esc(l.title || '')}</h2><ol class="ws-list" style="font-size:11pt">${
+    l.sentences.map((s, si) => { const k = keys.filter(x => x.n === si + 1).map(x => x.w); return k.length ? `<li><span class="no">${si + 1}</span><span class="en">${k.map(esc).join(', ')}</span></li>` : ''; }).join('')}</ol><div class="ws-foot">선생님용</div></div>` : '';
+  return `<div class="ws">${page1}${page2}</div>`;
+}
+function openPrint(){
+  if(!lesson || !N()) return toast('문장이 있어야 학습지를 만들 수 있어요.');
+  const o = printOpts(), hasLink = !!lesson.studentLink;
+  const blankInfo = lesson.blank.mode === 'custom' ? '선생님이 지정한 빈칸' : `빈칸 ${Math.round(lesson.blank.ratio * 100)}%`;
+  $('#printBody').innerHTML = `<p class="note" style="margin:0 0 8px">${blankInfo} · 학생 화면과 같은 빈칸이에요. 빈칸 비율은 ‘학생 화면 설정’에서 바꿀 수 있어요.</p>
+    <div class="row" style="gap:14px;flex-wrap:wrap;margin-bottom:8px">
+      <label class="toggle"><input type="checkbox" data-po="ko"${o.ko ? ' checked' : ''}> 한글 뜻 넣기</label>
+      <label class="toggle"><input type="checkbox" data-po="box"${o.box ? ' checked' : ''}> 단어 상자 (쉬운 버전)</label>
+      <label class="toggle"><input type="checkbox" data-po="key"${o.key ? ' checked' : ''}> 정답지 한 장 더</label>
+      <label class="toggle"><input type="checkbox" data-po="qr"${o.qr && hasLink ? ' checked' : ''}${hasLink ? '' : ' disabled'}> QR 코드${hasLink ? '' : ' (학생용 링크를 만들면 쓸 수 있어요)'}</label>
+    </div>
+    <div class="pv-wrap" id="printPv"></div>
+    <div class="row" style="margin-top:10px"><span class="note">인쇄 창에서 ‘PDF로 저장’을 고르면 파일로도 받을 수 있어요.</span><span class="spacer"></span><button class="btn main" id="printGo">🖨 인쇄하기</button></div>`;
+  const pv = () => { $('#printPv').innerHTML = worksheetHTML(printOpts()); };
+  $$('#printBody [data-po]').forEach(cb => cb.onchange = () => { const x = printOpts(); x[cb.dataset.po] = cb.checked; try{ localStorage.setItem(PRINT_KEY, JSON.stringify(x)); }catch(e){} pv(); });
+  $('#printGo').onclick = () => {
+    $('#printArea').innerHTML = worksheetHTML(printOpts());
+    $('#printDlg').close();
+    document.body.classList.add('printing');
+    const done = () => { document.body.classList.remove('printing'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    setTimeout(() => { window.print(); setTimeout(done, 1500); }, 50);
+  };
+  pv();
+  if(!$('#printDlg').open) $('#printDlg').showModal();
+}
+$('#btnPrint').onclick = openPrint;
+
 /* ---------------- 녹음 (학생 기기 안에서만) ---------------- */
 // 녹음은 메모리에만 두고 서버로 보내지 않습니다. 남기려면 '저장'으로 파일을 받아 클래스룸에 제출합니다.
 const REC = {media:null, rec:null, chunks:[], sid:null, timer:null, stopAt:0, store:{}, audio:null, abTimer:null};
@@ -2195,7 +2568,7 @@ $('#listOl').onclick = e => { const b = e.target.closest('[data-mgo]'); if(!b) r
     if(!on) return; on = false;
     const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
     if(Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.3 || Date.now() - st > 900 || !N()) return;
-    if(e.target.closest('button, select')) return;
+    if(e.target.closest('button, select, input')) return;
     goTo(E.target + (dx > 0 ? -1 : 1));
     try{ localStorage.setItem(SWIPE_KEY, '1'); }catch(err){}
     $('#mHint').hidden = true;
@@ -2226,7 +2599,17 @@ function mobPlayCheck(){
 }
 ['#bPlay', '#bPrev', '#bNext', '#bRepeat'].forEach(sel => $(sel).addEventListener('click', mobPlayCheck));
 /* ---------------- 내 수업 ---------------- */
-function switchLesson(l){ saveNow(); openLesson(l); }
+// G. 학생 링크에 반영하지 않은 채 다른 수업으로 가면 한 번 알려 줌 (같은 수업은 한 번만)
+const linkWarned = new Set();
+function warnLinkDirty(){
+  if(!lesson || !lesson.studentLink || !linkDirty() || linkWarned.has(lesson.id) || !canList()) return;
+  linkWarned.add(lesson.id);
+  if(confirm(`“${lesson.title}”의 고친 내용이 아직 학생 링크에 반영되지 않았어요.\n\n지금 반영할까요? ([취소]를 누르면 나중에 할 수 있어요)`)) linkAct('push');
+}
+function switchLesson(l){ saveNow(); if(!lesson || !l || l.id !== lesson.id) warnLinkDirty(); openLesson(l); }
+window.addEventListener('beforeunload', e => {
+  if(lesson && lesson.studentLink && canList() && linkDirty() && !linkWarned.has('unload:' + lesson.id)){ linkWarned.add('unload:' + lesson.id); e.preventDefault(); e.returnValue = ''; }
+});
 // 처음 온 교사가 처음 수업을 만들 때 한 번 알림
 const FIRST_NOTICE_KEY = 'shadowroom.firstNotice';
 function firstNotice(){
@@ -2256,20 +2639,54 @@ function finalIssues(l){
 }
 // '완성'은 버튼 없이 조건을 채우면 저절로 붙음
 const isFinal = l => finalIssues(l).block.length === 0;
+let libDup = {};   // 같은 제목 번호 매기기용
 function libItemHTML(l){
   const n = (l.sentences || []).length, src = l.source ? (l.source.kind === 'youtube' ? '유튜브' : '내 컴퓨터 파일') : '영상 없음';
+  const dupNo = libDup[l.id] || 0, made = l.createdAt ? `${new Date(l.createdAt).getMonth() + 1}/${new Date(l.createdAt).getDate()} 만듦` : '';
+  const tags = [l.studentLink ? '<span class="ltag lk">학생 링크</span>' : '', l.inList ? '<span class="ltag ls">학생 목록</span>' : '', l.submittedAt ? `<span class="ltag lr">${l.sharedApproved ? '자료실에 올림' : '공유 신청함'}</span>` : ''].join('');
   const {block, warn} = finalIssues(l), fin = block.length === 0, cur = lesson && l.id === lesson.id;
   const todo = fin ? warn[0] || '' : block[0];
   const badge = fin ? '<span class="free-pill">완성</span>' : '<span class="free-pill wip">작업 중</span>';
   const shared = l.origin ? `<span class="origin">자료실에서 가져옴 · 원작 ${esc(l.origin.author || '')}</span>` : l.submittedAt ? `<span class="origin">${l.sharedApproved ? '자료실에 올림' : '공유 신청함'}</span>` : '';
-  return `<div class="litem${cur ? ' cur' : ''}" data-id="${esc(l.id)}">
-    <div class="lt"><strong>${badge}${esc(l.title || '제목 없음')}</strong><span>문장 ${n}개 · ${src} · ${fmtDate(l.updatedAt || l.createdAt || Date.now())} 저장${todo ? ' · <b class="todo">' + esc(todo) + '</b>' : ''}</span>${shared}</div>
+  return `<div class="litem${cur ? ' cur' : ''}${l.archived ? ' arch' : ''}" data-id="${esc(l.id)}">
+    <input type="checkbox" class="lsel" data-sel aria-label="고르기">
+    <div class="lt"><strong>${badge}${esc(l.title || '제목 없음')}${dupNo > 1 ? `<span class="dupno">(${dupNo}) · ${made}</span>` : ''}</strong><span>문장 ${n}개 · ${src} · ${fmtDate(l.updatedAt || l.createdAt || Date.now())} 고침${todo ? ' · <b class="todo">' + esc(todo) + '</b>' : ''}</span>${tags ? '<span class="ltags">' + tags + '</span>' : ''}${l.origin ? shared : ''}</div>
     <div class="lbtns">
       ${canList() && l.source && l.source.kind === 'youtube' ? `<label class="inlist" title="체크하면 ‘선생님 수업 목록’ 링크로 들어온 학생에게 이 수업이 보입니다"><input type="checkbox" data-inlist${l.inList ? ' checked' : ''}> 학생 목록</label>` : ''}
       ${cur ? '<span class="note">지금 열려 있음</span>' : '<button class="btn main sm" data-lib="open">열기</button>'}
+      <button class="btn sm" data-lib="${l.archived ? 'unarch' : 'arch'}" title="${l.archived ? '보관함에서 꺼내 목록에 다시 보이게 합니다' : '지우지 않고 목록에서 숨깁니다 (아래 보관함에 있음)'}">${l.archived ? '꺼내기' : '보관'}</button>
       <button class="btn sm danger" data-lib="del">삭제</button>
     </div>
   </div>`;
+}
+/* ---------- 내 수업 정리: 정렬 · 여러 개 지우기 · 보관함 · 휴지통 ---------- */
+const SORT_KEY = 'shadowroom.libSort', TRASH_BASE = 'shadowroom.trash.v1', TRASH_DAYS = 14;
+const trashKey = () => TRASH_BASE + drawerSuffix();
+const libSort = () => { try{ return localStorage.getItem(SORT_KEY) || 'recent'; }catch(e){ return 'recent'; } };
+function sortLessons(arr){
+  const k = libSort();
+  return arr.slice().sort(k === 'title' ? (a, b) => String(a.title || '').localeCompare(String(b.title || ''), 'ko') || (a.createdAt || 0) - (b.createdAt || 0)
+    : k === 'created' ? (a, b) => (b.createdAt || 0) - (a.createdAt || 0) : (a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+}
+function loadTrash(){ const t = loadJSON(trashKey()); let ch = false; Object.keys(t).forEach(k => { if(Date.now() - (t[k].deletedAt || 0) > TRASH_DAYS * 864e5){ delete t[k]; ch = true; } }); if(ch) saveTrash(t); return t; }
+function saveTrash(t){ try{ localStorage.setItem(trashKey(), JSON.stringify(t)); return true; }catch(e){ toast('저장 공간이 부족해 휴지통에 넣지 못했습니다.'); return false; } }
+// 지우면 휴지통으로 (14일 동안 되살릴 수 있음)
+function deleteLessons(ids){
+  const lib = loadLib(), ls = ids.map(id => lib[id]).filter(Boolean); if(!ls.length) return;
+  const linked = ls.filter(l => l.studentLink), names = ls.length === 1 ? `“${ls[0].title}”` : `고른 수업 ${ls.length}개`;
+  let msg = `${names}을(를) 지울까요?\n\n지운 수업은 휴지통에 ${TRASH_DAYS}일 동안 남아 있어서 되살릴 수 있어요.`;
+  if(linked.length) msg += `\n\n⚠ 학생 링크가 있는 수업이 ${linked.length}개 있어요 (${linked.map(l => '“' + l.title + '”').join(', ')}).\n지워도 학생 링크는 그대로 열리지만, 나중에 고치거나 끊을 수 없게 돼요. 먼저 ‘자료 편집 → 학생용 링크 → 링크 끊기’를 할 수도 있어요.`;
+  if(canBackup()){ const lastBk = (() => { try{ return +localStorage.getItem(bkKey()) || 0; }catch(_){ return 0; } })(); if(ls.some(l => !lastBk || (l.updatedAt || 0) > lastBk)) msg += '\n\n(아직 파일로 내려받지 않은 내용이 있어요. 걱정되면 [취소] 후 ‘파일로 내려받기’를 먼저 해 주세요.)'; }
+  if(!confirm(msg)) return;
+  const t = loadTrash(); ls.forEach(l => { t[l.id] = {lesson:l, deletedAt:Date.now()}; delete lib[l.id]; });
+  saveTrash(t); writeLib(lib);
+  if(lesson && ls.some(l => l.id === lesson.id)){ const rest = sortLessons(Object.values(lib).filter(l => !l.archived)); lesson = null; openLesson(rest[0] || newLesson()); }
+  toast(`${names}을(를) 휴지통으로 옮겼어요. ${TRASH_DAYS}일 안에 되살릴 수 있어요.`, 4000);
+  renderLib();
+}
+function setArchived(ids, on){
+  const lib = loadLib(); ids.forEach(id => { if(lib[id]){ if(on) lib[id].archived = true; else delete lib[id].archived; if(lesson && lesson.id === id){ if(on) lesson.archived = true; else delete lesson.archived; } } });
+  writeLib(lib); toast(on ? '보관함으로 옮겼어요. 목록 아래 ‘보관함’에서 다시 꺼낼 수 있어요.' : '보관함에서 꺼냈어요.'); renderLib();
 }
 function backupInfo(){
   let t = 0; try{ t = +localStorage.getItem(bkKey()) || 0; }catch(e){}
@@ -2289,20 +2706,30 @@ function renderLib(){
   let cleaned = false;
   for(const k of Object.keys(lib)) if((!lesson || k !== lesson.id) && isEmptyLesson(lib[k])){ delete lib[k]; cleaned = true; }   // 빈 수업 정리
   if(cleaned) writeLib(lib);
-  const items = Object.values(lib).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const all = sortLessons(Object.values(lib)), items = all.filter(l => !l.archived), arch = all.filter(l => l.archived);
   const mine = items.filter(l => !l.origin), got = items.filter(l => l.origin);
+  // 같은 제목이 여러 개면 만든 순서대로 (2), (3) 번호
+  libDup = {}; const byT = {}; Object.values(lib).forEach(l => { const k = String(l.title || '').trim(); (byT[k] = byT[k] || []).push(l); });
+  Object.values(byT).forEach(g => { if(g.length > 1) g.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)).forEach((l, i) => { libDup[l.id] = i + 1; }); });
+  const trash = Object.values(loadTrash()).sort((a, b) => b.deletedAt - a.deletedAt);
   let top = '';
   if(canBackup()){ const b = backupInfo(); top = `<div class="bkbar${b.old ? ' old' : ''}"><span>${esc(b.text)}</span><span class="spacer"></span><button class="btn main sm" data-libx="export">파일로 내려받기</button></div>`; }
   else if(getRole() === 'general') top = memberBoxHTML();
   const sec = (title, arr, empty) => `<h4 class="libsec">${title}</h4>` + (arr.length ? arr.map(libItemHTML).join('') : `<p class="note">${empty}</p>`);
   if(canList()) top += '<div id="myListBox" class="listbox"><p class="note">선생님 수업 목록 링크를 불러오는 중…</p></div>';
-  $('#libList').innerHTML = top
+  const tools = canSave() ? `<div class="libtools"><label>정렬 <select id="libSortSel">${[['recent', '최근 고친 순'], ['title', '제목 순'], ['created', '만든 날짜 순']].map(([v, t]) => `<option value="${v}"${libSort() === v ? ' selected' : ''}>${t}</option>`).join('')}</select></label>
+      <span class="spacer"></span><span class="note" id="selCount"></span><button class="btn sm" data-libx="archsel" disabled>고른 수업 보관</button><button class="btn sm danger" data-libx="delsel" disabled>고른 수업 지우기</button></div>` : '';
+  $('#libList').innerHTML = top + tools
     + sec('내가 만든 수업', mine, '아직 만든 수업이 없습니다. 위의 ‘＋ 수업 만들기’로 시작하세요.')
-    + (got.length ? sec('자료실에서 가져온 수업', got, '') : '')
+    + (got.length ? sec('자료실에서 가져온 수업 <span class="note" style="font-weight:400">다른 사람이 올린 수업을 ‘가져가기’로 복사한 것</span>', got, '') : '')
+    + (arch.length ? `<details class="libfold"><summary>🗂 보관함 (${arch.length})</summary>${arch.map(libItemHTML).join('')}</details>` : '')
+    + (trash.length ? `<details class="libfold"><summary>🗑 휴지통 (${trash.length}) <span class="note">${TRASH_DAYS}일이 지나면 저절로 지워져요</span></summary>${trash.map(x => `<div class="litem trash" data-trash="${esc(x.lesson.id)}"><div class="lt"><strong>${esc(x.lesson.title || '제목 없음')}</strong><span>문장 ${(x.lesson.sentences || []).length}개 · ${fmtDate(x.deletedAt)} 지움</span></div><div class="lbtns"><button class="btn main sm" data-trashx="restore">되살리기</button><button class="btn sm danger" data-trashx="purge">완전히 지우기</button></div></div>`).join('')}</details>` : '')
     + '<div id="libFree"></div>';
   $('#libImportWrap').hidden = !canSave();
   renderLibFree();
   if(canList()) loadMyList();
+  // 지금 열린 수업이 가려지지 않게 그 자리로
+  const cur = $('#libList .litem.cur'); if(cur) setTimeout(() => cur.scrollIntoView({block:'center'}), 0);
 }
 async function renderLibFree(){
   const box = $('#libFree'); if(!box) return;
@@ -2343,21 +2770,22 @@ $('#libList').addEventListener('click', e => {
   const b = e.target.closest('[data-lib]'); if(!b || !b.closest('.litem')) return;
   const id = b.closest('.litem').dataset.id, lib = loadLib(), l = lib[id]; if(!l) return;
   if(b.dataset.lib === 'open'){ $('#libDlg').close(); switchLesson(l); setTab('lesson'); toast(`“${l.title}” 수업을 열었습니다.`); return; }
-  if(b.dataset.lib === 'del'){
-    let msg = `“${l.title}” 수업을 지울까요? 되돌릴 수 없습니다.`;
-    if(canBackup()){
-      // 마지막으로 내려받은 뒤 바뀌었거나 한 번도 내려받지 않은 수업이면 한 번 더 확인
-      const lastBk = (() => { try{ return +localStorage.getItem(bkKey()) || 0; }catch(_){ return 0; } })();
-      if(!lastBk || (l.updatedAt || 0) > lastBk) msg = `“${l.title}”은(는) 파일로 내려받은 뒤 바뀌었거나 아직 내려받은 적이 없습니다.\n\n지우기 전에 [취소]를 누르고 위의 ‘파일로 내려받기’를 먼저 눌러 주세요.\n\n그래도 지울까요? 되돌릴 수 없습니다.`;
-    }
-    if(!confirm(msg)) return;
-    delete lib[id]; writeLib(lib);
-    if(lesson && id === lesson.id){
-      const rest = Object.values(lib).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-      lesson = null; openLesson(rest[0] || newLesson());
-    }
-    renderLib();
-  }
+  if(b.dataset.lib === 'del') return deleteLessons([id]);
+  if(b.dataset.lib === 'arch') return setArchived([id], true);
+  if(b.dataset.lib === 'unarch') return setArchived([id], false);
+});
+const selIds = () => $$('#libList [data-sel]:checked').map(cb => cb.closest('.litem').dataset.id);
+$('#libList').addEventListener('change', e => {
+  if(e.target.id === 'libSortSel'){ try{ localStorage.setItem(SORT_KEY, e.target.value); }catch(_){} return renderLib(); }
+  if(e.target.matches('[data-sel]')){ const n = selIds().length; $('#selCount').textContent = n ? `${n}개 고름` : ''; $$('[data-libx="delsel"],[data-libx="archsel"]').forEach(x => x.disabled = !n); }
+});
+$('#libList').addEventListener('click', e => {
+  const x = e.target.closest('[data-libx="delsel"],[data-libx="archsel"]');
+  if(x){ const ids = selIds(); if(ids.length) x.dataset.libx === 'delsel' ? deleteLessons(ids) : setArchived(ids, true); return; }
+  const t = e.target.closest('[data-trashx]'); if(!t) return;
+  const id = t.closest('[data-trash]').dataset.trash, tr = loadTrash(), it = tr[id]; if(!it) return;
+  if(t.dataset.trashx === 'restore'){ const lib = loadLib(); lib[id] = it.lesson; if(writeLib(lib)){ delete tr[id]; saveTrash(tr); toast(`“${it.lesson.title}”을(를) 되살렸어요.`); renderLib(); } }
+  else if(confirm(`“${it.lesson.title}”을(를) 완전히 지울까요? 이제는 되살릴 수 없어요.`)){ delete tr[id]; saveTrash(tr); renderLib(); }
 });
 $('#libImport').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if(!f || !canSave()) return;
@@ -2390,12 +2818,12 @@ function focusTitle(){
 document.addEventListener('click', e => { if(e.target.closest('[data-focus-title]')){ e.preventDefault(); focusTitle(); } });
 // 제목이 비어 있으면 유튜브 영상 제목을 미리 넣음 (선생님이 한 번 고친 제목은 바꾸지 않음)
 function maybeAutoTitle(){
-  if(!lesson || welcome || lesson.transient || !canSave() || lesson.titleEdited) return;
+  if(!lesson || welcome || lesson.transient || !canSave() || lesson.titleEdited || !lesson.autoTitleOk) return;   // 새로 만든 수업에만
   if(lesson.title && !/^새 수업$/.test(lesson.title.trim())) return;
   if(Player.kind !== 'yt' || !Player.yt || !lesson.source || lesson.source.videoId !== Player.videoId) return;
   let t = ''; try{ t = String((Player.yt.getVideoData() || {}).title || '').trim(); }catch(e){}
   if(!t) return;
-  lesson.title = t.slice(0, 120); lesson.titleAuto = true;
+  lesson.title = t.slice(0, 120); lesson.titleAuto = true; delete lesson.autoTitleOk;
   syncToolbar(); save();
   toast('유튜브 영상 제목을 넣었어요. 맨 위 제목 칸에서 언제든 고칠 수 있어요.', 4000);
 }
@@ -2465,6 +2893,9 @@ function openFreeLesson(i){
 function copyFreeLesson(i){
   const l = (openLessons || [])[i]; if(!l || !canSave()) return;
   const lib = loadLib();
+  if(lib[l.id] && !lib[l.id].origin && confirm(`“${l.title}”의 원본이 이미 내 수업에 있어요.\n\n[확인] 원본 열기\n[취소] 그래도 사본으로 복사하기`)){
+    if($('#libDlg').open) $('#libDlg').close(); switchLesson(lib[l.id]); setTab('lesson'); return;
+  }
   const ex = Object.values(lib).find(x => x.origin && x.origin.lessonId === l.id);
   if(ex && !confirm(`“${l.title}”은(는) 이미 내 수업에 복사해 두었습니다. 하나 더 복사할까요?`)) return;
   const c = JSON.parse(JSON.stringify(l));
@@ -2533,7 +2964,7 @@ function marksHTML(text, marks){
   }).join(' ');
 }
 function fmtLen(sec){ sec = Math.round(sec || 0); const m = Math.floor(sec / 60), s = sec % 60; return m ? `${m}분${s ? ' ' + s + '초' : ''}` : `${s}초`; }
-function closeAllDialogs(){ ['#libDlg', '#hubDlg', '#submitDlg', '#teacherDlg', '#applyDlg', '#helpDlg'].forEach(s => { const d = $(s); if(d && d.open) d.close(); }); }
+function closeAllDialogs(){ ['#libDlg', '#hubDlg', '#submitDlg', '#teacherDlg', '#applyDlg', '#helpDlg', '#printDlg', '#quizDlg', '#fbDlg', '#classDlg', '#listDlg'].forEach(s => { const d = $(s); if(d && d.open) d.close(); }); }
 function openFromDrawer(){
   const lib = loadLib(); let curId = null; try{ curId = localStorage.getItem(curKey()); }catch(e){}
   const all = Object.values(lib).filter(l => !isEmptyLesson(l)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
@@ -2668,9 +3099,12 @@ function startFirst(){
 }
 
 /* ---------- 공유할 때 적는 칸 (공유 신청 · 회원 신청에서 함께 씀) ---------- */
+// I. 영상 종류: 공식 채널(개인·기관)과 정부·공공·퍼블릭 도메인을 나눔
+const KIND_OPTS = [['channel', '공식 채널 (개인·기관이 직접 올린 영상)'], ['official', '정부·공공·퍼블릭 도메인 영상'], ['cc', '유튜브 CC BY 영상 (다른 사람이 올린 영상)'], ['own', '내가 직접 만든 영상'], ['film', '영화·드라마·방송 장면 (공유 불가)']];
+const KIND_LABEL = {channel:'공식 채널', official:'정부·공공·퍼블릭 도메인', cc:'유튜브 CC BY', own:'직접 제작'};
 const TOPICS = ['연설', '뉴스', '인터뷰', '강연(TED 등)', '드라마·영화', '광고', '일상 대화', '기타'];
 function shareFieldsHTML(p, l){
-  const m = (l && l.libMeta) || {}, kind = (l && l.sourceKind) || 'official';
+  const m = (l && l.libMeta) || {}, kind = (l && l.sourceKind === 'official' && !l.kindChecked ? '' : (l && l.sourceKind)) || '';
   const opt = (v, label, cur) => `<option value="${v}"${v === cur ? ' selected' : ''}>${label}</option>`;
   return `<div class="form">
       <label>수준 <select class="inp" id="${p}Level">${['하', '중', '상'].map(v => opt(v, v, m.level || '중')).join('')}</select></label>
@@ -2680,7 +3114,8 @@ function shareFieldsHTML(p, l){
     <div class="srcbox">
       <label class="full">출처 (필수) <input class="inp" id="${p}Source" maxlength="120" placeholder="예: 유튜브 ○○ 공식 채널 ‘영상 제목’ / VOA Learning English" value="${esc((l && l.sourceCredit) || '')}"></label>
       <label class="full" style="margin-top:8px">영상 종류 <select class="inp" id="${p}Kind">
-        ${opt('official', '공식 채널·정부·공공 영상 (퍼블릭 도메인 등)', kind)}${opt('cc', '유튜브 CC BY 영상 (다른 사람이 올린 영상)', kind)}${opt('own', '내가 직접 만든 영상', kind)}${opt('film', '영화·드라마·방송 장면 (FilmRise 등 무료 공개 채널 포함)', kind)}</select></label>
+        ${opt('', '— 골라 주세요 —', kind)}${KIND_OPTS.map(([v, t]) => opt(v, t, kind)).join('')}</select></label>
+      <div id="${p}Chan" hidden class="note" style="margin-top:8px;padding:8px 10px;border-radius:8px;background:#FFF4D6;color:#7A4B00">공식 채널 영상은 <b>수업 목적으로만</b> 써 주세요. 출처(채널 이름·영상 제목)를 꼭 적고, <b>무료 공개(누구나)는 신중히</b> 해 주세요.</div>
       <div id="${p}Film" hidden class="issues" style="margin-top:8px;padding:10px 12px;border-radius:10px">영화·드라마·방송 장면은 <b>공유할 수 없습니다.</b> 무료로 볼 수 있는 영상이라도 수업 자료로 나누어 줄 허락은 아닙니다. 이 수업은 <b>내 수업에서만</b> 쓰세요.</div>
       <div id="${p}CC" hidden style="margin-top:8px;font-size:13px;display:grid;gap:6px">
         <label class="chk"><input type="checkbox" id="${p}CC1"><span>영상 설명란에서 <b>‘크리에이티브 커먼즈 저작자 표시(재사용 허용)’</b>를 직접 확인했습니다.</span></label>
@@ -2691,7 +3126,7 @@ function shareFieldsHTML(p, l){
 }
 function bindShareFields(p){
   const k = $('#' + p + 'Kind');
-  const upd = () => { $('#' + p + 'CC').hidden = k.value !== 'cc'; $('#' + p + 'Film').hidden = k.value !== 'film'; };
+  const upd = () => { $('#' + p + 'CC').hidden = k.value !== 'cc'; $('#' + p + 'Film').hidden = k.value !== 'film'; const c = $('#' + p + 'Chan'); if(c) c.hidden = k.value !== 'channel'; };
   k.onchange = upd; upd();
 }
 function readShareFields(p, l){
@@ -2700,17 +3135,18 @@ function readShareFields(p, l){
   if(src.length < 3) return {error:'영상의 출처를 적어 주세요. (채널 이름과 영상 제목)'};
   if(kind === 'cc' && !($('#' + p + 'CC1').checked && $('#' + p + 'CC2').checked)) return {error:'CC BY 영상은 두 가지 확인 항목에 모두 체크해야 합니다.'};
   if(!$('#' + p + 'Rights').checked) return {error:'출처·이용 조건 확인에 체크해 주세요.'};
-  const kindLabel = {official:'공식·공공 영상', cc:'유튜브 CC BY', own:'직접 제작'}[kind];
+  if(!kind) return {error:'영상 종류를 골라 주세요.'};
+  const kindLabel = KIND_LABEL[kind];
   const url = (l.source && l.source.url) || '', userNote = $('#' + p + 'Note').value.trim();
   const meta = {level:$('#' + p + 'Level').value, topic:$('#' + p + 'Topic').value,
     note:'[출처] ' + src + ' / ' + kindLabel + (url ? ' / ' + url : '') + (kind === 'cc' ? ' / 설명란 CC BY 확인함' : '') + (userNote ? '\n' + userNote : ''),
     duration:Math.max(0, ...l.sentences.map(s => s.end))};
   return {meta, src, kind, userNote};
 }
-function lessonForSend(l){ const c = JSON.parse(JSON.stringify(l)); delete c.submittedAt; delete c.libMeta; delete c.transient; delete c.sharedApproved; delete c.studentLink; delete c.titleEdited; delete c.titleAuto; return c; }
+function lessonForSend(l){ const c = JSON.parse(JSON.stringify(l)); ['submittedAt', 'libMeta', 'transient', 'sharedApproved', 'studentLink', 'titleEdited', 'titleAuto', 'autoTitleOk', 'inList', 'archived', 'fromLink', 'fromList'].forEach(k => delete c[k]); return c; }
 // 보낸 뒤 내 수업에 '공유함' 표시를 남김
 function markSent(l, f, approved){
-  const apply = x => { x.sourceCredit = f.src; x.sourceKind = f.kind; x.submittedAt = Date.now(); x.final = true; x.sharedApproved = !!approved; x.libMeta = {level:f.meta.level, topic:f.meta.topic, note:f.userNote}; };
+  const apply = x => { x.sourceCredit = f.src; x.sourceKind = f.kind; x.kindChecked = true; x.submittedAt = Date.now(); x.final = true; x.sharedApproved = !!approved; x.libMeta = {level:f.meta.level, topic:f.meta.topic, note:f.userNote}; };
   if(lesson && l.id === lesson.id){ apply(lesson); saveNow(); }
   else { const lib = loadLib(); if(lib[l.id]){ apply(lib[l.id]); writeLib(lib); } }
   renderSubmitBox();
@@ -2855,6 +3291,13 @@ async function hubGet(subId, btn){
   if(btn){ btn.disabled = true; btn.textContent = '가져오는 중…'; }
   try{
     const j = await hubApi('get', Object.assign({subId}, authData()));
+    // 내가 올린 수업이면 원본이 이미 내 수업에 있음
+    const own = loadLib()[j.meta.lessonId || (j.lesson && j.lesson.id)];
+    if(own && !own.origin){
+      if(confirm(`“${own.title}”의 원본이 이미 내 수업에 있어요.\n\n[확인] 원본 열기\n[취소] 그래도 사본으로 가져오기`)){
+        $('#hubDlg').close(); switchLesson(own); setTab('lesson'); toast('내 수업에 있는 원본을 열었어요.'); if(btn){ btn.disabled = false; btn.textContent = '가져가기'; } return;
+      }
+    }
     $('#hubDlg').close();
     importLibLesson(j.lesson, j.meta, false);
     toast(`“${j.meta.title}” 수업을 내 수업에 넣었습니다.`, 4000);
@@ -2918,7 +3361,7 @@ function adminItemHTML(x, tab){
       <button class="btn sm" data-adm="check">가져와서 확인</button>
       ${x.url ? `<a class="btn sm" href="${esc(x.url)}" target="_blank" rel="noopener">유튜브</a>` : ''}
       ${tab === 'wait' ? '<button class="btn main sm" data-adm="승인">승인</button><button class="btn sm danger" data-adm="반려">반려</button>' : ''}
-      ${tab === 'open' ? (x.free ? '<button class="btn sm" data-adm="freeoff">무료에서 내리기</button>' : '<button class="btn sm" data-adm="freeon">★ 무료로 지정</button>') + '<button class="btn sm danger" data-adm="내림">자료실에서 내리기</button>' : ''}
+      ${tab === 'open' ? '<button class="btn sm" data-adm="meta">✎ 정보 고치기</button>' + (x.free ? '<button class="btn sm" data-adm="freeoff">무료에서 내리기</button>' : '<button class="btn sm" data-adm="freeon">★ 무료로 지정</button>') + '<button class="btn sm danger" data-adm="내림">자료실에서 내리기</button>' : ''}
       ${tab === 'other' && x.status !== '교체됨' ? '<button class="btn sm" data-adm="승인">다시 공개</button>' : ''}
     </div></div>`;
 }
@@ -2977,8 +3420,48 @@ function adminFbHTML(x){
     <div class="row" style="margin-top:6px"><select data-fbst>${['새 건의', '확인함', '반영 예정', '반영함', '어려움'].map(st => `<option${st === x.status ? ' selected' : ''}>${st}</option>`).join('')}</select>
     ${x.who === '학생' ? '' : `<input class="inp" data-fbrep value="${esc(x.reply)}" placeholder="답 (교사의 ‘내 건의’에 보임)" style="flex:1;min-width:160px">`}<button class="btn sm main" data-fbsave>저장</button></div></div>`;
 }
+// H. 자료실 수업의 출처·메모·수준·주제를 다시 올리지 않고 그 자리에서 고침
+function parseNote(note){
+  const lines = String(note || '').split('\n'), first = lines[0] || '';
+  if(!/^\[출처\]/.test(first)) return {src:'', kindLabel:'', url:'', extra:'', memo:String(note || '')};
+  const parts = first.replace(/^\[출처\]\s*/, '').split(' / ');
+  const url = parts.find(x => /^https?:\/\//.test(x)) || '', extra = parts.filter((x, i) => i > 1 && x !== url).join(' / ');
+  return {src:parts[0] || '', kindLabel:parts[1] || '', url, extra, memo:lines.slice(1).join('\n')};
+}
+function kindOfLabel(lb){ return Object.keys(KIND_LABEL).find(k => KIND_LABEL[k] === lb) || ''; }
+function openMetaEdit(row){
+  const x = adminData.items.find(y => y.subId === row.dataset.sub); if(!x || $('.metaedit', row)) return;
+  const n = parseNote(x.note), k = kindOfLabel(n.kindLabel);
+  const opt = (v, label, cur) => `<option value="${v}"${v === cur ? ' selected' : ''}>${label}</option>`;
+  const box = document.createElement('div'); box.className = 'metaedit mbox';
+  box.innerHTML = `<div class="form">
+      <label class="full">출처 <input class="inp" data-me="src" maxlength="120" value="${esc(n.src)}" placeholder="예: 유튜브 ○○ 채널 ‘영상 제목’"></label>
+      <label class="full">영상 종류 <select class="inp" data-me="kind">${opt('', n.kindLabel ? '(예전 표시: ' + esc(n.kindLabel) + ') — 다시 골라 주세요' : '— 골라 주세요 —', k)}${KIND_OPTS.filter(o => o[0] !== 'film').map(([v, t]) => opt(v, t, k)).join('')}</select></label>
+      <label>수준 <select class="inp" data-me="level">${['하', '중', '상'].map(v => opt(v, v, x.level || '중')).join('')}</select></label>
+      <label>주제 <select class="inp" data-me="topic">${TOPICS.map(v => opt(v, v, x.topic || '연설')).join('')}</select></label>
+      <label class="full">활용 메모 <textarea class="inp" data-me="memo" rows="3" style="font-family:var(--ui)">${esc(n.memo)}</textarea></label>
+    </div>
+    <div class="row" style="margin-top:6px"><span class="note">문장·시간 같은 수업 내용은 그대로이고, 이 정보만 바뀝니다.</span><span class="spacer"></span><button class="btn sm" data-me-cancel>취소</button><button class="btn main sm" data-me-save>저장</button></div>
+    <p class="issues" data-me-msg style="list-style:none;padding:0;margin:4px 0 0"></p>`;
+  row.appendChild(box);
+}
+async function saveMetaEdit(row, btn){
+  const x = adminData.items.find(y => y.subId === row.dataset.sub), g = k => $(`[data-me="${k}"]`, row).value.trim(), msg = $('[data-me-msg]', row);
+  const src = g('src'), kind = g('kind');
+  if(src.length < 3) return msg.textContent = '출처를 적어 주세요. (채널 이름과 영상 제목)';
+  if(!kind) return msg.textContent = '영상 종류를 골라 주세요.';
+  const n = parseNote(x.note), url = n.url || x.url || '';
+  const note = '[출처] ' + src + ' / ' + KIND_LABEL[kind] + (url ? ' / ' + url : '') + (kind === 'cc' ? ' / 설명란 CC BY 확인함' : '') + (g('memo') ? '\n' + g('memo') : '');
+  btn.disabled = true;
+  try{
+    await hubApi('admin_meta', {adminPassword:adminPw(), subId:x.subId, meta:{level:g('level'), topic:g('topic'), note}});
+    Object.assign(x, {level:g('level'), topic:g('topic'), note});
+    toast('정보를 고쳤어요. 다시 올리지 않아도 바로 반영됩니다.'); renderAdmin();
+  }catch(e){ msg.textContent = e.message; btn.disabled = false; }
+}
 async function adminAction(act, subId, btn){
   const pw = adminPw();
+  if(act === 'meta') return openMetaEdit(btn.closest('[data-sub]'));
   btn.disabled = true;
   try{
     if(act === 'check'){
@@ -2987,7 +3470,10 @@ async function adminAction(act, subId, btn){
       toast('[검토] 복사본을 열었습니다. 문장을 눌러 시간이 맞는지 들어 보세요.', 4000); return;
     }
     if(act === 'freeon' || act === 'freeoff'){
-      if(act === 'freeon' && !confirm('이 수업을 학생을 포함해 누구나 쓰는 무료 수업으로 지정할까요?')){ btn.disabled = false; return; }
+      const xi = adminData.items.find(y => y.subId === subId), kl = parseNote(xi && xi.note).kindLabel;
+      const pd = kl === KIND_LABEL.official || kl === KIND_LABEL.own || kl === KIND_LABEL.cc;
+      if(act === 'freeon' && !confirm(pd ? '이 수업을 학생을 포함해 누구나 쓰는 무료 수업으로 지정할까요?'
+        : `이 수업의 영상 종류는 ‘${kl || '알 수 없음'}’입니다.\n\n정부·공공·퍼블릭 도메인이나 CC BY 영상이 아니면, 무료 공개는 수업 범위를 넘는 공개가 될 수 있습니다.\n(저작권법 제25조는 수업 목적의 이용을 허용합니다)\n\n그래도 누구나 쓰는 무료 수업으로 지정할까요?`)){ btn.disabled = false; return; }
       await hubApi('admin_free', {adminPassword:pw, subId, free:act === 'freeon'});
       openLessons = null; toast(act === 'freeon' ? '무료 수업으로 지정했습니다. 바로 모두에게 보입니다.' : '무료에서 내렸습니다.'); return loadAdmin();
     }
@@ -3051,6 +3537,10 @@ $('#hubBody').addEventListener('click', async e => {
   }
   const at = e.target.closest('[data-atab]');
   if(at){ adminTab = at.dataset.atab; return renderAdmin(); }
+  const ms = e.target.closest('[data-me-save]');
+  if(ms) return saveMetaEdit(ms.closest('[data-sub]'), ms);
+  const mc = e.target.closest('[data-me-cancel]');
+  if(mc){ const b = mc.closest('.metaedit'); if(b) b.remove(); return; }
   const ff = e.target.closest('[data-fbf]');
   if(ff){ fbFilter = ff.dataset.fbf; return renderAdmin(); }
   const fs = e.target.closest('[data-fbsave]');
@@ -3123,7 +3613,7 @@ function appBase(){ return location.protocol.startsWith('http') && location.orig
 const linkURL = id => appBase() + '?l=' + id;
 function linkHash(l){
   const c = JSON.parse(JSON.stringify(l));
-  ['studentLink', 'updatedAt', 'submittedAt', 'libMeta', 'sharedApproved', 'titleEdited', 'titleAuto', 'final', 'transient'].forEach(k => delete c[k]);
+  ['studentLink', 'updatedAt', 'submittedAt', 'libMeta', 'sharedApproved', 'titleEdited', 'titleAuto', 'final', 'transient', 'autoTitleOk', 'inList', 'archived'].forEach(k => delete c[k]);
   const str = JSON.stringify(c); let h = 5381;
   for(let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
   return (h >>> 0).toString(36) + '.' + str.length;
@@ -3424,6 +3914,10 @@ async function sendSubmit(){
     $('#submitDlg').close();
     toast(r === 'admin' ? '자료실에 올렸습니다.' + (free ? ' 무료 수업으로도 지정했습니다.' : '') + (j.warn ? ` (같은 영상 수업이 이미 있습니다: ${j.warn})` : '')
       : j.status === '승인' ? '자료실에 바로 올렸습니다.' : '공유 신청했습니다. 관리자가 확인하고 승인하면 자료실에 올라가고 기여 교사가 됩니다.', 6000);
+    // G. 학생 링크(학생 목록)가 있으면 함께 반영할지 물어봄
+    if(lesson.studentLink && linkDirty()) setTimeout(() => {
+      if(confirm(`자료실에 새 버전을 올렸어요.\n\n이 수업은 학생 링크${lesson.inList ? '와 학생 목록' : ''}에도 들어 있어요. 학생들도 새 버전을 보도록 지금 반영할까요?\n\n[취소]를 누르면 나중에 맨 위 ‘↻ 학생 링크에 반영’으로 할 수 있어요.`)) linkAct('push');
+    }, 400);
   }catch(e){
     if(e.code === 'wrongmember' || e.code === 'suspended'){ $('#submitDlg').close(); return forceStudent(e.message + ' 선생님 입구에서 다시 들어와 주세요.'); }
     say(e.message); $('#sbSend').disabled = false; $('#sbSend').textContent = r === 'member' ? '신청하기' : '올리기';
@@ -3524,6 +4018,7 @@ function openLesson(l, opts){
   }
   $('#rawScript').value = ''; $('#importStatus').textContent = ''; $('#aiStatus').textContent = ''; aiDefaultRange();
   welcome = !!(opts && opts.welcome);
+  applyStudentView();
   renderAll(); if(!welcome) save(); renderWelcome(); maybeSwipeHint();
 }
 /* ---------- 학생용 링크로 들어온 경우 ---------- */
