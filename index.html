@@ -267,7 +267,8 @@ body.stg #segView,body.stg #btnPresent,body.stg #toolRow,body.stg #blankRow,body
 .stg-btns{display:flex;gap:6px;flex-wrap:wrap}
 .stg-ar{color:var(--stage-muted);font-size:13px;align-self:center}
 .stg-b{border:1px solid var(--stage-line);background:transparent;color:var(--stage-text);border-radius:16px;padding:6px 12px;font-size:14px;cursor:pointer;white-space:nowrap;font-family:var(--ui)}
-.stg-b.done{border-color:#6FD3C0;color:#8FE3D0}
+.stg-b.done{border-color:#2E3B57;color:#7B8496}
+.stg-ck{color:#3FBF74;font-weight:700;margin-left:3px}
 .stg-b.on{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
 .stg-b.res{background:#FFE066;color:#15203A;border-color:#FFE066;font-weight:700}
 .stg-note{margin:8px 0 0;font-size:13.5px;color:var(--stage-muted);line-height:1.55}
@@ -293,6 +294,13 @@ body.linkload #welcomeOverlay > .welcome-msg:not(#linkMsg),body.linkload [data-f
 .qmode{display:inline-flex;gap:4px}
 .qmode button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
 /* 휴대폰 밀기 안내: 문장 양옆 손가락 + 화살표 */
+.mswipe2[hidden]{display:none!important}
+.mswipe2{display:flex;gap:14px;align-items:center;color:#FFE066;font-size:14px;line-height:1;pointer-events:none}
+.mswipe2 b{font-size:18px;font-weight:400}
+.mswipe2 .sl{display:inline-flex;align-items:center;gap:1px;animation:swl2 1.4s ease-in-out infinite}
+.mswipe2 .sr{display:inline-flex;align-items:center;gap:1px;animation:swr2 1.4s ease-in-out infinite}
+@keyframes swl2{0%,100%{transform:translateX(0)}50%{transform:translateX(-4px)}}
+@keyframes swr2{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 .mswipe{display:none;position:absolute;top:50%;color:#FFE066;font-size:15px;line-height:1.1;flex-direction:column;align-items:center;gap:2px;pointer-events:none}
 .mswipe b{font-size:20px;font-weight:400}
 .mswipe.l{left:5px;animation:swl 1.4s ease-in-out infinite}
@@ -687,10 +695,9 @@ body.hc .caption .ko{color:#fff}
 
     <!-- 휴대폰 화면 (학생 연습용) -->
     <div class="mcard" id="mCard" aria-live="polite">
-      <div class="mpos"><span id="mPos"></span><span class="mpos-btns"><button class="mlist-btn" id="mClassBtn" hidden>수업 목록</button><button class="mlist-btn" id="mListBtn">문장 목록</button></span></div>
+      <div class="mpos"><span id="mPos"></span><span class="mswipe2" id="mSwipe" aria-hidden="true"><span class="sl">←<b>☝</b></span><span class="sr"><b>☝</b>→</span></span><span class="mpos-btns"><button class="mlist-btn" id="mClassBtn" hidden>수업 목록</button><button class="mlist-btn" id="mListBtn">문장 목록</button></span></div>
       <p class="en mtext" id="mText"></p>
       <div class="mchk" id="mChk"></div>
-      <span class="mswipe l" aria-hidden="true">←<b>☝</b></span><span class="mswipe r" aria-hidden="true">→<b>☝</b></span>
       <div class="mko-row"><button class="mko-btn" id="mKoBtn" aria-pressed="false">뜻 보기</button></div>
       <p class="mko" id="mKo" hidden></p>
       <p class="mhint" id="mHint" hidden>← 옆으로 밀면 문장을 넘길 수 있어요 →</p>
@@ -949,7 +956,7 @@ body.hc .caption .ko{color:#fff}
           <div class="row"><button class="btn main" id="btnSvWizard">차례로 설정하기</button><span class="note">한 단계씩 물어보면서 정해요. AI 문제도 여기서 만들어요.</span></div>
           <div class="svs" id="svStages"></div>
           <div id="svDictOpts">
-            <div class="form"><label>④ 받아쓰기 채점 방식 <select class="inp" id="svCheck"><option value="all">한꺼번에 (다 쓰고 한 번에)</option><option value="sentence">문장마다 (한 문장씩)</option><option value="choose">학생이 고르게 하기</option></select></label><label>④ 받아쓰기 정답 보여 주기 <select class="inp" id="svReveal"><option value="two">두 번 기회 (1차는 맞음/틀림만, 2차 뒤 정답)</option><option value="now">바로 보여 주기 (채점하면 바로 정답)</option><option value="never">안 보여 주기 (맞음/틀림만)</option></select></label></div>
+            <div class="form"><label>④ 받아쓰기 채점 방식 <select class="inp" id="svCheck"><option value="sentence">문장마다 (한 문장씩, 채점하면 다음 문장으로)</option><option value="all">한꺼번에 (다 쓰고 한 번에)</option><option value="choose">학생이 고르게 하기</option></select></label><label>④ 받아쓰기 정답 보여 주기 <select class="inp" id="svReveal"><option value="two">두 번 기회 (1차는 맞음/틀림만, 2차 뒤 정답)</option><option value="now">바로 보여 주기 (채점하면 바로 정답)</option><option value="never">안 보여 주기 (맞음/틀림만)</option></select></label></div>
             <div class="row" id="svBlankRow" style="margin-top:8px;font-size:14px">④ 빈칸
               <span class="seg" id="svRatio"><button data-svr="0.1">10%</button><button data-svr="0.3">30%</button><button data-svr="0.5">50%</button></span>
               <span class="note" id="svBlankNote"></span>
@@ -1665,6 +1672,7 @@ function togglePlay(){
 function tick(){
   updateTransport();
   if(!Player.ready) return;
+  if(ui.stage === 'listen') checkListened();
   const t = Player.time(), now = performance.now(), playing = Player.isPlaying();
   $('#timeLbl').textContent = fmt(t);
   if(E.gap){
@@ -2271,8 +2279,18 @@ function quizLoad(){
   const j = loadJSON(qKey()); QZ.st = Object.assign({answers:{}, round:0, r1:{}, r2:{}, done:false}, j.st || {}); QZ.first = j.first || null;
   // 선생님이 문제를 바꿔 다시 반영했으면 객관식 답은 새로 시작
   QZ.mc = j.mc && j.mc.sig === mcSig() ? Object.assign({gist:{}, detail:{}}, j.mc) : {gist:{}, detail:{}, sig:mcSig()};
+  QZ.listened = !!j.listened;
 }
-function quizSave(){ try{ localStorage.setItem(qKey(), JSON.stringify({st:QZ.st, first:QZ.first, mc:QZ.mc})); }catch(e){} }
+function quizSave(){ try{ localStorage.setItem(qKey(), JSON.stringify({st:QZ.st, first:QZ.first, mc:QZ.mc, listened:!!QZ.listened})); }catch(e){} }
+// ① 듣기: 영상을 마지막 문장 끝까지 들으면 ✓ (다음 단계로는 학생이 직접 넘어감)
+function checkListened(){
+  if(QZ.listened || ui.stage !== 'listen' || !lesson || !stageMode() || !N() || !Player.isPlaying()) return;
+  const last = lesson.sentences[N() - 1];
+  if(Player.time() < (last.end || 0) - 0.4) return;
+  QZ.listened = true; quizSave(); renderStage();
+  const act = activeStages(lesson), next = act[act.indexOf('listen') + 1];
+  toast(`끝까지 다 들었어요!${next ? ` 준비되면 ‘${stName(next)}’를 누르세요.` : ''}`, 4000);
+}
 const qNorm = x => String(x || '').toLowerCase().replace(/[’‘`´]/g, "'").replace(/[^a-z0-9']/g, '');
 function quizKeys(){
   const out = [];
@@ -2284,7 +2302,7 @@ const qSid = key => key.slice(0, key.lastIndexOf(':'));
 const keyRound = key => { const st = QZ.st, sid = qSid(key); return st.sround && st.sround[sid] !== undefined ? st.sround[sid] : st.round; };
 const keyDone = key => { const st = QZ.st; return st.done || !!(st.sdone && st.sdone[qSid(key)]); };
 // 채점 방식: 한꺼번에 / 문장마다 (선생님이 정함, '학생이 고르게 하기'면 학생이 고름)
-const checkMode = () => { const m = svOf(lesson).checkMode || 'all'; return m === 'choose' ? (QZ.st.mode || 'all') : m; };
+const checkMode = () => { const m = svOf(lesson).checkMode || 'sentence'; return m === 'choose' ? (QZ.st.mode || 'sentence') : m; };   // 기본: 문장마다 채점
 // 칸 하나의 상태: 색, 잠김, 정답 표시
 function quizState(key){
   const st = QZ.st, rv = svOf(lesson).reveal, rd = keyRound(key), done = keyDone(key);
@@ -2337,6 +2355,12 @@ function quizCheckSentence(si){
   quizSave(); if(newOk) chime();
   renderScript(); renderMobile(); renderQuiz();
   if(st.done) setTimeout(stageAfterDone, 300);
+  else if(st.sdone[sid]){
+    // 이 문장이 끝났으면 (맞음/틀림을 잠깐 보여 준 뒤) 아직 채점 안 한 다음 문장으로 가서 재생
+    const todo = [...new Set(quizKeys().map(k => k.si))].filter(i => !st.sdone[lesson.sentences[i].id]);
+    const next = todo.find(i => i > si); const go = next !== undefined ? next : todo[0];
+    if(go !== undefined) setTimeout(() => { if(QZ.st === st && ui.stage === 'dict') goTo(go, true, true); }, 900);
+  }
 }
 function qchkHTML(si){
   if(!quizOn() || checkMode() !== 'sentence') return '';
@@ -2365,6 +2389,7 @@ function setStage(k, silent){
   renderScript(); renderCaption(); syncToolbar(); renderMobile(); renderRec(); renderQuiz(); renderQa(); renderStage();
 }
 function stageDone(k){
+  if(k === 'listen') return !!QZ.listened;
   if(k === 'gist' || k === 'detail'){ const qs = qsOf(lesson)[k]; return qs.length > 0 && qs.every((q, i) => QZ.mc[k][i] !== undefined); }
   if(k === 'dict') return !!QZ.first;
   return false;
@@ -2374,6 +2399,7 @@ const allDone = () => { const sc = scoredStages(); return sc.length > 0 && sc.ev
 function stageNoteHTML(k){
   const act = activeStages(lesson), next = act[act.indexOf(k) + 1];
   const nextTxt = next ? ` 다 했으면 ‘${stName(next)}’로 넘어가세요.` : '';
+  if(k === 'listen' && QZ.listened) return `<b>✓ 끝까지 다 들었어요.</b> 더 들어도 되고, 준비되면 ${next ? `‘${stName(next)}’를 누르세요.` : '연습을 이어 가세요.'}`;
   if(k === 'listen') return `<b>먼저 듣고 ${act.includes('dict') ? '받아쓰기 하세요' : act.includes('gist') || act.includes('detail') ? '문제를 풀어 보세요' : '연습하세요'}.</b> ‘재생’을 누르면 자막 없이 처음부터 끝까지 이어서 나와요. (CC 자막을 꺼 주세요) 몇 번이든 다시 들어도 돼요.` + (next ? ` 다 들었으면 ‘${stName(next)}’로 넘어가세요.` : '');
   if(k === 'gist') return '(CC 자막을 꺼 주세요) 영상의 <b>중심 내용</b>을 묻는 문제예요. 답을 고르면 바로 채점돼요. <b>기회는 한 번</b>이니 잘 듣고 고르세요. 다시 들으려면 ‘재생’을 누르세요.' + (stageDone(k) ? nextTxt : '');
   if(k === 'detail') return '(CC 자막을 꺼 주세요) 영상의 <b>세부 내용</b>을 묻는 문제예요. 답을 고르면 바로 채점돼요. <b>기회는 한 번</b>이니 잘 듣고 고르세요. 다시 들으려면 ‘재생’을 누르세요.' + (stageDone(k) ? nextTxt : '');
@@ -2402,7 +2428,7 @@ function renderStage(){
   const on = !!lesson && !welcome && N() > 0 && stageMode() && !!ui.stage;
   bar.hidden = !on; if(!on) return;
   const act = activeStages(lesson);
-  $('#stgBtns').innerHTML = act.map(k => `<button class="stg-b${k === ui.stage ? ' on' : ''}${stageDone(k) ? ' done' : ''}" data-stg-go="${k}" aria-pressed="${k === ui.stage}">${stName(k)}${stageDone(k) ? ' ✓' : ''}</button>`).join('<span class="stg-ar" aria-hidden="true">→</span>')
+  $('#stgBtns').innerHTML = act.map(k => `<button class="stg-b${k === ui.stage ? ' on' : ''}${stageDone(k) ? ' done' : ''}" data-stg-go="${k}" aria-pressed="${k === ui.stage}">${stName(k)}${stageDone(k) ? '<span class="stg-ck" aria-label="끝냄">✓</span>' : ''}</button>`).join('<span class="stg-ar" aria-hidden="true">→</span>')
     + (allDone() ? '<button class="stg-b res" data-stg-res>📄 결과 보기</button>' : '');
   $('#stgNote').innerHTML = stageNoteHTML(ui.stage);
 }
@@ -2459,7 +2485,7 @@ function renderQuiz(){
   $('#qResult').hidden = !(st.done && allDone()); $('#qReset').hidden = !st.done;
   const leftTxt = scoredStages().filter(k => !stageDone(k)).map(k => `‘${stName(k)}’`).join(', ');
   $('#qNote').textContent = st.done ? (rv === 'never' ? '채점이 끝났어요. ' : '채점이 끝났어요. 빨간 글씨가 정답이에요. ') + (leftTxt ? `남은 단계(${leftTxt})를 끝내면 결과 이미지를 저장할 수 있어요.` : '‘결과 보기’에서 이미지를 저장해 구글 클래스룸 과제에 올리세요.')
-    : sm ? '한 문장씩 빈칸을 채우고 문장 아래 ‘이 문장 채점’을 누르세요. 빨간 칸은 다시 듣고 고친 뒤 ‘다시 채점’을 누르세요. (키보드 추천 단어는 쓰지 마세요)'
+    : sm ? '한 문장씩 빈칸을 채우고 문장 아래 ‘이 문장 채점’을 누르세요. 그 문장이 끝나면 다음 문장으로 넘어가요. 빨간 칸은 다시 듣고 고친 뒤 ‘다시 채점’을 누르세요. (키보드 추천 단어는 쓰지 마세요)'
     : st.round === 1 ? '초록 칸은 맞았어요. 빨간 칸만 영상을 다시 듣고 고쳐 쓴 뒤 ‘다시 채점하기’를 누르세요.' : '영상을 들으며 빈칸에 들리는 단어를 써 보세요. 다 쓰면 ‘채점하기’를 누르세요. (키보드 추천 단어는 쓰지 마세요)';
 }
 function quizCheck(){
@@ -2605,7 +2631,7 @@ function stgStatus(k){
   const st = stagesOf(lesson), q = qsOf(lesson);
   if(!lesson.studentView || !st[k]) return '안 씀';
   if(k === 'gist' || k === 'detail') return q[k].length ? `문제 ${q[k].length}개 · ${Q_LANG[q.lang]}` : '⚠ 문제가 없어 학생에게 안 보여요';
-  if(k === 'dict') return `빈칸 ${lesson.blank.mode === 'custom' ? '직접 지정' : Math.round(lesson.blank.ratio * 100) + '%'} · ${({two:'두 번 기회', now:'바로 정답', never:'정답 안 보여 줌'})[svOf(lesson).reveal]} · ${CHECK_LABEL[svOf(lesson).checkMode || 'all']}`;
+  if(k === 'dict') return `빈칸 ${lesson.blank.mode === 'custom' ? '직접 지정' : Math.round(lesson.blank.ratio * 100) + '%'} · ${({two:'두 번 기회', now:'바로 정답', never:'정답 안 보여 줌'})[svOf(lesson).reveal]} · ${CHECK_LABEL[svOf(lesson).checkMode || 'sentence']}`;
   return '씀';
 }
 function renderSvBox(){
@@ -2614,7 +2640,7 @@ function renderSvBox(){
   $('#svStages').innerHTML = (set ? '' : '<p class="note" style="margin:0">아직 정하지 않았어요. 지금은 학생에게 영상과 스크립트가 그대로 보여요. ‘차례로 설정하기’를 눌러 시작하세요.</p>')
     + STG.map(([k, name]) => `<div class="svs-row"><label class="toggle"><input type="checkbox" data-stg="${k}"${set && st[k] ? ' checked' : ''}> ${name}</label><span class="note">${stgStatus(k)}</span>${k === 'gist' || k === 'detail' ? `<button class="btn sm" data-stgedit="${k}">문제 보기·고치기</button>` : ''}</div>`).join('');
   $('#svDictOpts').hidden = !(set && st.dict);
-  $('#svReveal').value = sv.reveal; $('#svCheck').value = sv.checkMode || 'all';
+  $('#svReveal').value = sv.reveal; $('#svCheck').value = sv.checkMode || 'sentence';
   $$('#svRatio [data-svr]').forEach(b => b.setAttribute('aria-pressed', String(lesson.blank.mode === 'random' && +b.dataset.svr === lesson.blank.ratio)));
   $('#svBlankNote').textContent = lesson.blank.mode === 'custom' ? `선생님이 지정한 빈칸 ${lesson.sentences.reduce((a, x) => a + (x.blanks || []).length, 0)}개를 씁니다 (수업 탭 ‘빈칸 지정’)` : '내용어부터 무작위로 비웁니다. 학생과 학습지에 같은 빈칸이 나옵니다.';
 }
@@ -2684,7 +2710,7 @@ function renderWiz(){
     const sv = svOf(lesson);
     html = `<h4>${STG_NAME[k]}</h4><p>빈칸 비율 <span class="seg">${[0.1, 0.3, 0.5].map(r => `<button data-w="ratio" data-r="${r}" aria-pressed="${lesson.blank.mode === 'random' && lesson.blank.ratio === r}">${r * 100}%</button>`).join('')}</span></p>
       ${lesson.blank.mode === 'custom' ? '<p class="note">지금은 선생님이 수업 탭에서 직접 지정한 빈칸을 써요. 비율을 누르면 무작위 빈칸으로 바뀌어요.</p>' : ''}
-      <p>채점 방식 <select class="inp" data-wc style="width:auto">${[['all', '한꺼번에 (다 쓰고 한 번에)'], ['sentence', '문장마다 (한 문장씩 채점)'], ['choose', '학생이 고르게 하기']].map(([v, t]) => `<option value="${v}"${(sv.checkMode || 'all') === v ? ' selected' : ''}>${t}</option>`).join('')}</select></p>
+      <p>채점 방식 <select class="inp" data-wc style="width:auto">${[['sentence', '문장마다 (한 문장씩 채점, 채점하면 다음 문장으로)'], ['all', '한꺼번에 (다 쓰고 한 번에)'], ['choose', '학생이 고르게 하기']].map(([v, t]) => `<option value="${v}"${(sv.checkMode || 'sentence') === v ? ' selected' : ''}>${t}</option>`).join('')}</select></p>
       <p>정답 보여 주기 <select class="inp" data-wr style="width:auto">${[['two', '두 번 기회 (1차는 맞음/틀림만, 2차 뒤 정답)'], ['now', '바로 보여 주기'], ['never', '안 보여 주기 (맞음/틀림만)']].map(([v, t]) => `<option value="${v}"${sv.reveal === v ? ' selected' : ''}>${t}</option>`).join('')}</select></p>
       <div class="row"><button class="btn main" data-w="next">이대로 확정${W.only ? '' : ' → 다음'}</button></div>`;
   } else html = `<h4>${STG_NAME[k]}</h4><p>${STG_DESC[k]}</p>${yesNo}`;
@@ -3041,6 +3067,7 @@ function renderMobileInner(){
   if(E.target !== mLastTarget){ mKoOpen = false; mLastTarget = E.target; }
   const s = curS();
   $('#mPos').textContent = N() ? `${E.target + 1} / ${N()} 문장` : '문장 없음';
+  $('#mSwipe').hidden = N() < 2 || welcome;
   const noText = !!ui.stage && ui.view === 'video' && stageMode();
   $('#mText').innerHTML = noText ? '<span style="color:var(--stage-muted);font-size:16px">🎧 자막 없이 들어요. (CC 자막을 꺼 주세요) ‘재생’을 누르세요.</span>' : s ? sentenceHTML(s, E.target) : (welcome ? '' : '아직 문장이 없어요.');
   $('#mChk').innerHTML = s && !noText ? qchkHTML(E.target) : '';
@@ -3124,6 +3151,7 @@ $('#listOl').onclick = e => { const b = e.target.closest('[data-mgo]'); if(!b) r
 const SWIPE_KEY = 'shadowroom.swipeHint';
 // 문장 양옆에 손가락 + 화살표 (처음 세 번만, 한 번 밀어 보면 다시 안 나옴)
 function maybeSwipeHint(){
+  return;   // 밀기 안내는 이제 문장 카드 위쪽(번호와 ‘문장 목록’ 사이)에 늘 보임
   if(!isMob() || N() < 2 || welcome) return;
   let n = 0;
   try{ if(localStorage.getItem(SWIPE_KEY + '.done')) return; n = +localStorage.getItem(SWIPE_KEY + '.n') || 0; if(n >= 3) return; localStorage.setItem(SWIPE_KEY + '.n', String(n + 1)); }catch(e){ return; }
